@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" jest przetłumaczone jako "Teren" lub "Obszar" (claim/territory)
+    island: teren
+    Island: Teren
+    an-island: teren
+    islands: tereny
+    Islands: Tereny
+  teleporting-to-spawn: "&c Byłeś poza granicą. Teleportowano do spawnu (punktu odrodzenia)."
+  errors:
+    not-in-world: "&c Musisz znajdować się w świecie, aby zająć teren"
+    already-claimed: "&c Ta lokalizacja jest już zajęta!"
+    overlap: "&c Nie możesz zająć terenu tutaj, ponieważ pokrywałby się z innym terenem w [xyz]."
+    too-close-to-spawn: "&c Jesteś za blisko spawnu, aby zająć teren. Odsuń się dalej."
+    no-fit-inside: "&c Ten teren nie może w całości zmieścić się w granicach."
+  nether:
+    refresh: "&a Kaboom! Nether został odnowiony! Twój wypaczony kompas kruszy się w twojej dłoni!"
+  claim:
+    team-increase-owner: "&a Twój teren powiększył się dzięki nowemu członkowi!"
+    team-decrease-owner: "&b Twój teren jest mniejszy, ponieważ jeden z członków zespołu odszedł."
+    team-increase: "&a Ten teren powiększył się dzięki nowemu członkowi!"
+    team-decrease: "&b Ten teren jest mniejszy, ponieważ jeden z członków zespołu odszedł."
+    team-no-change: "&d Rozmiar terenu nie mógł zostać powiększony! Musi być tam tłoczno!"
+  commands:
+    admin:
+        worldborder:
+            description: zmień ustawienia granicy świata
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Granica świata ma promień [number] bloków."
+            set-size:
+                needs-value: "&c Set wymaga wartości całkowitej dla rozmiaru granicy świata"          
+    claim:
+        description: "Próbuje zająć teren"
+    island:
+      create:
+        creating-island: "&a Próba zajęcia terenu..."
+        cannot-create-island: "&c Nie udało się utworzyć terenu."

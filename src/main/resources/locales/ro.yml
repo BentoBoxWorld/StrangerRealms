@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" este tradus ca "Reclamație" (claim/territory)
+    island: reclamație
+    Island: Reclamație
+    an-island: o reclamație
+    islands: reclamații
+    Islands: Reclamații
+  teleporting-to-spawn: "&c Erai în afara graniței. Teleportat la spawn."
+  errors:
+    not-in-world: "&c Trebuie să fii în lume pentru a face o reclamație"
+    already-claimed: "&c Această locație este deja revendicată!"
+    overlap: "&c Nu poți face o reclamație aici deoarece s-ar suprapune cu o altă reclamație la [xyz]."
+    too-close-to-spawn: "&c Ești prea aproape de spawn pentru a face o reclamație. Îndepărtează-te."
+    no-fit-inside: "&c Această reclamație nu poate încăpea complet în interiorul limitei."
+  nether:
+    refresh: "&a Kaboom! Nether-ul este refăcut! Busola ta deformată se sfărâmă în mâna ta!"
+  claim:
+    team-increase-owner: "&a Reclamația ta s-a extins datorită unui nou membru!"
+    team-decrease-owner: "&b Reclamația ta este mai mică deoarece un membru al echipei a plecat."
+    team-increase: "&a Această reclamație s-a extins datorită unui nou membru!"
+    team-decrease: "&b Această reclamație este mai mică deoarece un membru al echipei a plecat."
+    team-no-change: "&d Dimensiunea reclamației nu a putut fi extinsă! Trebuie să fie aglomerat acolo!"
+  commands:
+    admin:
+        worldborder:
+            description: schimbă setările limitei lumii
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Limita lumii are un radius de [number] blocuri."
+            set-size:
+                needs-value: "&c Set are nevoie de o valoare întreagă pentru dimensiunea limitei lumii"          
+    claim:
+        description: "Încearcă să facă o reclamație"
+    island:
+      create:
+        creating-island: "&a Se încearcă reclamația..."
+        cannot-create-island: "&c Nu s-a putut crea reclamația."

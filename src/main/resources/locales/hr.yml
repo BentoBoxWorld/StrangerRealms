@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" je preveden kao "Područje" (claim/territory)
+    island: područje
+    Island: Područje
+    an-island: područje
+    islands: područja
+    Islands: Područja
+  teleporting-to-spawn: "&c Bili ste izvan granice. Teleportirani ste na spawn (točku stvaranja)."
+  errors:
+    not-in-world: "&c Morate biti u svijetu da biste zahtijevali područje"
+    already-claimed: "&c Ova lokacija je već zahtijevana!"
+    overlap: "&c Ovdje ne možete podnijeti zahtjev jer bi se preklapao s drugim područjem na [xyz]."
+    too-close-to-spawn: "&c Preblizu ste spawna da biste zahtijevali područje. Odmaknite se dalje."
+    no-fit-inside: "&c Ovo područje ne može u potpunosti stati unutar granice."
+  nether:
+    refresh: "&a Kaboom! Nether je ponovno stvoren! Vaš iskrivljeni kompas se raspada u vašoj ruci!"
+  claim:
+    team-increase-owner: "&a Vaše se područje proširilo zbog novog člana!"
+    team-decrease-owner: "&b Vaše je područje manje jer je član tima otišao."
+    team-increase: "&a Ovo se područje proširilo zbog novog člana!"
+    team-decrease: "&b Ovo je područje manje jer je član tima otišao."
+    team-no-change: "&d Veličina područja nije mogla biti proširena! Sigurno je gužva vani!"
+  commands:
+    admin:
+        worldborder:
+            description: promijeniti postavke granice svijeta
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Granica svijeta ima radijus od [number] blokova."
+            set-size:
+                needs-value: "&c Set zahtijeva cijeli broj za veličinu granice svijeta"          
+    claim:
+        description: "Pokušava napraviti zahtjev za područje"
+    island:
+      create:
+        creating-island: "&a Pokušava se zahtijevati područje..."
+        cannot-create-island: "&c Područje nije moglo biti stvoreno."

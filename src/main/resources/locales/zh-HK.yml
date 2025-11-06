@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" 翻譯為「領地」 (claim/territory)
+    island: 領地
+    Island: 領地
+    an-island: 一個領地
+    islands: 領地
+    Islands: 領地
+  teleporting-to-spawn: "&c 你在邊界之外。已傳送至重生點 (spawn)。"
+  errors:
+    not-in-world: "&c 你必須在世界中才能宣稱領地"
+    already-claimed: "&c 此位置已被宣稱！"
+    overlap: "&c 你無法在此處建立領地，因為它會與 [xyz] 的另一個領地重疊。"
+    too-close-to-spawn: "&c 你離重生點太近，無法宣稱領地。請往外移動。"
+    no-fit-inside: "&c 此領地無法完全容納在邊界內。"
+  nether:
+    refresh: "&a 轟隆！地獄 (Nether) 已重新創建！你扭曲的指南針在手中粉碎了！"
+  claim:
+    team-increase-owner: "&a 由於有新成員加入，你的領地擴大了！"
+    team-decrease-owner: "&b 由於有隊伍成員離開，你的領地縮小了。"
+    team-increase: "&a 由於有新成員加入，此領地擴大了！"
+    team-decrease: "&b 由於有隊伍成員離開，此領地縮小了。"
+    team-no-change: "&d 領地大小無法擴大！外面一定很擠！"
+  commands:
+    admin:
+        worldborder:
+            description: 更改世界邊界設定
+            parameters: '[on][off][set][auto][info]'
+            info: "&a 世界邊界的半徑為 [number] 個方塊。"
+            set-size:
+                needs-value: "&c set 需要一個整數值來設定世界邊界的大小"          
+    claim:
+        description: "嘗試宣稱領地"
+    island:
+      create:
+        creating-island: "&a 正在嘗試宣稱領地..."
+        cannot-create-island: "&c 無法創建領地。"

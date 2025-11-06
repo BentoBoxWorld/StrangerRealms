@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island", "Bölge" veya "Hak İddiası" olarak çevrildi (claim/territory)
+    island: bölge
+    Island: Bölge
+    an-island: bir bölge
+    islands: bölgeler
+    Islands: Bölgeler
+  teleporting-to-spawn: "&c Sınırın dışındaydınız. Spawn noktasına (doğma noktasına) ışınlandınız."
+  errors:
+    not-in-world: "&c Bölge talep etmek için dünyada olmanız gerekir"
+    already-claimed: "&c Bu konum zaten talep edilmiş!"
+    overlap: "&c Burada bir bölge talep edemezsiniz çünkü [xyz]'deki başka bir bölgeyle çakışacaktır."
+    too-close-to-spawn: "&c Bölge talep etmek için spawn noktasına çok yakınsınız. Daha uzağa gidin."
+    no-fit-inside: "&c Bu bölge sınırların içine tam olarak sığamıyor."
+  nether:
+    refresh: "&a Kaboom! Nether yeniden oluşturuldu! Eğrilmiş pusulanız elinizde ufalanıyor!"
+  claim:
+    team-increase-owner: "&a Bölgeniz yeni bir üye sayesinde genişledi!"
+    team-decrease-owner: "&b Bir ekip üyesi ayrıldığı için bölgeniz küçüldü."
+    team-increase: "&a Bu bölge yeni bir üye sayesinde genişledi!"
+    team-decrease: "&b Bu bölge bir ekip üyesi ayrıldığı için küçüldü."
+    team-no-change: "&d Bölge boyutu genişletilemedi! Dışarısı çok kalabalık olmalı!"
+  commands:
+    admin:
+        worldborder:
+            description: dünya sınırı ayarlarını değiştirir
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Dünya sınırının yarıçapı [number] bloktur."
+            set-size:
+                needs-value: "&c Set komutu, dünya sınırının boyutu için bir tam sayı değeri gerektirir"          
+    claim:
+        description: "Bölge talep etmeye çalışır"
+    island:
+      create:
+        creating-island: "&a Bölge talep etmeye çalışılıyor..."
+        cannot-create-island: "&c Bölge oluşturulamadı."

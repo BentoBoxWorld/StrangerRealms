@@ -1,0 +1,165 @@
+name: StrangerRealms
+main: world.bentobox.stranger.StrangerRealms
+version: ${version}${build.number}
+api-version: 3.9.0
+metrics: true
+icon: "COMPOSTER"
+repository: "BentoBoxWorld/StrangerRealms"
+
+authors: tastybento
+
+permissions:    
+  stranger.island:
+   description: Allow claim command usage
+   default: true
+  stranger.claim:
+    description: Allow claim command usage
+    default: true
+  stranger.create:
+    description: Allow claim creation
+    default: false
+  stranger.island.home:
+    description: Allow teleporting to player claim
+    default: true
+  stranger.island.sethome:
+    description: Let the player use the sethome command
+    default: true
+  stranger.island.info:
+    description: Let the player check other players info
+    default: true
+  stranger.island.lock:
+    description: Allows claim locking
+    default: true
+  stranger.island.near:
+    description: Players can see nearby claim names
+    default: true
+  stranger.island.expel:
+    description: Allows expelling of visitors
+    default: true
+  stranger.island.ban:
+    description: Allows banning of visitors
+    default: true
+  stranger.island.settings:
+    description: Player can see server settings
+    default: true
+  stranger.island.language:
+    description: Player can select a language
+    default: true
+  stranger.island.name:
+    description: Player can set the name of their claim
+    default: true
+  stranger.island.spawn:
+    description: Player can use the claim spawn command if spawn exists
+    default: true
+  stranger.island.reset:
+    description: Player can use the claim reset or restart command
+    default: false  
+  stranger.island.team:
+    description: Let a player use team command
+    default: true
+  stranger.island.team.setowner:
+    description: Let a player change the team owner
+    default: true
+  stranger.island.team.invite:
+    description: Let a player invite others
+    default: true
+  stranger.island.team.reject:
+    description: Let a player reject invites
+    default: true
+  stranger.island.team.leave:
+    description: Let a player leave the team
+    default: true
+  stranger.island.team.kick:
+    description: Let a player kick team members
+    default: true
+  stranger.island.team.accept:
+    description: Let a player accept invitations
+    default: true
+  stranger.island.team.trust:
+    description: Let a player use team trust commands
+    default: true
+  stranger.island.team.coop:
+    description: Let a player use team coop commands
+    default: true
+  stranger.island.team.promote:
+    description: Let a player use promote commands
+    default: true
+  stranger.island.settings.*:
+    description: Allow use of settings on claim
+    default: true
+  stranger.mod.info:
+    description: Let a moderator see info on a player
+    default: op
+  stranger.mod.clearreset:
+    description: Allow clearing of claim reset limit
+    default: false
+  stranger.mod.bypasscooldowns:
+    description: Allow moderator to bypass cooldowns
+    default: op
+  stranger.mod.bypassdelays:
+    description: Allow moderator to bypass delays
+    default: op
+  stranger.mod.bypassprotect:
+    description: Allow moderator to bypass claim protection
+    default: op
+  stranger.mod.bypassexpel:
+    description: Allow moderator to bypass claim expulsion
+    default: op
+  stranger.mod.switch:
+    description: Allows moderator to switch bypass protection on and off
+    default: op
+  stranger.mod.lock:
+    description: Locks or unlocks an claim
+    default: op
+  stranger.mod.bypasslock:
+    description: Bypasses an claim lock
+    default: op
+  stranger.mod.bypassban:
+    description: Bypasses claim ban
+    default: op  
+  stranger.mod.team:
+    description: Enables modification of teams via kick and add commands
+    default: false
+  stranger.admin.tp:
+    description: Allows teleport to an claim
+    default: op    
+  stranger.admin.clearresetall:
+    description: Allow clearing of claim reset limit of all players
+    default: op
+  stranger.admin.reload:
+    description: Reload the config.yml
+    default: op
+  stranger.admin.delete:
+    description: Let a player completely remove a player (including claim)
+    default: op
+  stranger.admin.register:
+    description: Let a player register the nearest claim to another player.
+    default: op
+  stranger.admin.unregister:
+    description: Removes a player from an claim without deleting the claim blocks.
+    default: op
+  stranger.admin.setspawn:
+    description: Allows use of spawn tools
+    default: op
+  stranger.admin.setrange:
+    description: Allows setting of claim protection range
+    default: op
+  stranger.admin.settingsreset:
+    description: Resets all the claims to default protection settings
+    default: op
+  stranger.admin.noban:
+    description: Player cannot be banned from an claim
+    default: op
+  stranger.admin.noexpel:
+    description: Player cannot be expelled from an claim
+    default: op
+  stranger.admin.setlanguage:
+    description: Resets all player languages and sets the default language
+    default: op
+  stranger.admin.getrank:
+    description: Get a player's rank
+    default: op
+  stranger.admin.setrank:
+    description: Set a player's rank
+    default: op
+    

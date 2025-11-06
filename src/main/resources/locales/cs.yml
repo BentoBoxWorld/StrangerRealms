@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" je přeloženo jako "území" (claim/territory)
+    island: území
+    Island: Území
+    an-island: území
+    islands: území
+    Islands: Území
+  teleporting-to-spawn: "&c Byl jsi mimo hranici. Teleportován na spawn (bod objevení)."
+  errors:
+    not-in-world: "&c Musíš být v tomto světě, abys mohl nárokovat území"
+    already-claimed: "&c Tato lokace je již nárokována!"
+    overlap: "&c Nemůžeš zde vytvořit území, protože by se překrývalo s jiným územím na [xyz]."
+    too-close-to-spawn: "&c Jsi příliš blízko spawnu, abys mohl nárokovat území. Jdi dál."
+    no-fit-inside: "&c Toto území se nemůže celé vejít dovnitř hranice."
+  nether:
+    refresh: "&a Kaboom! Nether byl přestavěn! Tvůj pokřivený kompas se ti v ruce drolí!"
+  claim:
+    team-increase-owner: "&a Tvé území se rozšířilo díky novému členovi!"
+    team-decrease-owner: "&b Tvé území je menší, protože jeden člen týmu odešel."
+    team-increase: "&a Toto území se rozšířilo díky novému členovi!"
+    team-decrease: "&b Toto území je menší, protože jeden člen týmu odešel."
+    team-no-change: "&d Velikost území nemohla být rozšířena! Tam venku musí být pořádná tlačenice!"
+  commands:
+    admin:
+        worldborder:
+            description: změnit nastavení hranice světa
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Hranice světa má poloměr [number] bloků."
+            set-size:
+                needs-value: "&c Set potřebuje celočíselnou hodnotu pro velikost hranice světa"          
+    claim:
+        description: "Pokusí se vytvořit území"
+    island:
+      create:
+        creating-island: "&a Pokouším se nárokovat území..."
+        cannot-create-island: "&c Území nemohlo být vytvořeno."

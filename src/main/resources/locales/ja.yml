@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" is translated to "領地" (ryōchi - territory/claim)
+    island: 領地
+    Island: 領地
+    an-island: 領地
+    islands: 領地
+    Islands: 領地
+  teleporting-to-spawn: "&c ボーダーの外にいました。スポーン地点にテレポートしました。"
+  errors:
+    not-in-world: "&c クレームを行うにはワールド内にいる必要があります"
+    already-claimed: "&c この場所はすでにクレームされています！"
+    overlap: "&c [xyz]にある別のクレームと重複するため、ここでクレームを作成できません。"
+    too-close-to-spawn: "&c クレームを行うにはスポーン地点に近すぎます。もっと離れてください。"
+    no-fit-inside: "&c このクレームは境界内に完全に収まりません。"
+  nether:
+    refresh: "&a ドカーン！ネザーが作り直されました！あなたの歪んだコンパスは手の中で砕け散ります！"
+  claim:
+    team-increase-owner: "&a 新しいメンバーにより、あなたのクレームが拡大しました！"
+    team-decrease-owner: "&b チームメンバーが去ったため、あなたのクレームは縮小しました。"
+    team-increase: "&a 新しいメンバーにより、このクレームが拡大しました！"
+    team-decrease: "&b チームメンバーが去ったため、このクレームは縮小しました。"
+    team-no-change: "&d クレームのサイズは拡大できませんでした！そこは混雑しているに違いありません！"
+  commands:
+    admin:
+        worldborder:
+            description: ワールドボーダーの設定を変更する
+            parameters: '[on][off][set][auto][info]'
+            info: "&a ワールドボーダーの半径は [number] ブロックです。"
+            set-size:
+                needs-value: "&c set にはワールドボーダーのサイズを示す整数値が必要です"          
+    claim:
+        description: "クレームを作成しようとします"
+    island:
+      create:
+        creating-island: "&a クレームを作成中です..."
+        cannot-create-island: "&c クレームを作成できませんでした。"

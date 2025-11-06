@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" est traduit par "Territoire" (claim/territory)
+    island: territoire
+    Island: Territoire
+    an-island: un territoire
+    islands: territoires
+    Islands: Territoires
+  teleporting-to-spawn: "&c Vous étiez en dehors de la bordure. Téléporté au spawn (point d'apparition)."
+  errors:
+    not-in-world: "&c Vous devez être dans le monde pour revendiquer un territoire"
+    already-claimed: "&c Cet emplacement est déjà revendiqué !"
+    overlap: "&c Vous ne pouvez pas faire de revendication ici car cela chevaucherait un autre territoire en [xyz]."
+    too-close-to-spawn: "&c Vous êtes trop proche du spawn pour faire une revendication. Éloignez-vous."
+    no-fit-inside: "&c Ce territoire ne peut pas rentrer complètement à l'intérieur de la limite."
+  nether:
+    refresh: "&a Kaboum ! Le Nether a été recréé ! Votre boussole déformée s'effrite dans votre main !"
+  claim:
+    team-increase-owner: "&a Votre territoire s'est agrandi grâce à un nouveau membre !"
+    team-decrease-owner: "&b Votre territoire est plus petit car un membre de l'équipe est parti."
+    team-increase: "&a Ce territoire s'est agrandi grâce à un nouveau membre !"
+    team-decrease: "&b Ce territoire est plus petit car un membre de l'équipe est parti."
+    team-no-change: "&d La taille du territoire n'a pas pu être étendue ! Ça doit être bondé par là !"
+  commands:
+    admin:
+        worldborder:
+            description: changer les paramètres de la bordure du monde
+            parameters: '[on][off][set][auto][info]'
+            info: "&a La bordure du monde a un rayon de [number] blocs."
+            set-size:
+                needs-value: "&c Set a besoin d'une valeur entière pour la taille de la bordure du monde"          
+    claim:
+        description: "Tente de revendiquer un territoire"
+    island:
+      create:
+        creating-island: "&a Tentative de revendication en cours..."
+        cannot-create-island: "&c Le territoire n'a pas pu être créé."

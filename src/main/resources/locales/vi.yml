@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" được dịch thành "Khu đất" (claim/territory)
+    island: khu đất
+    Island: Khu đất
+    an-island: một khu đất
+    islands: các khu đất
+    Islands: Các khu đất
+  teleporting-to-spawn: "&c Bạn đã ở ngoài ranh giới. Đã dịch chuyển đến spawn (điểm hồi sinh)."
+  errors:
+    not-in-world: "&c Bạn phải ở trong thế giới để tuyên bố khu đất"
+    already-claimed: "&c Vị trí này đã được tuyên bố!"
+    overlap: "&c Bạn không thể tạo khu đất ở đây vì nó sẽ chồng lấn với một khu đất khác ở [xyz]."
+    too-close-to-spawn: "&c Bạn quá gần spawn để tuyên bố khu đất. Hãy di chuyển ra xa hơn."
+    no-fit-inside: "&c Khu đất này không thể vừa vặn hoàn toàn bên trong ranh giới."
+  nether:
+    refresh: "&a Kaboom! Nether đã được làm lại! La bàn bị cong của bạn vỡ vụn trong tay!"
+  claim:
+    team-increase-owner: "&a Khu đất của bạn được mở rộng nhờ có thành viên mới!"
+    team-decrease-owner: "&b Khu đất của bạn bị thu hẹp vì một thành viên đội đã rời đi."
+    team-increase: "&a Khu đất này được mở rộng nhờ có thành viên mới!"
+    team-decrease: "&b Khu đất này bị thu hẹp vì một thành viên đội đã rời đi."
+    team-no-change: "&d Kích thước khu đất không thể được mở rộng! Chắc hẳn bên ngoài đã quá đông đúc!"
+  commands:
+    admin:
+        worldborder:
+            description: thay đổi cài đặt ranh giới thế giới
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Ranh giới thế giới có bán kính [number] khối."
+            set-size:
+                needs-value: "&c Set cần một giá trị số nguyên cho kích thước ranh giới thế giới"          
+    claim:
+        description: "Cố gắng tuyên bố một khu đất"
+    island:
+      create:
+        creating-island: "&a Đang cố gắng tuyên bố..."
+        cannot-create-island: "&c Không thể tạo khu đất."

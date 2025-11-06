@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" переведено как "Территория" (claim/territory)
+    island: территория
+    Island: Территория
+    an-island: территория
+    islands: территории
+    Islands: Территории
+  teleporting-to-spawn: "&c Вы были за границей. Телепортирован на спаун (точку появления)."
+  errors:
+    not-in-world: "&c Вы должны находиться в мире, чтобы захватить территорию"
+    already-claimed: "&c Эта локация уже захвачена!"
+    overlap: "&c Вы не можете захватить территорию здесь, так как она будет накладываться на другую территорию в [xyz]."
+    too-close-to-spawn: "&c Вы слишком близко к спауну, чтобы захватить территорию. Отойдите подальше."
+    no-fit-inside: "&c Эта территория не может полностью поместиться в пределах границы."
+  nether:
+    refresh: "&a Бабах! Нижний мир (Nether) пересоздан! Ваш искривленный компас рассыпается в руке!"
+  claim:
+    team-increase-owner: "&a Ваша территория расширилась благодаря новому участнику!"
+    team-decrease-owner: "&b Ваша территория стала меньше, так как участник команды ушел."
+    team-increase: "&a Эта территория расширилась благодаря новому участнику!"
+    team-decrease: "&b Эта территория стала меньше, так как участник команды ушел."
+    team-no-change: "&d Размер территории не удалось расширить! Должно быть, там тесно!"
+  commands:
+    admin:
+        worldborder:
+            description: изменить настройки границы мира
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Граница мира имеет радиус [number] блоков."
+            set-size:
+                needs-value: "&c Команде set требуется целочисленное значение для размера границы мира"          
+    claim:
+        description: "Попытка захватить территорию"
+    island:
+      create:
+        creating-island: "&a Попытка захватить территорию..."
+        cannot-create-island: "&c Не удалось создать территорию."

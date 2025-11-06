@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" ir tulkots kā "apgabals" (claim/territory)
+    island: apgabals
+    Island: Apgabals
+    an-island: apgabals
+    islands: apgabali
+    Islands: Apgabali
+  teleporting-to-spawn: "&c Jūs bijāt ārpus robežas. Teleportēts uz spavnu (parādīšanās vietu)."
+  errors:
+    not-in-world: "&c Lai pieprasītu apgabalu, jums jābūt šajā pasaulē"
+    already-claimed: "&c Šī atrašanās vieta jau ir pieprasīta!"
+    overlap: "&c Jūs nevarat veikt pieprasījumu šeit, jo tas pārklātos ar citu apgabalu pie [xyz]."
+    too-close-to-spawn: "&c Jūs esat pārāk tuvu spavnam, lai pieprasītu apgabalu. Dodieties tālāk."
+    no-fit-inside: "&c Šis apgabals nevar pilnībā iekļauties robežās."
+  nether:
+    refresh: "&a Kaboom! Nīderis ir pārveidots! Jūsu sagrozītā kompass sabirst jūsu rokā!"
+  claim:
+    team-increase-owner: "&a Jūsu apgabals tika paplašināts jauna biedra dēļ!"
+    team-decrease-owner: "&b Jūsu apgabals ir mazāks, jo komandas biedrs ir aizgājis."
+    team-increase: "&a Šis apgabals tika paplašināts jauna biedra dēļ!"
+    team-decrease: "&b Šis apgabals ir mazāks, jo komandas biedrs ir aizgājis."
+    team-no-change: "&d Apgabala izmēru nevarēja paplašināt! Tur ārā droši vien ir liels drūzma!"
+  commands:
+    admin:
+        worldborder:
+            description: mainīt pasaules robežas iestatījumus
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Pasaules robežas rādiuss ir [number] bloki."
+            set-size:
+                needs-value: "&c Set komandai nepieciešama vesela skaitļa vērtība pasaules robežas izmēram"          
+    claim:
+        description: "Mēģina pieprasīt apgabalu"
+    island:
+      create:
+        creating-island: "&a Mēģina pieprasīt apgabalu..."
+        cannot-create-island: "&c Apgabalu nevarēja izveidot."

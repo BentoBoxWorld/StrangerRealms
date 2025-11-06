@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" se traduce como "reclamo" o "territorio" (claim/territory)
+    island: reclamo
+    Island: Reclamo
+    an-island: un reclamo
+    islands: reclamos
+    Islands: Reclamos
+  teleporting-to-spawn: "&c Estabas fuera del borde. Teletransportado al punto de aparición (spawn)."
+  errors:
+    not-in-world: "&c Debes estar en el mundo para hacer un reclamo"
+    already-claimed: "&c ¡Esta ubicación ya ha sido reclamada!"
+    overlap: "&c No puedes hacer un reclamo aquí porque se superpondría a otro reclamo en [xyz]."
+    too-close-to-spawn: "&c Estás demasiado cerca del punto de aparición (spawn) para hacer un reclamo. Aléjate más."
+    no-fit-inside: "&c Este reclamo no puede caber completamente dentro del límite."
+  nether:
+    refresh: "&a ¡Kaboom! ¡El Nether ha sido recreado! ¡Tu brújula deformada se desmorona en tu mano!"
+  claim:
+    team-increase-owner: "&a ¡Tu reclamo se expandió debido a un nuevo miembro!"
+    team-decrease-owner: "&b Tu reclamo es más pequeño ya que un miembro del equipo se fue."
+    team-increase: "&a ¡Este reclamo se expandió debido a un nuevo miembro!"
+    team-decrease: "&b Este reclamo es más pequeño ya que un miembro del equipo se fue."
+    team-no-change: "&d ¡El tamaño del reclamo no se pudo expandir! ¡Debe estar abarrotado ahí fuera!"
+  commands:
+    admin:
+        worldborder:
+            description: cambiar la configuración del borde del mundo
+            parameters: '[on][off][set][auto][info]'
+            info: "&a El borde del mundo tiene un radio de [number] bloques."
+            set-size:
+                needs-value: "&c Set necesita un valor entero para el tamaño del borde del mundo"          
+    claim:
+        description: "Intenta hacer un reclamo"
+    island:
+      create:
+        creating-island: "&a Intentando reclamar..."
+        cannot-create-island: "&c No se pudo hacer el reclamo."

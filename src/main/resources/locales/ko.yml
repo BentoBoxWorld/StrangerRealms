@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island"는 "영토" 또는 "클레임"으로 번역됨 (claim/territory)
+    island: 영토
+    Island: 영토
+    an-island: 영토
+    islands: 영토
+    Islands: 영토
+  teleporting-to-spawn: "&c 경계 밖에 있었습니다. 스폰(spawn) 지점으로 텔레포트되었습니다."
+  errors:
+    not-in-world: "&c 영토를 주장하려면 월드 안에 있어야 합니다"
+    already-claimed: "&c 이 위치는 이미 클레임되었습니다!"
+    overlap: "&c [xyz]에 있는 다른 클레임과 겹치므로 여기에 클레임을 만들 수 없습니다."
+    too-close-to-spawn: "&c 클레임을 만들기에는 스폰 지점에 너무 가깝습니다. 더 멀리 이동하세요."
+    no-fit-inside: "&c 이 클레임은 경계 안에 완전히 들어맞지 않습니다."
+  nether:
+    refresh: "&a 쾅! 네더가 재구성되었습니다! 당신의 일그러진 나침반이 손 안에서 부서집니다!"
+  claim:
+    team-increase-owner: "&a 새로운 팀원 덕분에 당신의 영토가 확장되었습니다!"
+    team-decrease-owner: "&b 팀원이 떠났기 때문에 당신의 영토가 축소되었습니다."
+    team-increase: "&a 새로운 팀원 덕분에 이 클레임이 확장되었습니다!"
+    team-decrease: "&b 팀원이 떠났기 때문에 이 클레임이 축소되었습니다."
+    team-no-change: "&d 클레임 크기를 확장할 수 없었습니다! 분명히 그곳은 붐비고 있을 겁니다!"
+  commands:
+    admin:
+        worldborder:
+            description: 월드 경계(world border) 설정을 변경합니다
+            parameters: '[on][off][set][auto][info]'
+            info: "&a 월드 경계의 반경은 [number] 블록입니다."
+            set-size:
+                needs-value: "&c Set 명령은 월드 경계 크기에 대한 정수 값이 필요합니다"          
+    claim:
+        description: "클레임을 시도합니다"
+    island:
+      create:
+        creating-island: "&a 클레임을 시도하는 중..."
+        cannot-create-island: "&c 클레임을 만들 수 없었습니다."

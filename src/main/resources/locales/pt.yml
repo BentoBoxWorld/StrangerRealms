@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" é traduzido como "Território" ou "Reivindicação" (claim/territory)
+    island: território
+    Island: Território
+    an-island: um território
+    islands: territórios
+    Islands: Territórios
+  teleporting-to-spawn: "&c Você estava fora do limite. Teleportado para o spawn (ponto de surgimento)."
+  errors:
+    not-in-world: "&c Você deve estar no mundo para fazer uma reivindicação"
+    already-claimed: "&c Este local já foi reivindicado!"
+    overlap: "&c Você não pode fazer uma reivindicação aqui porque ela se sobreporia a outra reivindicação em [xyz]."
+    too-close-to-spawn: "&c Você está muito perto do spawn para fazer uma reivindicação. Afaste-se mais."
+    no-fit-inside: "&c Esta reivindicação não cabe completamente dentro do limite."
+  nether:
+    refresh: "&a Kaboom! O Nether foi refeito! Sua bússola distorcida se esfarela em sua mão!"
+  claim:
+    team-increase-owner: "&a Seu território se expandiu devido a um novo membro!"
+    team-decrease-owner: "&b Seu território ficou menor, pois um membro da equipe saiu."
+    team-increase: "&a Esta reivindicação se expandiu devido a um novo membro!"
+    team-decrease: "&b Esta reivindicação ficou menor, pois um membro da equipe saiu."
+    team-no-change: "&d O tamanho da reivindicação não pôde ser expandido! Deve estar lotado lá fora!"
+  commands:
+    admin:
+        worldborder:
+            description: mudar as configurações do limite do mundo (world border)
+            parameters: '[on][off][set][auto][info]'
+            info: "&a O limite do mundo tem um raio de [number] blocos."
+            set-size:
+                needs-value: "&c Set precisa de um valor inteiro para o tamanho do limite do mundo"          
+    claim:
+        description: "Tenta fazer uma reivindicação"
+    island:
+      create:
+        creating-island: "&a Tentando fazer a reivindicação..."
+        cannot-create-island: "&c Não foi possível criar o território."

@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" перекладено як "Територія" (claim/territory)
+    island: територія
+    Island: Територія
+    an-island: територія
+    islands: території
+    Islands: Території
+  teleporting-to-spawn: "&c Ви були за межами кордону. Телепортовано до спавну (точки появи)."
+  errors:
+    not-in-world: "&c Ви повинні бути у світі, щоб зайняти територію"
+    already-claimed: "&c Ця локація вже зайнята!"
+    overlap: "&c Ви не можете створити тут територію, оскільки вона перетинатиметься з іншою територією в [xyz]."
+    too-close-to-spawn: "&c Ви надто близько до спавну, щоб зайняти територію. Відійдіть далі."
+    no-fit-inside: "&c Ця територія не може повністю поміститися в межах кордону."
+  nether:
+    refresh: "&a Бум! Нижній світ (Nether) перетворено! Ваш викривлений компас кришиться у вашій руці!"
+  claim:
+    team-increase-owner: "&a Ваша територія розширилася завдяки новому учаснику!"
+    team-decrease-owner: "&b Ваша територія зменшилася, оскільки учасник команди пішов."
+    team-increase: "&a Ця територія розширилася завдяки новому учаснику!"
+    team-decrease: "&b Ця територія зменшилася, оскільки учасник команди пішов."
+    team-no-change: "&d Розмір території не вдалося збільшити! Там, мабуть, тісно!"
+  commands:
+    admin:
+        worldborder:
+            description: змінити налаштування кордону світу
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Кордон світу має радіус [number] блоків."
+            set-size:
+                needs-value: "&c Команда set потребує цілого числа для розміру кордону світу"          
+    claim:
+        description: "Намагається зайняти територію"
+    island:
+      create:
+        creating-island: "&a Спроба зайняти територію..."
+        cannot-create-island: "&c Не вдалося створити територію."

@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" is translated to "Gebiet" (territory/claim)
+    island: Gebiet
+    Island: Gebiet
+    an-island: ein Gebiet
+    islands: Gebiete
+    Islands: Gebiete
+  teleporting-to-spawn: "&c Du warst außerhalb der Grenze. Zum Spawn teleportiert."
+  errors:
+    not-in-world: "&c Du musst in dieser Welt sein, um ein Gebiet zu beanspruchen"
+    already-claimed: "&c Dieser Ort ist bereits beansprucht!"
+    overlap: "&c Du kannst hier kein Gebiet beanspruchen, da es sich mit einem anderen Gebiet bei [xyz] überschneiden würde."
+    too-close-to-spawn: "&c Du bist zu nah am Spawn, um ein Gebiet zu beanspruchen. Entferne dich weiter."
+    no-fit-inside: "&c Dieses Gebiet passt nicht vollständig innerhalb der Grenze."
+  nether:
+    refresh: "&a Kaboom! Der Nether wurde neu erstellt! Dein verzerrter Kompass zerfällt in deiner Hand!"
+  claim:
+    team-increase-owner: "&a Dein Gebiet wurde durch ein neues Mitglied erweitert!"
+    team-decrease-owner: "&b Dein Gebiet ist kleiner, da ein Teammitglied gegangen ist."
+    team-increase: "&a Dieses Gebiet wurde durch ein neues Mitglied erweitert!"
+    team-decrease: "&b Dieses Gebiet ist kleiner, da ein Teammitglied gegangen ist."
+    team-no-change: "&d Gebietsgröße konnte nicht erweitert werden! Es muss dort draußen überfüllt sein!"
+  commands:
+    admin:
+        worldborder:
+            description: Die World Border Einstellungen ändern
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Die World Border hat einen Radius von [number] Blöcken."
+            set-size:
+                needs-value: "&c Set benötigt einen Ganzzahlwert für die Größe der World Border"          
+    claim:
+        description: "Versucht, ein Gebiet zu beanspruchen"
+    island:
+      create:
+        creating-island: "&a Versuche, Gebiet zu beanspruchen..."
+        cannot-create-island: "&c Gebiet konnte nicht erstellt werden."

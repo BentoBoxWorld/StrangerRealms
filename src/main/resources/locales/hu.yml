@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" fordítása: "terület" (claim/territory)
+    island: terület
+    Island: Terület
+    an-island: terület
+    islands: területek
+    Islands: Területek
+  teleporting-to-spawn: "&c Kívül voltál a határon. Teleportálva a spawnra (megjelenési pontra)."
+  errors:
+    not-in-world: "&c Területet csak a világon belül igényelhetsz"
+    already-claimed: "&c Ez a hely már le van foglalva!"
+    overlap: "&c Nem hozhatsz létre itt területet, mert átfedne egy másik területtel a [xyz] ponton."
+    too-close-to-spawn: "&c Túl közel vagy a spawnponthoz a terület igényléséhez. Menj távolabb."
+    no-fit-inside: "&c Ez a terület nem fér el teljesen a határon belül."
+  nether:
+    refresh: "&a Kaboom! A Nether újra lett teremtve! Az elvetemült iránytűd szétesik a kezedben!"
+  claim:
+    team-increase-owner: "&a A területetek bővült egy új tag miatt!"
+    team-decrease-owner: "&b A területetek kisebb lett, mivel egy csapattag távozott."
+    team-increase: "&a Ez a terület bővült egy új tag miatt!"
+    team-decrease: "&b Ez a terület kisebb lett, mivel egy csapattag távozott."
+    team-no-change: "&d A terület mérete nem bővülhetett! Biztosan zsúfolt odakint!"
+  commands:
+    admin:
+        worldborder:
+            description: a világ határának beállításainak megváltoztatása
+            parameters: '[on][off][set][auto][info]'
+            info: "&a A világ határának sugara [number] blokk."
+            set-size:
+                needs-value: "&c A set parancshoz egész számra van szükség a világ határának méretéhez"          
+    claim:
+        description: "Megpróbál területet foglalni"
+    island:
+      create:
+        creating-island: "&a Próbálkozás a területfoglalással..."
+        cannot-create-island: "&c Nem sikerült területet létrehozni."

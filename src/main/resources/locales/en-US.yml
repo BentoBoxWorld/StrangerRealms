@@ -1,0 +1,42 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    island: claim
+    Island: Claim
+    an-island: a claim
+    islands: claims
+    Islands: Claims
+  teleporting-to-spawn: "&c You were outside the border. Teleported to spawn.."
+  errors:
+    not-in-world: "&c You must be in the world to claim"
+    already-claimed: "&c This location is already claimed!"
+    overlap: "&c You cannot make a claim here because it would overlap another claim
+      at [xyz]."
+    too-close-to-spawn: "&c You are too close to spawn to make a claim. Move further out."
+    no-fit-inside: "&c This claim cannot completely fit inside the boundary."
+  nether:
+    welcome: "&c Welcome to the Upsidedown! Beware!"
+    refresh: "&a Kaboom! The Nether is remade! Your warped compass crumbles in your hand!"
+  claim:
+    team-increase-owner: "&a Your claim expanded due to a new member!"
+    team-decrease-owner: "&b Your claim is smaller as a team member left."
+    team-increase: "&a This claim expanded due to a new member!"
+    team-decrease: "&b This claim is smaller as a team member left."
+    team-no-change: "&d Claim size could not be expanded! Must be crowded out there!"
+  commands:
+    admin:
+        worldborder:
+            description: change the world border settings
+            parameters: '[on][off][set][auto][info]'
+            info: "&a The world border has a radius of [number] blocks."
+            set-size:
+                needs-value: "&c Set needs an integer value for the size of the world border"          
+    claim:
+        description: "Attemtps to make a claim"
+    island:
+      create:
+        creating-island: "&a Trying to claim..."
+        cannot-create-island: "&c Claim could not be made."

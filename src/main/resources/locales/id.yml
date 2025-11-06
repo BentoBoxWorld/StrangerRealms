@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" diterjemahkan sebagai "Klaim" atau "Wilayah" (claim/territory)
+    island: klaim
+    Island: Klaim
+    an-island: klaim
+    islands: klaim
+    Islands: Klaim
+  teleporting-to-spawn: "&c Anda berada di luar batas. Dipindahkan ke spawn (titik muncul)."
+  errors:
+    not-in-world: "&c Anda harus berada di dunia untuk membuat klaim"
+    already-claimed: "&c Lokasi ini sudah diklaim!"
+    overlap: "&c Anda tidak bisa membuat klaim di sini karena akan tumpang tindih dengan klaim lain di [xyz]."
+    too-close-to-spawn: "&c Anda terlalu dekat dengan spawn untuk membuat klaim. Bergeraklah menjauh."
+    no-fit-inside: "&c Klaim ini tidak dapat sepenuhnya muat di dalam batas."
+  nether:
+    refresh: "&a Kaboom! Nether telah dibuat ulang! Kompas Anda yang bengkok hancur di tangan Anda!"
+  claim:
+    team-increase-owner: "&a Klaim Anda meluas karena anggota baru!"
+    team-decrease-owner: "&b Klaim Anda mengecil karena ada anggota tim yang pergi."
+    team-increase: "&a Klaim ini meluas karena anggota baru!"
+    team-decrease: "&b Klaim ini mengecil karena ada anggota tim yang pergi."
+    team-no-change: "&d Ukuran Klaim tidak dapat diperluas! Pasti sudah padat di luar sana!"
+  commands:
+    admin:
+        worldborder:
+            description: ubah pengaturan batas dunia (world border)
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Batas dunia memiliki radius [number] blok."
+            set-size:
+                needs-value: "&c Set membutuhkan nilai bilangan bulat untuk ukuran batas dunia"          
+    claim:
+        description: "Mencoba untuk membuat klaim"
+    island:
+      create:
+        creating-island: "&a Mencoba untuk membuat klaim..."
+        cannot-create-island: "&c Klaim tidak dapat dibuat."

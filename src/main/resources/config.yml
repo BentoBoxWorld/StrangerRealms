@@ -1,0 +1,432 @@
+# StrangerRealms Configuration ${version}
+stranger:
+  command:
+    # Player Command. What command users will run to access their claim.
+    # To define alias, just separate commands with white space.
+    player: sr
+    # The admin command.
+    # To define alias, just separate commands with white space.
+    admin: stranger
+    # The default action for new player command call.
+    # Sub-command of main player command that will be run on first player command call.
+    # By default it is sub-command 'create'.
+    new-player-action: spawn
+    # The default action for player command.
+    # Sub-command of main player command that will be run on each player command call.
+    # By default it is sub-command 'go'.
+    default-action: go
+world:
+  # Friendly name for this world. Used in admin commands. Must be a single word
+  friendly-name: StrangerRealms
+  # Name of the world - if it does not exist then it will be generated.
+  # It acts like a prefix for nether and end (e.g. stranger_world, stranger_world_nether, stranger_world_end)
+  world-name: stranger_world
+  generator:
+    # World seed.
+    # /!\ BentoBox currently does not support changing this value mid-game. If you do need to change it, do a full reset of your databases and worlds.
+    seed: 9408794086
+  # World difficulty setting - PEACEFUL, EASY, NORMAL, HARD
+  # Other plugins may override this setting
+  difficulty: NORMAL
+  # Disable world border
+  # Set to true to disable the worldborder feature.
+  disable-worldborder: true
+  # Use manual world border sizing
+  # Set to true to overide the automatic world border sizing based on the number of online players.
+  manual-border-size: false
+  # Global border size increase per online player in blocks.
+  barrier-increase-blocks: 320
+  # Global border reduction speed. How fast the global border will shrink if it needs to do so.
+  # Per block reduction time in seconds.
+  barrier-reduction-speed: 10
+  # Allow structures to generate
+  allow-structures: true
+  # Maximum number of claims in the world. Set to -1 or 0 for unlimited.
+  max-claims: -1
+  # The number of concurrent claims a player can have
+  # A value of 0 will use the BentoBox config.yml default
+  concurrent-claims: 3
+  # Disallow team members from having their own claim.
+  disallow-team-member-claims: true
+  spawn-limits:
+    # Spawn limits. These override the limits set in bukkit.yml
+    # If set to a negative number, the server defaults will be used
+    monsters: -1
+    animals: -1
+    water-animals: -1
+    ambient: -1
+    # Setting to 0 will disable animal spawns, but this is not recommended. Minecraft default is 400.
+    # A negative value uses the server default
+    ticks-per-animal-spawns: -1
+    # Setting to 0 will disable monster spawns, but this is not recommended. Minecraft default is 400.
+    # A negative value uses the server default
+    ticks-per-monster-spawns: -1
+  # The maximum number of players a player can ban at any one time in this game mode.
+  # The permission stranger.ban.maxlimit.X where X is a number can also be used per player
+  # -1 = unlimited
+  ban-limit: -1
+  nether:
+    # Generate Nether - if this is false, the nether world will not be made.
+    generate: true
+    upsidedown:
+      # Make the UpsideDown nether - this is a nether that mirrors the overworld
+      generate: true
+      # Level of destruction of UpsideDown nether in %. Default is 5%.
+      # The UpsideDown is not pretty like the overworld...
+      attrition: 5
+      # Maximum number of chests to fill in a chunk. Default is 1.
+      # Chests get filled with random nether loot
+      chest-fills: 3
+  end:
+    # End World - if this is false, the end world will not be made and access to
+    # the end will not occur. Other plugins may still enable portal usage.
+    generate: true
+  # Mob white list - these mobs will NOT be removed when player's log in or go to their claim
+  remove-mobs-whitelist: []
+  # World flags. These are boolean settings for various flags for this world
+  flags:
+    DRAGON_EGG: false
+    ISLAND_RESPAWN: false
+    CREEPER_GRIEFING: false
+    PETS_STAY_AT_HOME: true
+    NATURAL_SPAWNING_OUTSIDE_RANGE: true
+    HURT_TAMED_ANIMALS: true
+    ANVIL: true
+    VISITOR_TRIGGER_RAID: true
+    TRAPPED_CHEST: true
+    ENDER_CHEST: true
+    TREES_GROWING_OUTSIDE_RANGE: true
+    BOOKSHELF: true
+    HARVEST: true
+    FROST_WALKER: true
+    PISTON_PUSH: true
+    COLLECT_LAVA: true
+    LEVER: true
+    HURT_MONSTERS: true
+    CAKE: true
+    CLEAN_SUPER_FLAT: false
+    SIGN_EDITING: true
+    TRADING: true
+    EGGS: true
+    CHEST: true
+    ENTER_EXIT_MESSAGES: true
+    PLACE_WARP: true
+    FLINT_AND_STEEL: true
+    SCULK_SENSOR: true
+    CROP_TRAMPLE: true
+    ENTITY_PORTAL_TELEPORT: false
+    DROPPER: true
+    OBSIDIAN_SCOOPING: true
+    TNT_PRIMING: true
+    COLLECT_WATER: true
+    AXOLOTL_SCOOPING: true
+    WORLD_BLOCK_EXPLODE_DAMAGE: true
+    BUTTON: true
+    COMPOSTER: true
+    CRAFTER: true
+    TRAPDOOR: true
+    EXPERIENCE_BOTTLE_THROWING: true
+    DYE: true
+    HIVE: true
+    ITEM_FRAME: true
+    CROP_PLANTING: true
+    CRAFTING: true
+    ENCHANTING: true
+    SHEARING: true
+    BOAT: true
+    BED: true
+    SPAWN_EGGS: true
+    SCULK_SHRIEKER: true
+    SMITHING: true
+    CHEST_DAMAGE: false
+    EXPERIENCE_PICKUP: true
+    PREVENT_TELEPORT_WHEN_FALLING: true
+    WORLD_TNT_DAMAGE: true
+    HOPPER: true
+    CANDLES: true
+    LEASH: true
+    BREAK_BLOCKS: true
+    MOUNT_INVENTORY: true
+    OFFLINE_REDSTONE: true
+    JUKEBOX: true
+    POTION_THROWING: true
+    SPAWNER_SPAWN_EGGS: true
+    HURT_ANIMALS: true
+    LOOM: false
+    REDSTONE: true
+    VISITOR_KEEP_INVENTORY: false
+    BUCKET: true
+    ENDER_PEARL: true
+    BELL_RINGING: true
+    DOOR: true
+    PODZOL: true
+    BREAK_HOPPERS: true
+    FURNACE: true
+    LIQUIDS_FLOWING_OUT: true
+    MINECART: true
+    FISH_SCOOPING: true
+    END_PORTAL: true
+    BREEDING: true
+    HURT_VILLAGERS: true
+    WITHER_DAMAGE: false
+    FARMER_DANCE: false
+    TURTLE_EGGS: true
+    BREAK_SPAWNERS: true
+    ELYTRA: true
+    COARSE_DIRT_TILLING: true
+    RIDING: true
+    ARMOR_STAND: true
+    NAME_TAG: true
+    ENDERMAN_GRIEFING: true
+    ITEM_DROP: true
+    NOTE_BLOCK: true
+    START_SAFETY: false
+    NETHER_PORTAL: true
+    REMOVE_END_EXIT_ISLAND: true
+    LECTERN: true
+    OFFLINE_GROWTH: true
+    SHULKER_BOX: true
+    GRINDSTONE: true
+    ITEM_PICKUP: true
+    BREWING: true
+    CREEPER_DAMAGE: true
+    STONECUTTING: true
+    FIRE_EXTINGUISH: true
+    ALLAY: true
+    BEACON: true
+    PRESSURE_PLATE: true
+    PLACE_BLOCKS: true
+    REMOVE_MOBS: true
+    FLOWER_POT: true
+    MILKING: true
+    DISPENSER: true
+    GATE: true
+    ALLOW_MOVE_BOX: true
+    CHORUS_FRUIT: true
+    CONTAINER: true
+    ITEM_FRAME_DAMAGE: true
+    BARREL: true
+    COLLECT_POWDERED_SNOW: true
+    CARTOGRAPHY: true
+  # These are the default protection settings for new claim.
+  # The value is the minimum claim rank required allowed to do the action
+  # Ranks are the following:
+  #   VISITOR   = 0
+  #   COOP      = 200
+  #   TRUSTED   = 400
+  #   MEMBER    = 500
+  #   SUB-OWNER = 900
+  #   OWNER     = 1000
+  default-claim-flags:
+    DRAGON_EGG: 500
+    HURT_TAMED_ANIMALS: 500
+    ANVIL: 200
+    TRAPPED_CHEST: 200
+    BOOKSHELF: 200
+    HARVEST: 200
+    FROST_WALKER: 200
+    LEAF_DECAY: 200
+    COLLECT_LAVA: 200
+    ENDERMAN_TELEPORT: 200
+    LEVER: 200
+    HURT_MONSTERS: 200
+    CAKE: 200
+    FIRE_SPREAD: 200
+    CHANGE_SETTINGS: 1000
+    SIGN_EDITING: 200
+    TRADING: 200
+    EGGS: 200
+    CHEST: 200
+    TNT_DAMAGE: 200
+    FLINT_AND_STEEL: 200
+    SCULK_SENSOR: 200
+    CROP_TRAMPLE: 200
+    DROPPER: 200
+    TNT_PRIMING: 200
+    COLLECT_WATER: 200
+    AXOLOTL_SCOOPING: 200
+    ANIMAL_NATURAL_SPAWN: 200
+    SHULKER_TELEPORT: 200
+    COMPOSTER: 200
+    BUTTON: 200
+    COMMAND_RANKS: 200
+    CRAFTER: 200
+    TRAPDOOR: 200
+    EXPERIENCE_BOTTLE_THROWING: 200
+    HIVE: 200
+    DYE: 200
+    ITEM_FRAME: 200
+    CROP_PLANTING: 200
+    CRAFTING: 200
+    SHEARING: 200
+    ANIMAL_SPAWNERS_SPAWN: 200
+    ENCHANTING: 200
+    BLOCK_EXPLODE_DAMAGE: 200
+    BOAT: 200
+    BED: 200
+    SPAWN_EGGS: 200
+    MONSTER_NATURAL_SPAWN: 200
+    SCULK_SHRIEKER: 200
+    SMITHING: 200
+    EXPERIENCE_PICKUP: 200
+    HOPPER: 200
+    CANDLES: 200
+    LEASH: 200
+    BREAK_BLOCKS: 200
+    MOUNT_INVENTORY: 200
+    POTION_THROWING: 200
+    JUKEBOX: 200
+    HURT_ANIMALS: 200
+    LOOM: 200
+    REDSTONE: 200
+    BUCKET: 200
+    ENDER_PEARL: 200
+    BELL_RINGING: 200
+    DOOR: 200
+    BREAK_HOPPERS: 200
+    FURNACE: 200
+    MONSTER_SPAWNERS_SPAWN: 200
+    MINECART: 200
+    FIRE_IGNITE: 200
+    FISH_SCOOPING: 200
+    END_PORTAL: 200
+    BREEDING: 200
+    HURT_VILLAGERS: 200
+    TURTLE_EGGS: 200
+    BREAK_SPAWNERS: 200
+    RIDING: 200
+    ARMOR_STAND: 200
+    NAME_TAG: 200
+    ITEM_DROP: 200
+    NOTE_BLOCK: 200
+    NETHER_PORTAL: 200
+    LECTERN: 200
+    GRINDSTONE: 200
+    SHULKER_BOX: 200
+    ITEM_PICKUP: 200
+    BREWING: 200
+    STONECUTTING: 200
+    FIRE_EXTINGUISH: 200
+    BEACON: 200
+    ALLAY: 200
+    PRESSURE_PLATE: 200
+    PLACE_BLOCKS: 200
+    FLOWER_POT: 200
+    MILKING: 200
+    DISPENSER: 200
+    GATE: 200
+    FIRE_BURNING: 200
+    CHORUS_FRUIT: 200
+    CONTAINER: 200
+    BARREL: 200
+    COLLECT_POWDERED_SNOW: 200
+    CARTOGRAPHY: 200
+  # These are the default settings for new claims
+  default-claim-settings: {}
+  # These settings/flags are hidden from users
+  # Ops can toggle hiding in-game using SHIFT-LEFT-CLICK on flags in settings
+  hidden-flags:
+  - BUCKET
+  - BREAK_HOPPERS
+  - BREAK_SPAWNERS
+  - DRAGON_EGG
+  - ONEBLOCK_BOSSBAR
+  - PVP_END
+  - PVP_NETHER
+  - PVP_OVERWORLD
+  - SHULKER_TELEPORT
+  - TNT_DAMAGE
+  - ENDERMAN_TELEPORT
+  - FIRE_BURNING
+  - FIRE_IGNITE
+  - BLOCK_EXPLODE_DAMAGE
+  - ANIMAL_SPAWNERS_SPAWN
+  - ANIMAL_NATURAL_SPAWN
+  - FIRE_SPREAD
+  - LEAF_DECAY
+  - MONSTER_NATURAL_SPAWN
+  - MONSTER_SPAWNERS_SPAWN
+  # Visitor banned commands - Visitors to claims cannot use these commands in this world
+  visitor-banned-commands: []
+claim:
+  # Size of a single player claim.
+  # A claim exists every dimension : Overworld, Nether and End.
+  size: 32
+  # Default max team size
+  # Team members can increase the size of the claim.
+  # Permission size cannot be less than the default below. 
+  max-team-size: 4
+  # Claim size bonus in bocks for each team member
+  member-bonus: 32
+  # Default maximum number of coop rank members per claim.
+  # Coop members loose status when they logoff or their inviter logs off.
+  # Coop members do not increase the size of the claim.
+  # Players can have the stranger.coop.maxsize.<number> permission to be bigger but
+  # permission size cannot be less than the default below. 
+  max-coop-size: 4
+  # Default maximum number of trusted rank members per claim.
+  # Trusted members retain the status continuously.
+  # Trusted members do not increase the size of the claim.
+  # Players can have the stranger.trust.maxsize.<number> permission to be bigger but
+  # permission size cannot be less than the default below. 
+  max-trusted-size: 4
+  # Default maximum number of home teleports a player can have. Min = 1
+  # Accessed via /is sethome <number> or /is go <number>
+  max-homes: 5
+  commands:
+    # List of commands to run when a player joins an claim or creates one.
+    # These commands are run by the console, unless otherwise stated using the [SUDO] prefix,
+    # in which case they are executed by the player.
+    # 
+    # Available placeholders for the commands are the following:
+    #    * [name]: name of the player
+    # 
+    # Here are some examples of valid commands to execute:
+    #    * "[SUDO] bbox version"
+    #    * "give [player] stick 1"
+    on-join: []
+    # List of commands to run when a player leaves a claim or gets kicked from it.
+    # These commands are run by the console, unless otherwise stated using the [SUDO] prefix,
+    # in which case they are executed by the player.
+    # 
+    # Available placeholders for the commands are the following:
+    #    * [name]: name of the player
+    # 
+    # Here are some examples of valid commands to execute:
+    #    * '[SUDO] bbox version'
+    #    * 'give [player] stick 1'
+    # 
+    # Note that player-executed commands might not work, as these commands can be run with said player being offline.
+    on-leave: []
+    # List of commands that should be executed when the player respawns after death if Flags.ISLAND_RESPAWN is true.
+    # These commands are run by the console, unless otherwise stated using the [SUDO] prefix,
+    # in which case they are executed by the player.
+    # 
+    # Available placeholders for the commands are the following:
+    #    * [name]: name of the player
+    # 
+    # Here are some examples of valid commands to execute:
+    #    * '[SUDO] bbox version'
+    #    * 'give [player] stick 1'
+    # 
+    # Note that player-executed commands might not work, as these commands can be run with said player being offline.
+    on-respawn: []
+  sethome:
+    nether:
+      # Allow setting home in the nether.
+      allow: true
+      require-confirmation: true
+    the-end:
+      # Allow setting home in the end.
+      allow: true
+      require-confirmation: true
+protection:
+  # Blocked mobs.
+  # List of mobs that should not spawn.
+  block-mobs: []
+  # Invincible visitors. List of damages that will not affect visitors.
+  # Make list blank if visitors should receive all damages
+  invincible-visitors: []
+do-not-edit-these-settings:
+  # These settings should not be edited
+  reset-epoch: 0

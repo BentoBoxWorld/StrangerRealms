@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" traduzido para "Território" (territory/claim)
+    island: território
+    Island: Território
+    an-island: um território
+    islands: territórios
+    Islands: Territórios
+  teleporting-to-spawn: "&c Você estava fora do limite. Teletransportado para o spawn."
+  errors:
+    not-in-world: "&c Você precisa estar no mundo para criar um território"
+    already-claimed: "&c Esta localização já foi reivindicada!"
+    overlap: "&c Não é possível criar um território aqui porque ele se sobreporia a outro território em [xyz]."
+    too-close-to-spawn: "&c Você está muito perto do spawn para criar um território. Afaste-se."
+    no-fit-inside: "&c Este território não cabe completamente dentro do limite."
+  nether:
+    refresh: "&a Kaboom! O Nether foi refeito! Sua bússola distorcida se desfaz em suas mãos!"
+  claim:
+    team-increase-owner: "&a Seu território se expandiu devido a um novo membro!"
+    team-decrease-owner: "&b Seu território ficou menor, pois um membro da equipe saiu."
+    team-increase: "&a Este território se expandiu devido a um novo membro!"
+    team-decrease: "&b Este território ficou menor, pois um membro da equipe saiu."
+    team-no-change: "&d O tamanho do território não pôde ser expandido! Deve estar lotado por lá!"
+  commands:
+    admin:
+        worldborder:
+            description: mudar as configurações do limite de mundo
+            parameters: '[on][off][set][auto][info]'
+            info: "&a O limite de mundo tem um raio de [number] blocos."
+            set-size:
+                needs-value: "&c Set precisa de um valor inteiro para o tamanho do limite de mundo"          
+    claim:
+        description: "Tenta criar um território"
+    island:
+      create:
+        creating-island: "&a Tentando criar o território..."
+        cannot-create-island: "&c Não foi possível criar o território."

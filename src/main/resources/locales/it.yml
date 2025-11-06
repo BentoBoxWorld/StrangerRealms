@@ -1,0 +1,41 @@
+#
+# This is a YML file. Be careful when editing. Check your edits in a YAML checker like    #
+# the one at http://yaml-online-parser.appspot.com                                        #
+---
+stranger:
+  prefixes:
+    # "island" è tradotto come "Reclamo" (claim/territory)
+    island: reclamo
+    Island: Reclamo
+    an-island: un reclamo
+    islands: reclami
+    Islands: Reclami
+  teleporting-to-spawn: "&c Eri fuori dal confine. Teletrasportato allo spawn (punto di generazione)."
+  errors:
+    not-in-world: "&c Devi essere nel mondo per fare un reclamo"
+    already-claimed: "&c Questa posizione è già stata reclamata!"
+    overlap: "&c Non puoi fare un reclamo qui perché si sovrapporrebbe a un altro reclamo in [xyz]."
+    too-close-to-spawn: "&c Sei troppo vicino allo spawn per fare un reclamo. Allontanati."
+    no-fit-inside: "&c Questo reclamo non può rientrare completamente all'interno del confine."
+  nether:
+    refresh: "&a Kaboom! Il Nether è stato ricreato! La tua bussola distorta si sgretola nella tua mano!"
+  claim:
+    team-increase-owner: "&a Il tuo reclamo si è espanso grazie a un nuovo membro!"
+    team-decrease-owner: "&b Il tuo reclamo è più piccolo poiché un membro della squadra se n'è andato."
+    team-increase: "&a Questo reclamo si è espanso grazie a un nuovo membro!"
+    team-decrease: "&b Questo reclamo è più piccolo poiché un membro della squadra se n'è andato."
+    team-no-change: "&d La dimensione del reclamo non è potuta essere espansa! Dev'essere affollato là fuori!"
+  commands:
+    admin:
+        worldborder:
+            description: cambia le impostazioni del confine del mondo
+            parameters: '[on][off][set][auto][info]'
+            info: "&a Il confine del mondo ha un raggio di [number] blocchi."
+            set-size:
+                needs-value: "&c Set necessita di un valore intero per la dimensione del confine del mondo"          
+    claim:
+        description: "Tenta di fare un reclamo"
+    island:
+      create:
+        creating-island: "&a Tentativo di reclamo in corso..."
+        cannot-create-island: "&c Il reclamo non ha potuto essere effettuato."
