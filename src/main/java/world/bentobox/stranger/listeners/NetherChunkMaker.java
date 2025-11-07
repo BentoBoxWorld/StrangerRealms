@@ -96,8 +96,9 @@ public class NetherChunkMaker implements Listener {
         biomeMap.put(Biome.CHERRY_GROVE, Biome.WARPED_FOREST);
 
         // Special
-        biomeMap.put(Biome.DEEP_DARK, Biome.BASALT_DELTAS);
-
+        biomeMap.put(Biome.DEEP_DARK, Biome.DEEP_DARK);
+        biomeMap.put(Biome.DRIPSTONE_CAVES, Biome.DEEP_DARK);
+        biomeMap.put(Biome.LUSH_CAVES, Biome.DEEP_DARK);
 
         BIOME_MAPPING = Collections.unmodifiableMap(biomeMap);
     }
@@ -159,7 +160,7 @@ public class NetherChunkMaker implements Listener {
             refreshNetherChunks(p);
         }
     }
-    
+
     /**
      * Handles the event when a player enters the UpsideDown.
      * 
@@ -167,7 +168,7 @@ public class NetherChunkMaker implements Listener {
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNetherPortalExit(PlayerChangedWorldEvent e) {
-        if (addon.inWorld(e.getPlayer().getWorld())) {
+        if (addon.inWorld(e.getPlayer().getWorld()) && e.getPlayer().getWorld().getEnvironment() == Environment.NETHER) {
             User.getInstance(e.getPlayer()).notify(addon.getNetherWorld(), "stranger.nether.welcome");
         }
     }
@@ -291,13 +292,14 @@ public class NetherChunkMaker implements Listener {
         e.getChunk().getStructures().forEach(gs -> structures.add(gs.getBoundingBox()));
 
         // Loop through the chunk and set blocks
-        for (int y = e.getWorld().getMinHeight() + 8; y < ROOF_HEIGHT; y++) {
+        for (int y = e.getWorld().getMinHeight() + 7; y < ROOF_HEIGHT; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     Block overworldBlock = overworldChunk.getBlock(x, y, z);
                     Block newBlock = e.getChunk().getBlock(x, y, z);
                     newBlock.setBiome(BIOME_MAPPING.getOrDefault(overworldBlock.getBiome(), Biome.NETHER_WASTES)); // Set biome for the new block
-                    if (overworldBlock.getType() == newBlock.getType() 
+                    if (newBlock.getBiome() == Biome.DEEP_DARK
+                            || overworldBlock.getType() == newBlock.getType() 
                             || newBlock.getType() == Material.NETHER_PORTAL // We must not touch these otherwise errors occur
                             || y > 100 && rand.nextDouble() < attrition
                             || (inStructure(e.getChunk().getX(), e.getChunk().getZ(), x, y, z, structures) && (newBlock.getType() == Material.NETHER_BRICKS
@@ -326,6 +328,7 @@ public class NetherChunkMaker implements Listener {
                         // Replicate the creepy deep dark
                     } else 
                         // --- Tag-Based Conversion ---
+
                         // Convert blocks based on their tags
                         if (Tag.BUTTONS.isTagged(material)) {
                             newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.STONE_BUTTON.createBlockData(); // Converts all buttons to stone
@@ -462,7 +465,9 @@ public class NetherChunkMaker implements Listener {
                                 newBlockData = Material.AIR.createBlockData();
                                 break;
                             case HAY_BLOCK:
-                                if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
+                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                    newBlockData = Material.AIR.createBlockData();
+                                } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
                                     newBlockData = Material.SHROOMLIGHT.createBlockData();
                                 } else {
                                     newBlockData = Material.GLOWSTONE.createBlockData();
@@ -486,7 +491,11 @@ public class NetherChunkMaker implements Listener {
                                 newBlockData = Material.MAGMA_BLOCK.createBlockData();
                                 break;
                             case WATER:
-                                newBlockData = Material.LAVA.createBlockData();
+                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                    newBlockData = Material.AIR.createBlockData();
+                                } else {
+                                    newBlockData = Material.LAVA.createBlockData();
+                                }
                                 break;
                             case LAVA:
                                 // Keep lava as lava
@@ -541,6 +550,15 @@ public class NetherChunkMaker implements Listener {
                                 if (rand.nextDouble() < attrition) {
                                     newBlockData = Material.FIRE.createBlockData();
                                 }
+                            break;
+
+                            case CALCITE, SMOOTH_BASALT, AMETHYST_CLUSTER, LARGE_AMETHYST_BUD, MEDIUM_AMETHYST_BUD, 
+                            SMALL_AMETHYST_BUD, AMETHYST_BLOCK, BUDDING_AMETHYST, INFESTED_COBBLESTONE, INFESTED_CRACKED_STONE_BRICKS,
+                            END_PORTAL_FRAME,
+                            GRAY_WOOL,
+                            SOUL_FIRE, SOUL_SAND, REDSTONE_BLOCK, TARGET, SOUL_LANTERN, CANDLE,
+                            SCULK, SCULK_VEIN,SCULK_SENSOR,SCULK_CATALYST,SCULK_SHRIEKER:
+                                // These stay
                                 break;
                             default:
                                 newBlockData = Material.BLACKSTONE.createBlockData();
