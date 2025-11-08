@@ -34,6 +34,8 @@ import world.bentobox.bentobox.managers.IslandsManager;
 import world.bentobox.stranger.commands.admin.WorldBorderCommand;
 import world.bentobox.stranger.commands.player.ClaimCommand;
 import world.bentobox.stranger.commands.player.SpawnCommand;
+import world.bentobox.stranger.generator.NetherBiomeProvider;
+import world.bentobox.stranger.generator.NetherChunks;
 import world.bentobox.stranger.listeners.BorderShower;
 import world.bentobox.stranger.listeners.NetherChunkMaker;
 import world.bentobox.stranger.listeners.NetherRedstoneListener;
@@ -198,11 +200,11 @@ public class StrangerRealms extends GameModeAddon {
         // Set world name
         worldName2 = env == World.Environment.NETHER ? worldName2 + NETHER : worldName2;
         worldName2 = env == World.Environment.THE_END ? worldName2 + THE_END : worldName2;
-        //boxedBiomeProvider = new BoxedBiomeGenerator(this);
         World w = WorldCreator
                 .name(worldName2)
-                //.generator(env == World.Environment.NETHER ? new NetherChunkGenerator(this) : null)
                 .environment(env)
+                .generator(env == Environment.NETHER ? new NetherChunks() : null)
+                .biomeProvider(env == Environment.NETHER ? new NetherBiomeProvider() : null)
                 .seed(this.getSettings().getSeed())
                 .createWorld();
         // Set spawn rates

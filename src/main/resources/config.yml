@@ -3,7 +3,7 @@ stranger:
   command:
     # Player Command. What command users will run to access their claim.
     # To define alias, just separate commands with white space.
-    player: sr
+    player: st strange
     # The admin command.
     # To define alias, just separate commands with white space.
     admin: stranger

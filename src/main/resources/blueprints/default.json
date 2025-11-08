@@ -1,0 +1,16 @@
+{
+  "uniqueId": "default",
+  "icon": "PAPER",
+  "displayName": "Default bundle",
+  "description": [
+    "aquaDefault bundle of blueprints"
+  ],
+  "requirePermission": false,
+  "blueprints": {
+    "NORMAL": "bedrock",
+    "NETHER": "bedrock",
+    "THE_END": "bedrock"
+  },
+  "slot": 0,
+  "times": 0
+}

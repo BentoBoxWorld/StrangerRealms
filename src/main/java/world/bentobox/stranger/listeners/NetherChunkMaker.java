@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -49,6 +50,7 @@ import world.bentobox.bentobox.api.user.User;
 import world.bentobox.bentobox.database.Database;
 import world.bentobox.bentobox.util.ExpiringSet;
 import world.bentobox.bentobox.util.Pair;
+import world.bentobox.bentobox.util.Util;
 import world.bentobox.stranger.StrangerRealms;
 import world.bentobox.stranger.database.NetherChunksMade;
 
@@ -57,15 +59,13 @@ import world.bentobox.stranger.database.NetherChunksMade;
  */
 public class NetherChunkMaker implements Listener {
 
-    private static final int ROOF_HEIGHT = 107;
-    private static final String NETHER_CHUNKS_TABLE = "NetherChunks";
-    private StrangerRealms addon;
-    private Random rand = new Random();
-    private final Database<NetherChunksMade> handler;
-    private NetherChunksMade netherChunksMade;
-    private final int maxChestFills;
-    private ExpiringSet<UUID> portalPlayer = new ExpiringSet<>(10, TimeUnit.SECONDS);
-    private final TreeMap<Integer, LootTable> chestContents;
+    private static final int ROOF_HEIGHT = 107; 
+    private static final int CEILING_START = 100; // Blocks above this height are left as natural nether blocks
+    private static final int NETHER_FLOOR = 30; // Blocks below this are left as natural nether world blocks
+    private static final String NETHER_CHUNKS_TABLE = "StrangerChunks";
+    private static final Set<Material> NETHER_STRUCTURE_BLOCKS = Set.of(Material.NETHER_BRICKS, Material.NETHER_BRICK_FENCE, 
+            Material.NETHER_BRICK_SLAB, Material.NETHER_BRICK_STAIRS, Material.NETHER_BRICK_WALL, Material.CHISELED_NETHER_BRICKS
+            , Material.CRACKED_NETHER_BRICKS, Material.BONE_BLOCK, Material.SPAWNER, Material.CHEST);
 
     // Overworld Biome -> Nether Biome
     public static final Map<Biome, Biome> BIOME_MAPPING;
@@ -96,15 +96,27 @@ public class NetherChunkMaker implements Listener {
         biomeMap.put(Biome.CHERRY_GROVE, Biome.WARPED_FOREST);
 
         // Special
-        biomeMap.put(Biome.DEEP_DARK, Biome.BASALT_DELTAS);
-
+        biomeMap.put(Biome.DEEP_DARK, Biome.DEEP_DARK);
 
         BIOME_MAPPING = Collections.unmodifiableMap(biomeMap);
     }
+    
+    private StrangerRealms addon;
+    private Random rand = new Random();
+    private final Database<NetherChunksMade> handler;
+    private NetherChunksMade netherChunksMade;
+    private final int maxChestFills;
+    private ExpiringSet<UUID> portalPlayer = new ExpiringSet<>(10, TimeUnit.SECONDS);
+    private final TreeMap<Integer, LootTable> chestContents;
 
+    /**
+     * Class that transforms the nether to the upside down
+     * @param addon Addon
+     */
     public NetherChunkMaker(StrangerRealms addon) {
         super();
         this.addon = addon;
+        // Create the database table where we will log what chunks have been transformed
         handler = new Database<>(addon, NetherChunksMade.class);
         if (handler.objectExists(NETHER_CHUNKS_TABLE)) {
             netherChunksMade = handler.loadObject(NETHER_CHUNKS_TABLE);
@@ -113,7 +125,7 @@ public class NetherChunkMaker implements Listener {
             netherChunksMade = new NetherChunksMade();
             handler.saveObjectAsync(netherChunksMade);
         }
-        // Chests
+        // Chests and their potential contents
         maxChestFills = addon.getSettings().getChestFills();
         chestContents = new TreeMap<>();
         chestContents.put(1, LootTables.BASTION_TREASURE.getLootTable()); // Rare
@@ -133,7 +145,7 @@ public class NetherChunkMaker implements Listener {
 
     /**
      * Handles the event when a player enters a Nether portal.
-     * 
+     * This event can be called multiple times as the player goes through.
      * @param e The event triggered when an entity enters a portal.
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -146,7 +158,7 @@ public class NetherChunkMaker implements Listener {
             return;
         }
         Player p = (Player)e.getEntity();
-        // Add the player as teleporting
+        // Flag the player as teleporting to debounce the additional event calls
         portalPlayer.add(p.getUniqueId());
         if (e.getLocation().getWorld().getEnvironment() == Environment.NETHER) {
             return; // No action needed if already in the Nether
@@ -159,22 +171,23 @@ public class NetherChunkMaker implements Listener {
             refreshNetherChunks(p);
         }
     }
-    
+
     /**
-     * Handles the event when a player enters the UpsideDown.
+     * Handles the event when a player enters the UpsideDown via a teleport.
      * 
      * @param e The event triggered
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNetherPortalExit(PlayerChangedWorldEvent e) {
-        if (addon.inWorld(e.getPlayer().getWorld())) {
+        if (addon.inWorld(e.getPlayer().getWorld()) && e.getPlayer().getWorld().getEnvironment() == Environment.NETHER) {
             User.getInstance(e.getPlayer()).notify(addon.getNetherWorld(), "stranger.nether.welcome");
         }
     }
 
     /**
      * Refreshes the Nether chunks based on the player's location.
-     * 
+     * This removes the database entries of chunks made so that when the chunk is
+     * reloaded next time it will be transformed again.
      * @param p The player who triggered the refresh.
      */
     private void refreshNetherChunks(Player p) {
@@ -232,8 +245,12 @@ public class NetherChunkMaker implements Listener {
         handler.saveObjectAsync(netherChunksMade); // Save to database
         clearTileEntities(e); // Clear tile entities in the chunk
         clearEntities(e); // Clear entities in the chunk
-        convertBlocks(e); // Convert blocks from overworld to Nether
-        spawnNetherEntities(e); // Spawn Nether entities
+        // Get the overworld chunk async
+        Util.getChunkAtAsync(addon.getOverWorld(), e.getChunk().getX(), e.getChunk().getZ()).thenRun(() -> {
+            convertBlocks(e);
+            convertBlocks(e); // Convert blocks from overworld to Nether
+            spawnNetherEntities(e); // Spawn Nether entities
+        });
     }
 
     /**
@@ -289,43 +306,38 @@ public class NetherChunkMaker implements Listener {
         // Check for structures
         List<BoundingBox> structures = new ArrayList<>();
         e.getChunk().getStructures().forEach(gs -> structures.add(gs.getBoundingBox()));
-
         // Loop through the chunk and set blocks
-        for (int y = e.getWorld().getMinHeight() + 8; y < ROOF_HEIGHT; y++) {
+        for (int y = e.getWorld().getMinHeight() + NETHER_FLOOR; y < ROOF_HEIGHT; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     Block overworldBlock = overworldChunk.getBlock(x, y, z);
                     Block newBlock = e.getChunk().getBlock(x, y, z);
                     newBlock.setBiome(BIOME_MAPPING.getOrDefault(overworldBlock.getBiome(), Biome.NETHER_WASTES)); // Set biome for the new block
+                    // Skip if the block should not be converted
                     if (overworldBlock.getType() == newBlock.getType() 
                             || newBlock.getType() == Material.NETHER_PORTAL // We must not touch these otherwise errors occur
-                            || y > 100 && rand.nextDouble() < attrition
-                            || (inStructure(e.getChunk().getX(), e.getChunk().getZ(), x, y, z, structures) && (newBlock.getType() == Material.NETHER_BRICKS
-                            || newBlock.getType() == Material.NETHER_BRICK_FENCE
-                            || newBlock.getType() == Material.NETHER_BRICK_SLAB
-                            || newBlock.getType() == Material.NETHER_BRICK_STAIRS
-                            || newBlock.getType() == Material.NETHER_BRICK_WALL
-                            || newBlock.getType() == Material.CHISELED_NETHER_BRICKS
-                            || newBlock.getType() == Material.CRACKED_NETHER_BRICKS
-                            || newBlock.getType() == Material.BONE_BLOCK
-                            || newBlock.getType() == Material.SPAWNER
-                            || newBlock.getType() == Material.CHEST))            
-                            ) {
+                            || y > CEILING_START && rand.nextDouble() < attrition
+                            || (inStructure(e.getChunk().getX(), e.getChunk().getZ(), x, y, z, structures) 
+                                    &&  NETHER_STRUCTURE_BLOCKS.contains(newBlock.getType()))) {
                         continue; // Skip if the block types are the same or if conditions are met
                     }
+                    // Get the overworld block
                     BlockData overworldBlockData = overworldBlock.getBlockData();
                     Material material = overworldBlockData.getMaterial(); // Get the material for the switch
                     BlockData newBlockData = overworldBlockData.clone(); // Clone the BlockData to modify it
 
                     if (newBlockData instanceof Waterlogged waterlogged) {
+                        // No water in the nether
                         waterlogged.setWaterlogged(false);
                     }
 
                     // Biome
                     if (overworldBlock.getBiome() == Biome.DEEP_DARK) {
                         // Replicate the creepy deep dark
+                        
                     } else 
                         // --- Tag-Based Conversion ---
+
                         // Convert blocks based on their tags
                         if (Tag.BUTTONS.isTagged(material)) {
                             newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.STONE_BUTTON.createBlockData(); // Converts all buttons to stone
@@ -462,7 +474,9 @@ public class NetherChunkMaker implements Listener {
                                 newBlockData = Material.AIR.createBlockData();
                                 break;
                             case HAY_BLOCK:
-                                if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
+                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                    newBlockData = Material.AIR.createBlockData();
+                                } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
                                     newBlockData = Material.SHROOMLIGHT.createBlockData();
                                 } else {
                                     newBlockData = Material.GLOWSTONE.createBlockData();
@@ -486,7 +500,11 @@ public class NetherChunkMaker implements Listener {
                                 newBlockData = Material.MAGMA_BLOCK.createBlockData();
                                 break;
                             case WATER:
-                                newBlockData = Material.LAVA.createBlockData();
+                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                    newBlockData = Material.AIR.createBlockData();
+                                } else {
+                                    newBlockData = Material.LAVA.createBlockData();
+                                }
                                 break;
                             case LAVA:
                                 // Keep lava as lava
@@ -541,6 +559,15 @@ public class NetherChunkMaker implements Listener {
                                 if (rand.nextDouble() < attrition) {
                                     newBlockData = Material.FIRE.createBlockData();
                                 }
+                            break;
+
+                            case CALCITE, SMOOTH_BASALT, AMETHYST_CLUSTER, LARGE_AMETHYST_BUD, MEDIUM_AMETHYST_BUD, 
+                            SMALL_AMETHYST_BUD, AMETHYST_BLOCK, BUDDING_AMETHYST, INFESTED_COBBLESTONE, INFESTED_CRACKED_STONE_BRICKS,
+                            END_PORTAL_FRAME,
+                            GRAY_WOOL,
+                            SOUL_FIRE, SOUL_SAND, REDSTONE_BLOCK, TARGET, SOUL_LANTERN, CANDLE,
+                            SCULK, SCULK_VEIN,SCULK_SENSOR,SCULK_CATALYST,SCULK_SHRIEKER:
+                                // These stay
                                 break;
                             default:
                                 newBlockData = Material.BLACKSTONE.createBlockData();
