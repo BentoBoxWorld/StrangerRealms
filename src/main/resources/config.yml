@@ -3,10 +3,10 @@ stranger:
   command:
     # Player Command. What command users will run to access their claim.
     # To define alias, just separate commands with white space.
-    player: sr strange
+    player: st strange
     # The admin command.
     # To define alias, just separate commands with white space.
-    admin: demigorgon
+    admin: stranger
     # The default action for new player command call.
     # Sub-command of main player command that will be run on first player command call.
     # By default it is sub-command 'create'.
