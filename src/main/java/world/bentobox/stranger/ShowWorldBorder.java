@@ -43,12 +43,6 @@ public class ShowWorldBorder implements BorderShower {
             double dist = addon.getBorderSize() / 2D;
            BoundingBox worldBB = BoundingBox.of(center.toVector(), dist, dist, dist);
            if (worldBB.contains(island.getBoundingBox())) {
-               /*
-               BentoBox.getInstance().logDebug("Claim is within the world barrier");
-               BentoBox.getInstance().logDebug("world barrier bb = " + worldBB);
-               BentoBox.getInstance().logDebug("Player location = " + player.getLocation());
-               BentoBox.getInstance().logDebug("Player in world border? " + worldBB.contains(player.getLocation().toVector()));
-               */
                showWorldBarrier(player);
                return;
            }

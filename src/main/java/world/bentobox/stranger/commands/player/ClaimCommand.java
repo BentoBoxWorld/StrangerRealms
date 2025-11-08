@@ -17,7 +17,7 @@ import world.bentobox.bentobox.panels.customizable.IslandCreationPanel;
 
 /**
  * Handles the claim creation command.
- * A lot of this code comes from the stock create command in BentoBox and it uses 
+ * A lot of this code comes from the stock create command in BentoBox, and it uses
  * locale from that too often. References to "island" can be read as "claim".
  * <p>
  * Features:

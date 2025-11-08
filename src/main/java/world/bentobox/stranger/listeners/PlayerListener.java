@@ -51,10 +51,10 @@ public class PlayerListener implements Listener {
     private static final Vector XZ = new Vector(1,0,1);
     private final StrangerRealms addon;
     // Set to track players currently being teleported to prevent recursion
-    private Set<UUID> inTeleport;
+    private final Set<UUID> inTeleport;
     private final BorderShower show;
     // Map to track tasks for mounted players
-    private Map<Player, BukkitTask> mountedPlayers = new HashMap<>();
+    private final Map<Player, BukkitTask> mountedPlayers = new HashMap<>();
 
     public PlayerListener(StrangerRealms addon) {
         this.addon = addon;
@@ -76,7 +76,7 @@ public class PlayerListener implements Listener {
             return;
         }
         if (isOn(player)) {
-            // Run one-tick after joining because meta data cannot be set otherwise
+            // Run one-tick after joining because metadata cannot be set otherwise
             Bukkit.getScheduler().runTask(addon.getPlugin(), () -> processEvent(e));
         }
         // Update the border for any online players
@@ -108,7 +108,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent e) {
         show.clearUser(User.getInstance(e.getPlayer()));
         // Wait for player to exit
-        Bukkit.getScheduler().runTask(addon.getPlugin(), () -> addon.getBorderSize());
+        Bukkit.getScheduler().runTask(addon.getPlugin(), addon::getBorderSize);
     }
 
     /**
@@ -154,6 +154,7 @@ public class PlayerListener implements Listener {
 
         show.clearUser(User.getInstance(player));
 
+        //noinspection ConstantValue
         if (to == null || !addon.inWorld(to.getWorld())) {
             return;
         }
@@ -217,7 +218,7 @@ public class PlayerListener implements Listener {
             return;
         }
         
-        // If outside, calculate closest safe position on border
+        // If outside, calculate the closest safe position on border
         addon.getIslands().getIslandAt(p.getLocation()).ifPresent(i -> {
             // Calculate vector pointing from player to island center
             Vector unitVector = i.getProtectionCenter().toVector().subtract(p.getLocation().toVector()).normalize()
@@ -366,7 +367,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Hide and then show the border to react to the change in protection area
-     * @param e
+     * @param e IslandProtectionRangeChangeEvent
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onProtectionRangeChange(IslandProtectionRangeChangeEvent e) {

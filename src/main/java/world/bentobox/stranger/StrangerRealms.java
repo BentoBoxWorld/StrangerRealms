@@ -62,7 +62,7 @@ public class StrangerRealms extends GameModeAddon {
     private BorderShower borderShower;
     private final Set<BorderType> availableBorderTypes = EnumSet.of(BorderType.VANILLA, BorderType.BARRIER);
     private int borderSize;
-    private @NotNull BukkitTask task;
+    private BukkitTask task;
     private PlayerListener playerListener;
     private NetherChunkMaker netherChunkMaker;
 
@@ -291,11 +291,9 @@ public class StrangerRealms extends GameModeAddon {
         int newBorderSize = getSettings().isManualBorderSize() ? borderSize :
                 Math.max(getSettings().getBarrierIncreaseBlocks(), (this.getSettings().getBarrierIncreaseBlocks() * Bukkit.getServer().getOnlinePlayers().size()));
          if (newBorderSize < borderSize) {
-            if (task != null) {
-                // End any current task to replace it
-                task.cancel();
-            }
-            // Trigger gradual reduction of border
+             // End any current task to replace it
+             task.cancel();
+             // Trigger gradual reduction of border
            task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
                //BentoBox.getInstance().logDebug("Get border size = " + newBorderSize + " old = " + borderSize);
                 if (borderSize > newBorderSize) {
@@ -325,9 +323,7 @@ public class StrangerRealms extends GameModeAddon {
      * Cancels any active border reduction task
      */
     public void cancelBorderTask() {
-        if (this.task != null) {
-            this.task.cancel();
-        }
+        this.task.cancel();
     }
     
     /**

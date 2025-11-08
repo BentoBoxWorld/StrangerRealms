@@ -12,6 +12,7 @@ import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
 
+import org.jetbrains.annotations.NotNull;
 import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.configuration.ConfigComment;
 import world.bentobox.bentobox.api.configuration.ConfigEntry;
@@ -772,18 +773,6 @@ public class Settings implements WorldSettings {
     }
 
     /**
-     * @param islandStartX the islandStartX to set
-     */
-    public void setIslandStartX(int islandStartX) {
-    }
-
-    /**
-     * @param islandStartZ the islandStartZ to set
-     */
-    public void setIslandStartZ(int islandStartZ) {
-    }
-
-    /**
      * @param maxIslands the maxIslands to set
      */
     public void setMaxIslands(int maxIslands) {
@@ -970,7 +959,7 @@ public class Settings implements WorldSettings {
      * @return the onJoinCommands
      */
     @Override
-    public List<String> getOnJoinCommands() {
+    public @NotNull List<String> getOnJoinCommands() {
         return onJoinCommands;
     }
 
@@ -985,7 +974,7 @@ public class Settings implements WorldSettings {
      * @return the onLeaveCommands
      */
     @Override
-    public List<String> getOnLeaveCommands() {
+    public @NotNull List<String> getOnLeaveCommands() {
         return onLeaveCommands;
     }
 
@@ -1000,7 +989,7 @@ public class Settings implements WorldSettings {
      * @return the onRespawnCommands
      */
     @Override
-    public List<String> getOnRespawnCommands() {
+    public @NotNull List<String> getOnRespawnCommands() {
         return onRespawnCommands;
     }
 

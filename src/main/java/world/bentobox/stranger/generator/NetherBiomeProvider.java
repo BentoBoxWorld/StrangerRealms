@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public class NetherBiomeProvider extends BiomeProvider {
     
-    private Random random = new Random();
+    private final Random random = new Random();
 
     @Override
     public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {

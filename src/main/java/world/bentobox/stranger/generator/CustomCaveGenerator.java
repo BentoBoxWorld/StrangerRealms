@@ -7,11 +7,11 @@ import java.util.Random;
 
 /**
  * A custom noise generator for creating 3D cave systems.
- *
+ * <p>
  * This class extends NoiseGenerator and is designed to be used within
  * a custom ChunkGenerator (like in generateNoise(), generateSurface(), or
  * generateBedrock()).
- *
+ * <p>
  * The algorithm works by combining two 3D Simplex noise fields. A "cave"
  * is formed in areas where the values of both noise fields are close to zero.
  * This creates intersecting "sheets" of noise, resulting in tunnel-like
@@ -56,11 +56,11 @@ public class CustomCaveGenerator extends NoiseGenerator {
 
     /**
      * Computes the 3D "cave" noise value at the given coordinates.
-     *
+     * <p>
      * This is the core abstract method from NoiseGenerator.
      * The value returned is typically in the range [-1, 1], but this
      * implementation's "cheese" logic may exceed that slightly.
-     *
+     * <p>
      * A lower value (closer to 0) means "more likely to be a cave".
      * A higher value (closer to 1 or -1) means "more likely to be solid".
      *
@@ -139,11 +139,6 @@ public class CustomCaveGenerator extends NoiseGenerator {
         // finalNoise = Math.max(0, Math.min(1, finalNoise));
 
         // The finalNoise value is a double.
-        // In a ChunkGenerator, you would check:
-        // if (customCaveGenerator.noise(x, y, z) < 0.1) {
-        //    chunkData.setBlock(x, y, z, Material.AIR);
-        // }
-        
         return finalNoise;
     }
 }
