@@ -97,8 +97,6 @@ public class NetherChunkMaker implements Listener {
 
         // Special
         biomeMap.put(Biome.DEEP_DARK, Biome.DEEP_DARK);
-        biomeMap.put(Biome.DRIPSTONE_CAVES, Biome.DEEP_DARK);
-        biomeMap.put(Biome.LUSH_CAVES, Biome.DEEP_DARK);
 
         BIOME_MAPPING = Collections.unmodifiableMap(biomeMap);
     }
