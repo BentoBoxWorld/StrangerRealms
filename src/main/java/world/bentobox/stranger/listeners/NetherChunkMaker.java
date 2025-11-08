@@ -61,8 +61,8 @@ public class NetherChunkMaker implements Listener {
 
     private static final int ROOF_HEIGHT = 107; 
     private static final int CEILING_START = 100; // Blocks above this height are left as natural nether blocks
-    private static final int NETHER_FLOOR = 7; // Blocks below this are left as natural nether world blocks
-    private static final String NETHER_CHUNKS_TABLE = "NetherChunks";
+    private static final int NETHER_FLOOR = 30; // Blocks below this are left as natural nether world blocks
+    private static final String NETHER_CHUNKS_TABLE = "StrangerChunks";
     private static final Set<Material> NETHER_STRUCTURE_BLOCKS = Set.of(Material.NETHER_BRICKS, Material.NETHER_BRICK_FENCE, 
             Material.NETHER_BRICK_SLAB, Material.NETHER_BRICK_STAIRS, Material.NETHER_BRICK_WALL, Material.CHISELED_NETHER_BRICKS
             , Material.CRACKED_NETHER_BRICKS, Material.BONE_BLOCK, Material.SPAWNER, Material.CHEST);
@@ -313,6 +313,7 @@ public class NetherChunkMaker implements Listener {
                     Block overworldBlock = overworldChunk.getBlock(x, y, z);
                     Block newBlock = e.getChunk().getBlock(x, y, z);
                     newBlock.setBiome(BIOME_MAPPING.getOrDefault(overworldBlock.getBiome(), Biome.NETHER_WASTES)); // Set biome for the new block
+                    // Skip if the block should not be converted
                     if (overworldBlock.getType() == newBlock.getType() 
                             || newBlock.getType() == Material.NETHER_PORTAL // We must not touch these otherwise errors occur
                             || y > CEILING_START && rand.nextDouble() < attrition
@@ -320,17 +321,20 @@ public class NetherChunkMaker implements Listener {
                                     &&  NETHER_STRUCTURE_BLOCKS.contains(newBlock.getType()))) {
                         continue; // Skip if the block types are the same or if conditions are met
                     }
+                    // Get the overworld block
                     BlockData overworldBlockData = overworldBlock.getBlockData();
                     Material material = overworldBlockData.getMaterial(); // Get the material for the switch
                     BlockData newBlockData = overworldBlockData.clone(); // Clone the BlockData to modify it
 
                     if (newBlockData instanceof Waterlogged waterlogged) {
+                        // No water in the nether
                         waterlogged.setWaterlogged(false);
                     }
 
                     // Biome
                     if (overworldBlock.getBiome() == Biome.DEEP_DARK) {
                         // Replicate the creepy deep dark
+                        
                     } else 
                         // --- Tag-Based Conversion ---
 

@@ -18,7 +18,7 @@ public class NetherChunksMade implements DataObject {
 
     @Override
     public String getUniqueId() {
-        return "NetherChunks";
+        return "StrangerChunks";
     }
 
     @Override

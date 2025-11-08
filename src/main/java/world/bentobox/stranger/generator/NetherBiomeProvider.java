@@ -2,15 +2,13 @@ package world.bentobox.stranger.generator;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Makes the nether, different
+ * Makes the deep dark biome
  */
 public class NetherBiomeProvider extends BiomeProvider {
 

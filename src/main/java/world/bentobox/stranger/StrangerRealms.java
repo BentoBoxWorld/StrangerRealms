@@ -203,8 +203,8 @@ public class StrangerRealms extends GameModeAddon {
         World w = WorldCreator
                 .name(worldName2)
                 .environment(env)
-                //.generator(env == Environment.NETHER ? new NetherChunks() : null)
-                //.biomeProvider(env == Environment.NETHER ? new NetherBiomeProvider() : null)
+                .generator(env == Environment.NETHER ? new NetherChunks() : null)
+                .biomeProvider(env == Environment.NETHER ? new NetherBiomeProvider() : null)
                 .seed(this.getSettings().getSeed())
                 .createWorld();
         // Set spawn rates
