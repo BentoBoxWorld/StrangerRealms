@@ -1,6 +1,7 @@
 package world.bentobox.stranger.generator;
 
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BiomeProvider;
@@ -11,10 +12,13 @@ import org.jetbrains.annotations.NotNull;
  * Makes the deep dark biome
  */
 public class NetherBiomeProvider extends BiomeProvider {
+    
+    private Random random = new Random();
 
     @Override
     public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
-        if (y < worldInfo.getMinHeight() + 30) {
+        final int top = worldInfo.getMinHeight() + 30 - random.nextInt(5);
+        if (y < top) {
             return Biome.DEEP_DARK;
         }
         

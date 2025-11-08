@@ -310,6 +310,12 @@ public class NetherChunkMaker implements Listener {
         for (int y = e.getWorld().getMinHeight() + NETHER_FLOOR; y < ROOF_HEIGHT; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
+                    if (y == e.getWorld().getMinHeight() + NETHER_FLOOR) {
+                        // Bleed some netherrack into the deep dark
+                        for (int bleed = y - rand.nextInt(5); bleed < y; bleed++ ) {
+                            e.getChunk().getBlock(x, bleed, z).setType(Material.NETHERRACK, false);
+                        }
+                    }
                     Block overworldBlock = overworldChunk.getBlock(x, y, z);
                     Block newBlock = e.getChunk().getBlock(x, y, z);
                     newBlock.setBiome(BIOME_MAPPING.getOrDefault(overworldBlock.getBiome(), Biome.NETHER_WASTES)); // Set biome for the new block
@@ -333,8 +339,7 @@ public class NetherChunkMaker implements Listener {
 
                     // Biome
                     if (overworldBlock.getBiome() == Biome.DEEP_DARK) {
-                        // Replicate the creepy deep dark
-                        
+                        // Replicate the creepy deep dark                      
                     } else 
                         // --- Tag-Based Conversion ---
 

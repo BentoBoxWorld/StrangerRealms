@@ -37,23 +37,39 @@ public class NetherChunks extends ChunkGenerator {
         // Define the Y-range for cave generation
         final int minCaveY = worldInfo.getMinHeight() + 7;
         final int maxCaveY = minCaveY + 30;
-
+        final double caveRange = (double)(maxCaveY - minCaveY);
+        
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
 
                 // Calculate absolute world X and Z once per column
                 final int worldX = chunkX * 16 + x;
                 final int worldZ = chunkZ * 16 + z;
-                for (int y = minCaveY; y < maxCaveY; y++) {
+                final int top = maxCaveY - random.nextInt(5);
+                for (int y = minCaveY; y < top ; y++) {
                     // Check the noise value
                     final int worldY = y;
                     double noise = this.caveGenerator.noise(worldX, worldY, worldZ);
+                    
+                    // --- DYNAMIC THRESHOLD LOGIC ---
 
-                    if (noise < CAVE_THRESHOLD + 0.1) {
+                    // 1. Get Y's progress (0.0 to 1.0) through the cave range.
+                    double yProgress = (y - minCaveY) / caveRange;
+                    
+                    // 2. Map this progress to a sine wave (0 to PI).
+                    //    Math.sin(0) = 0 (at minCaveY)
+                    //    Math.sin(PI / 2) = 1 (at the midpoint)
+                    //    Math.sin(PI) = 0 (at maxCaveY)
+                    double swellFactor = Math.sin(yProgress * Math.PI);
+                    
+                    // 3. Multiply by our max threshold.
+                    double yDependentThreshold = CAVE_THRESHOLD * swellFactor;
+
+                    if (noise < yDependentThreshold + 0.1) {
                         // Coat with Sculk
                         chunkData.setBlock(x, y, z, Material.SCULK);
                     }
-                    if (noise < CAVE_THRESHOLD) {
+                    if (noise < yDependentThreshold) {
                         // Noise value is low enough, carve a cave block
                         chunkData.setBlock(x, y, z, Material.AIR);
                     }
