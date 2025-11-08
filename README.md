@@ -39,12 +39,14 @@ Encourage players to join and grow your server with the Dynamic World Border opt
 
 *Stranger Realms* uses the robust BentoBox command structure.
 
+The main player command is `/strange` or `/st` and the admin command is `/stranger`
+
 | Command | Description |
 | :--- | :--- |
-| `/sr claim` | Creates a claim at your current location (if you have room). |
-| `/sr info` | Shows information about the claim you are currently standing in. |
-| `/sr settings` | Opens the GUI to manage claim permissions (e.g., visitor block break, chest access). |
-| `/sr team` | Goes the Team GUI where you can invites players to become a member of your claim, which also increases the claim size. |
+| `/st claim` | Creates a claim at your current location (if you have room). |
+| `/st info` | Shows information about the claim you are currently standing in. |
+| `/st settings` | Opens the GUI to manage claim permissions (e.g., visitor block break, chest access). |
+| `/st team` | Goes the Team GUI where you can invites players to become a member of your claim, which also increases the claim size. |
 
 ## Use with Other Addons
 
