@@ -1,4 +1,4 @@
-package world.bentobox.stranger;
+package world.bentobox.stranger.border;
 
 import java.util.Optional;
 

@@ -70,6 +70,11 @@ public class ClaimCommand extends CompositeCommand {
      */
     @Override
     public boolean canExecute(User user, String label, List<String> args) {
+        // Check if the player is in a claim
+       if (getIslands().getIslandAt(user.getLocation()).isPresent()) {
+            user.sendMessage("strangerrealms.errors.already-claimed");
+            return false;
+       }
         // Check if the island is reserved
         @Nullable
         Island island = getIslands().getPrimaryIsland(getWorld(), user.getUniqueId());
@@ -131,7 +136,9 @@ public class ClaimCommand extends CompositeCommand {
     private boolean makeClaim(User user, String name) {
         user.sendMessage("commands.island.create.creating-island");
         try {
-            NewIsland.builder().player(user).addon(getAddon()).reason(Reason.CREATE).name(name).locationStrategy(strategy).noPaste().build();
+            NewIsland.builder().player(user).addon(getAddon()).reason(Reason.CREATE)
+            .name(name).locationStrategy(strategy)
+            .noPaste().build();
         } catch (IOException e) {
             user.sendMessage(e.getMessage());
             return false;
