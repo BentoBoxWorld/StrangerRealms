@@ -15,6 +15,9 @@ permissions:
   strangerrealms.claim:
     description: Allow claim command usage
     default: true
+  strangerrealms.unclaim:
+    description: Allow unclaim command usage
+    default: true
   strangerrealms.create:
     description: Allow claim creation
     default: false
