@@ -1,8 +1,9 @@
-package world.bentobox.stranger;
+package world.bentobox.stranger.border;
 
 import org.bukkit.entity.Player;
 
 import world.bentobox.bentobox.api.user.User;
+import world.bentobox.stranger.StrangerRealms;
 import world.bentobox.stranger.listeners.BorderShower;
 
 public final class PerPlayerBorderProxy implements BorderShower {

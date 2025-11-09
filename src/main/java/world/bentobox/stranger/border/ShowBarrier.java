@@ -1,4 +1,4 @@
-package world.bentobox.stranger;
+package world.bentobox.stranger.border;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +22,7 @@ import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.metadata.MetaDataValue;
 import world.bentobox.bentobox.api.user.User;
 import world.bentobox.bentobox.util.Util;
+import world.bentobox.stranger.StrangerRealms;
 import world.bentobox.stranger.listeners.BorderShower;
 
 /**

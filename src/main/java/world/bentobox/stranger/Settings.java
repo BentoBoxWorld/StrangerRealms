@@ -22,6 +22,7 @@ import world.bentobox.bentobox.api.flags.Flag;
 import world.bentobox.bentobox.database.objects.adapters.Adapter;
 import world.bentobox.bentobox.database.objects.adapters.FlagSerializer;
 import world.bentobox.bentobox.database.objects.adapters.FlagSerializer2;
+import world.bentobox.stranger.border.BorderType;
 
 /**
  * All the plugin settings are here
@@ -60,9 +61,9 @@ public class Settings implements WorldSettings {
     private String friendlyName = "StrangerRealms";
 
     @ConfigComment("Name of the world - if it does not exist then it will be generated.")
-    @ConfigComment("It acts like a prefix for nether and end (e.g. stranger_world, stranger_world_nether, stranger_world_end)")
+    @ConfigComment("It acts like a prefix for nether and end (e.g. stranger-world, stranger-world_nether, stranger-world_end)")
     @ConfigEntry(path = "world.world-name")
-    private String worldName = "stranger_world";
+    private String worldName = "stranger-world";
 
     @ConfigComment("World seed.")
     @ConfigEntry(path = "world.generator.seed", needsReset = true)

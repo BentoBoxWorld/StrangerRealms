@@ -11,8 +11,9 @@ strangerrealms:
     Islands: Claims
   teleporting-to-spawn: "&c You were outside the border. Teleported to spawn.."
   errors:
-    not-in-world: "&c You must be in the world to claim"
+    not-in-world: "&c You must be in the world to claim."
     already-claimed: "&c This location is already claimed!"
+    must-be-in: "&c You must be in your claim to do that."
     overlap: "&c You cannot make a claim here because it would overlap another claim
       at [xyz]."
     too-close-to-spawn: "&c You are too close to spawn to make a claim. Move further out."
@@ -36,6 +37,9 @@ strangerrealms:
                 needs-value: "&c Set needs an integer value for the size of the world border"          
     claim:
         description: "Attemtps to make a claim"
+    unclaim:
+        description: "Removes a claim"
+        success: "&a Your claim was removed successfully"
     island:
       create:
         creating-island: "&a Trying to claim..."

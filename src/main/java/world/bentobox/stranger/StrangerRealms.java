@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -19,7 +20,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.eclipse.jdt.annotation.Nullable;
-import org.jetbrains.annotations.NotNull;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -31,9 +31,14 @@ import world.bentobox.bentobox.api.configuration.Config;
 import world.bentobox.bentobox.api.configuration.WorldSettings;
 import world.bentobox.bentobox.database.objects.Island;
 import world.bentobox.bentobox.managers.IslandsManager;
+import world.bentobox.stranger.border.BorderType;
+import world.bentobox.stranger.border.PerPlayerBorderProxy;
+import world.bentobox.stranger.border.ShowBarrier;
+import world.bentobox.stranger.border.ShowWorldBorder;
 import world.bentobox.stranger.commands.admin.WorldBorderCommand;
 import world.bentobox.stranger.commands.player.ClaimCommand;
 import world.bentobox.stranger.commands.player.SpawnCommand;
+import world.bentobox.stranger.commands.player.UnclaimCommand;
 import world.bentobox.stranger.generator.NetherBiomeProvider;
 import world.bentobox.stranger.generator.NetherChunks;
 import world.bentobox.stranger.listeners.BorderShower;
@@ -93,6 +98,7 @@ public class StrangerRealms extends GameModeAddon {
                 super.setup();
                 // Commands
                 new ClaimCommand(this);
+                new UnclaimCommand(this);
                 new SpawnCommand(this);
             }
         };
@@ -145,6 +151,7 @@ public class StrangerRealms extends GameModeAddon {
             Island spawn = getPlugin().getIslands().createIsland(getOverWorld().getSpawnLocation());
             if (spawn != null) {
                 spawn.setSpawn(true);
+                spawn.setSpawnPoint(Map.of(Environment.NORMAL, getOverWorld().getSpawnLocation()));
                 IslandsManager.saveIsland(spawn);
             } else {
                 this.logError("Could not make a spawn claim. You will have to set one manually in the world.");
