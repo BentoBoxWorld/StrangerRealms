@@ -52,7 +52,6 @@ public class ShowBarrier implements BorderShower {
     /**
      * Show the barrier to the player on an island
      * @param player - player to show
-     * @param island - island
      */
     @Override
     public void showBorder(Player player) {
@@ -118,10 +117,10 @@ public class ShowBarrier implements BorderShower {
 
     /**
      * @param player player
-     * @param i 
-     * @param j
-     * @param k
-     * @param max
+     * @param i x coord
+     * @param j y coord
+     * @param k z coord
+     * @param max whether the max border should be shown or not
      */
     private void showPlayer(Player player, int i, int j, int k, boolean max) {
         // Get if on or in border
@@ -192,7 +191,7 @@ public class ShowBarrier implements BorderShower {
         this.showBorder(user.getPlayer());
     }
 
-    private class BarrierBlock {
+    private static class BarrierBlock {
         Location l;
         BlockData oldBlockData;
         public BarrierBlock(Location l, BlockData oldBlockData) {

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
@@ -22,6 +23,7 @@ import org.bukkit.Tag;
 import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
@@ -100,13 +102,13 @@ public class NetherChunkMaker implements Listener {
 
         BIOME_MAPPING = Collections.unmodifiableMap(biomeMap);
     }
-    
-    private StrangerRealms addon;
-    private Random rand = new Random();
+
+    private final StrangerRealms addon;
+    private final Random rand = new Random();
     private final Database<NetherChunksMade> handler;
-    private NetherChunksMade netherChunksMade;
+    private final NetherChunksMade netherChunksMade;
     private final int maxChestFills;
-    private ExpiringSet<UUID> portalPlayer = new ExpiringSet<>(10, TimeUnit.SECONDS);
+    private final ExpiringSet<UUID> portalPlayer = new ExpiringSet<>(10, TimeUnit.SECONDS);
     private final TreeMap<Integer, LootTable> chestContents;
 
     /**
@@ -337,248 +339,141 @@ public class NetherChunkMaker implements Listener {
                         waterlogged.setWaterlogged(false);
                     }
 
-                    // Biome
-                    if (overworldBlock.getBiome() == Biome.DEEP_DARK) {
-                        // Replicate the creepy deep dark                      
-                    } else 
-                        // --- Tag-Based Conversion ---
-
-                        // Convert blocks based on their tags
-                        if (Tag.BUTTONS.isTagged(material)) {
-                            newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.STONE_BUTTON.createBlockData(); // Converts all buttons to stone
-                        } else if (Tag.DOORS.isTagged(material) || Tag.FENCE_GATES.isTagged(material)) {
-                            newBlockData = Material.AIR.createBlockData(); // Converts all doors to air
-                        } else if (Tag.CORAL_BLOCKS.isTagged(material)) {
-                            newBlockData = Material.NETHERRACK.createBlockData(); // Converts all coral blocks to netherrack
-                        } else if (Tag.LOGS.isTagged(material)) {
-                            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
-                                newBlockData = Material.CRIMSON_STEM.createBlockData(); // Converts all overworld logs to Warped Stem
-                            } else {
-                                newBlockData = Material.WARPED_STEM.createBlockData(); // Converts all overworld logs to Warped Stem
-                                e.getChunk().getBlock(x, y, z).setBiome(Biome.WARPED_FOREST);
-                            }
-                        } else if (Tag.LEAVES.isTagged(material)) {
-                            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
-                                newBlockData = Material.WARPED_WART_BLOCK.createBlockData(); // Converts all overworld leaves to Nether Wart Block
-                            } else {
-                                newBlockData = Material.NETHER_WART_BLOCK.createBlockData(); // Converts all overworld leaves to Nether Wart Block
-                            }
-                        } else if (Tag.STONE_BRICKS.isTagged(material)) {
-                            newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.NETHER_BRICKS.createBlockData(); // Converts all stone bricks to Nether Bricks
-                        } else if (Tag.SAND.isTagged(material)) {
-                            newBlockData = Material.SOUL_SAND.createBlockData(); // Converts all types of sand to Soul Sand
-                            e.getChunk().getBlock(x, y, z).setBiome(Biome.SOUL_SAND_VALLEY);
-                        } else if (Tag.DIRT.isTagged(material)) {
-                            newBlockData = Material.NETHERRACK.createBlockData(); // Converts all dirt/grass-like blocks to Netherrack
-                        } else if (Tag.FLOWERS.isTagged(material) || Tag.SAPLINGS.isTagged(material)) {
-                            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
-                                newBlockData = rand.nextDouble() < 0.2 ? newBlockData = Material.CRIMSON_FUNGUS.createBlockData() : Material.CRIMSON_ROOTS.createBlockData(); // Converts flowers/saplings to Crimson Roots
-                            } else if (newBlock.getBiome() == Biome.WARPED_FOREST) {
-                                newBlockData = rand.nextDouble() < 0.2 ? newBlockData = Material.WARPED_FUNGUS.createBlockData() : Material.WARPED_ROOTS.createBlockData(); // Converts flowers/saplings to Warped Roots
-                            } else {
-                                newBlockData = rand.nextBoolean() ? Material.RED_MUSHROOM.createBlockData() : Material.BROWN_MUSHROOM.createBlockData();
-                            }
-                        } else if (Tag.COAL_ORES.isTagged(material) || Tag.IRON_ORES.isTagged(material) || Tag.GOLD_ORES.isTagged(material)) {
-                            // Converts overworld ores to their Nether equivalent (or just a common Nether block)
-                            newBlockData = Material.NETHER_GOLD_ORE.createBlockData(); // Example conversion
-                        } else if (Tag.CROPS.isTagged(material)) {
-                            newBlockData = Material.NETHER_WART.createBlockData();
-                            e.getChunk().getBlock(x, Math.max(y-1, e.getWorld().getMinHeight()), z).setType(Material.SOUL_SAND);
-                        } else if (Tag.BANNERS.isTagged(material)) {
-                            newBlockData = Material.BLACK_BANNER.createBlockData();
-                        } else if (Tag.TRAPDOORS.isTagged(material)) {
-                            newBlockData = Material.WARPED_TRAPDOOR.createBlockData();
-                        } else if (Tag.BADLANDS_TERRACOTTA.isTagged(material)) {
-                            newBlockData = Material.NETHER_BRICKS.createBlockData();
-                        } else if(Tag.ALL_HANGING_SIGNS.isTagged(material)) {
-                            newBlockData = Material.WARPED_HANGING_SIGN.createBlockData();
-                        } else if(Tag.ALL_SIGNS.isTagged(material)) {
-                            newBlockData = Material.WARPED_SIGN.createBlockData();
-                        } else if(Tag.ANVIL.isTagged(material)) {
-                            newBlockData = Material.CRACKED_POLISHED_BLACKSTONE_BRICKS.createBlockData();
-                        } else if(Tag.CAMPFIRES.isTagged(material)) {
-                            newBlockData = Material.SOUL_CAMPFIRE.createBlockData();
-                        } else if(Tag.CANDLE_CAKES.isTagged(material)) {
-                            newBlockData = Material.WARPED_HYPHAE.createBlockData();
-                        } else if(Tag.COAL_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
-                        } else if(Tag.COPPER_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
-                        } else if(Tag.DIAMOND_ORES.isTagged(material)) {
-                            newBlockData = Material.ANCIENT_DEBRIS.createBlockData();
-                        } else if (Tag.EMERALD_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
-                        } else if (Tag.GOLD_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
-                        } else if (Tag.IRON_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
-                        } else if (Tag.LAPIS_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
-                        } else if (Tag.REDSTONE_ORES.isTagged(material)) {
-                            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
-                        } else if (Tag.BEDS.isTagged(material)) {
-                            newBlockData = Material.GLOWSTONE.createBlockData();
-                        } else if (Tag.BEEHIVES.isTagged(material)) {
-                            newBlockData = Material.GLOWSTONE.createBlockData();
-                        } else if (Tag.BARS.isTagged(material)) {
-                            newBlockData = Material.IRON_BARS.createBlockData();
-                        } else if (Tag.CAVE_VINES.isTagged(material)) {
-                            newBlockData = Material.GLOWSTONE.createBlockData();
-                        } else if (Tag.CAULDRONS.isTagged(material)) {
-                            if (rand.nextBoolean()) {
-                                newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.CAULDRON.createBlockData();
-                            } else {
-                                newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.LAVA_CAULDRON.createBlockData();
-                            }
-                        } else if (Tag.COPPER_CHESTS.isTagged(material)) {
-                            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() : Material.OXIDIZED_COPPER_CHEST.createBlockData();
-
-                        }  else if (Tag.FENCES.isTagged(material)) {
-                            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.NETHER_BRICK_FENCE.createBlockData();
-                        } else if (Tag.SLABS.isTagged(material)) {
-                            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.NETHER_BRICK_SLAB.createBlockData();
-                        } else if (Tag.STAIRS.isTagged(material)) {
-
-                            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() : Material.NETHER_BRICK_STAIRS.createBlockData() ;
-
-                        } else if (Tag.WALLS.isTagged(material)) {
-                            newBlockData = rand.nextDouble() < 0.1 ? Material.AIR .createBlockData() :  Material.NETHER_BRICK_WALL.createBlockData();
-                        } else if (newBlock.getType() == Material.OBSIDIAN) {
-                            newBlockData = Material.OBSIDIAN.createBlockData();
-                        }
-                    // Individual Block Conversion 
-                        else { // Only proceed to switch if no Tag conversion was applied
-                            switch (material) {
-                            case AIR:
-                                // Nothing to do here
-                                break;
-                            case BELL, ENCHANTING_TABLE, LECTERN:
-                                // Turn into a spawner
-                                newBlockData = Material.SPAWNER.createBlockData();
-                            break;                          
-                            case GRASS_BLOCK:
-                                if (newBlock.getBiome() == Biome.WARPED_FOREST) {
-                                    newBlockData = Material.WARPED_NYLIUM.createBlockData();
-                                } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
-                                    newBlockData = Material.CRIMSON_NYLIUM.createBlockData();
-                                } else if (newBlock.getBiome() == Biome.SOUL_SAND_VALLEY) {
-                                    newBlockData = rand.nextDouble() < 0.2 ? Material.SOUL_SOIL.createBlockData() : Material.SOUL_SAND.createBlockData();
-                                } else {
-                                    newBlockData = rand.nextDouble() < 0.2 ? Material.SOUL_SOIL.createBlockData() : Material.NETHERRACK.createBlockData();
-                                }
-                                break;
-                            case NETHER_PORTAL:
-                                if (e.getChunk().getBlock(x, y, z).getType() == Material.NETHER_PORTAL) {
-                                    newBlockData = Material.NETHER_PORTAL.createBlockData();
-                                } else {
-                                    newBlockData = Material.AIR.createBlockData();
-                                }
-                                break;
-                            case OBSIDIAN:
-                                // Set Obi to air
-                                newBlockData = Material.AIR.createBlockData();
-                                break;
-                            case HAY_BLOCK:
-                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
-                                    newBlockData = Material.AIR.createBlockData();
-                                } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
-                                    newBlockData = Material.SHROOMLIGHT.createBlockData();
-                                } else {
-                                    newBlockData = Material.GLOWSTONE.createBlockData();
-                                }
-                                break;
-                            case GRAVEL, RED_MUSHROOM, BROWN_MUSHROOM:
-                                break;
-                            case ANDESITE:
-                                newBlockData = Material.SOUL_SOIL.createBlockData();
-                                break;
-                            case DIORITE:
-                            case GRANITE:
-                                newBlockData = Material.BASALT.createBlockData();
-                                break;
-                            case STONE:
-                            case BUBBLE_COLUMN:
-                                newBlockData = Material.NETHERRACK.createBlockData();
-                                break;
-                            case KELP:
-                            case SEAGRASS:
-                                newBlockData = Material.MAGMA_BLOCK.createBlockData();
-                                break;
-                            case WATER:
-                                if (newBlock.getBiome() == Biome.DEEP_DARK) {
-                                    newBlockData = Material.AIR.createBlockData();
-                                } else {
-                                    newBlockData = Material.LAVA.createBlockData();
-                                }
-                                break;
-                            case LAVA:
-                                // Keep lava as lava
-                                break;
-                            case TORCH:
-                            case WALL_TORCH:
-                                // Convert to a more intense light source
-                                newBlockData = Material.SOUL_TORCH.createBlockData();
-                                break;
-                            case COBBLESTONE:
-                                newBlockData = Material.BASALT.createBlockData();
-                                break;
-                            case TALL_GRASS:
-                                newBlockData = Material.AIR.createBlockData();
-                                break;
-                            case SHORT_GRASS:
-                                if (newBlock.getBiome() == Biome.WARPED_FOREST) {
-                                    newBlockData = Material.NETHER_SPROUTS.createBlockData();
-                                    break;
-                                }
-                            case SHORT_DRY_GRASS:
-                                if (rand.nextDouble() < attrition) {
-                                    newBlockData = Material.FIRE.createBlockData();
-                                } else {
-                                    newBlockData = Material.AIR.createBlockData();
-                                }
-                                break;
-                            case GLASS:
-                            case GLASS_PANE:
-                                // Convert to a dark, smoky pane
-                                newBlockData = Material.BLACK_STAINED_GLASS_PANE.createBlockData();
-                                break;
-                            case BEDROCK:
-                                // Bedrock remains bedrock
-                                break;
-                            case BRICKS:
-                                newBlockData = Material.NETHER_BRICK.createBlockData();
-                                break;
-                            case CHEST:
-                                break;
-                            case SPAWNER:
-                                break;
-                            case VINE, CAVE_VINES:
-                                if (newBlock.getBiome() == Biome.WARPED_FOREST) {
-                                    newBlockData = Material.WEEPING_VINES.createBlockData();
-                                } else {
-                                    newBlockData = Material.TWISTING_VINES.createBlockData();
-                                }
+                    // --- Tag-Based Conversion ---
+                    Optional<BlockData> opBlockData = tagCheck(material, newBlockData, attrition, newBlock);
+                    if (opBlockData.isPresent()) {
+                        newBlockData = opBlockData.get();
+                    } else {
+                        // Only proceed to switch if no Tag conversion was applied
+                        // Individual Block Conversion 
+                        switch (material) {
+                        case AIR:
+                            // Nothing to do here
                             break;
-                            // Redstone survives, mostly
-                            case REDSTONE_WIRE, REDSTONE_TORCH, REDSTONE_LAMP, REDSTONE_WALL_TORCH, COMPARATOR, LEVER, RAIL, POWERED_RAIL:
-                                if (rand.nextDouble() < attrition) {
-                                    newBlockData = Material.FIRE.createBlockData();
-                                }
+                        case BELL, ENCHANTING_TABLE, LECTERN:
+                            // Turn into a spawner
+                            newBlockData = Material.SPAWNER.createBlockData();
+                        break;                          
+                        case GRASS_BLOCK:
+                            if (newBlock.getBiome() == Biome.WARPED_FOREST) {
+                                newBlockData = Material.WARPED_NYLIUM.createBlockData();
+                            } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
+                                newBlockData = Material.CRIMSON_NYLIUM.createBlockData();
+                            } else if (newBlock.getBiome() == Biome.SOUL_SAND_VALLEY) {
+                                newBlockData = rand.nextDouble() < 0.2 ? Material.SOUL_SOIL.createBlockData() : Material.SOUL_SAND.createBlockData();
+                            } else {
+                                newBlockData = rand.nextDouble() < 0.2 ? Material.SOUL_SOIL.createBlockData() : Material.NETHERRACK.createBlockData();
+                            }
                             break;
-
-                            case CALCITE, SMOOTH_BASALT, AMETHYST_CLUSTER, LARGE_AMETHYST_BUD, MEDIUM_AMETHYST_BUD, 
-                            SMALL_AMETHYST_BUD, AMETHYST_BLOCK, BUDDING_AMETHYST, INFESTED_COBBLESTONE, INFESTED_CRACKED_STONE_BRICKS,
-                            END_PORTAL_FRAME,
-                            GRAY_WOOL,
-                            SOUL_FIRE, SOUL_SAND, REDSTONE_BLOCK, TARGET, SOUL_LANTERN, CANDLE,
-                            SCULK, SCULK_VEIN,SCULK_SENSOR,SCULK_CATALYST,SCULK_SHRIEKER:
-                                // These stay
-                                break;
-                            default:
-                                newBlockData = Material.BLACKSTONE.createBlockData();
+                        case NETHER_PORTAL:
+                            if (e.getChunk().getBlock(x, y, z).getType() == Material.NETHER_PORTAL) {
+                                newBlockData = Material.NETHER_PORTAL.createBlockData();
+                            } else {
+                                newBlockData = Material.AIR.createBlockData();
+                            }
+                            break;
+                        case OBSIDIAN:
+                            // Set Obi to air
+                            newBlockData = Material.AIR.createBlockData();
+                            break;
+                        case HAY_BLOCK:
+                            if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                newBlockData = Material.AIR.createBlockData();
+                            } else if (newBlock.getBiome() == Biome.CRIMSON_FOREST || newBlock.getBiome() == Biome.WARPED_FOREST ) {
+                                newBlockData = Material.SHROOMLIGHT.createBlockData();
+                            } else {
+                                newBlockData = Material.GLOWSTONE.createBlockData();
+                            }
+                            break;
+                        case GRAVEL, RED_MUSHROOM, BROWN_MUSHROOM:
+                            break;
+                        case ANDESITE:
+                            newBlockData = Material.SOUL_SOIL.createBlockData();
+                            break;
+                        case DIORITE, GRANITE, COBBLESTONE:
+                            newBlockData = Material.BASALT.createBlockData();
+                        break;
+                        case STONE:
+                        case BUBBLE_COLUMN:
+                            newBlockData = Material.NETHERRACK.createBlockData();
+                            break;
+                        case KELP:
+                        case SEAGRASS:
+                            newBlockData = Material.MAGMA_BLOCK.createBlockData();
+                            break;
+                        case WATER:
+                            if (newBlock.getBiome() == Biome.DEEP_DARK) {
+                                newBlockData = Material.AIR.createBlockData();
+                            } else {
+                                newBlockData = Material.LAVA.createBlockData();
+                            }
+                            break;
+                        case LAVA:
+                            // Keep lava as lava
+                            break;
+                        case TORCH:
+                        case WALL_TORCH:
+                            // Convert to a more intense light source
+                            newBlockData = Material.SOUL_TORCH.createBlockData();
+                            break;
+                        case TALL_GRASS:
+                            newBlockData = Material.AIR.createBlockData();
+                            break;
+                        case SHORT_GRASS:
+                            if (newBlock.getBiome() == Biome.WARPED_FOREST) {
+                                newBlockData = Material.NETHER_SPROUTS.createBlockData();
                                 break;
                             }
+                        case SHORT_DRY_GRASS:
+                            if (rand.nextDouble() < attrition) {
+                                newBlockData = Material.FIRE.createBlockData();
+                            } else {
+                                newBlockData = Material.AIR.createBlockData();
+                            }
+                            break;
+                        case GLASS:
+                        case GLASS_PANE:
+                            // Convert to a dark, smoky pane
+                            newBlockData = Material.BLACK_STAINED_GLASS_PANE.createBlockData();
+                            break;
+                        case BEDROCK:
+                            // Bedrock remains bedrock
+                            break;
+                        case BRICKS:
+                            newBlockData = Material.NETHER_BRICK.createBlockData();
+                            break;
+                        case CHEST:
+                            break;
+                        case SPAWNER:
+                            break;
+                        case VINE, CAVE_VINES:
+                            if (newBlock.getBiome() == Biome.WARPED_FOREST) {
+                                newBlockData = Material.WEEPING_VINES.createBlockData();
+                            } else {
+                                newBlockData = Material.TWISTING_VINES.createBlockData();
+                            }
+                        break;
+                        // Redstone survives, mostly
+                        case REDSTONE_WIRE, REDSTONE_TORCH, REDSTONE_LAMP, REDSTONE_WALL_TORCH, COMPARATOR, LEVER, RAIL, POWERED_RAIL:
+                            if (rand.nextDouble() < attrition) {
+                                newBlockData = Material.FIRE.createBlockData();
+                            }
+                        break;
+
+                        case CALCITE, SMOOTH_BASALT, AMETHYST_CLUSTER, LARGE_AMETHYST_BUD, MEDIUM_AMETHYST_BUD, 
+                        SMALL_AMETHYST_BUD, AMETHYST_BLOCK, BUDDING_AMETHYST, INFESTED_COBBLESTONE, INFESTED_CRACKED_STONE_BRICKS,
+                        END_PORTAL_FRAME,
+                        GRAY_WOOL,
+                        SOUL_FIRE, SOUL_SAND, REDSTONE_BLOCK, TARGET, SOUL_LANTERN, CANDLE,
+                        SCULK, SCULK_VEIN,SCULK_SENSOR,SCULK_CATALYST,SCULK_SHRIEKER:
+                            // These stay
+                            break;
+                        default:
+                            newBlockData = Material.BLACKSTONE.createBlockData();
+                            break;
                         }
+                    }
+                    
                     // Apply the new BlockData to the shadow world chunk
                     newBlock.setBlockData(newBlockData, false);
 
@@ -613,6 +508,116 @@ public class NetherChunkMaker implements Listener {
         }
     }
 
+    private Optional<BlockData> tagCheck(Material material, BlockData newBlockData, double attrition, Block newBlock) {
+        // Convert blocks based on their tags
+        if (Tag.BUTTONS.isTagged(material)) {
+            newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.STONE_BUTTON.createBlockData(); // Converts all buttons to stone
+        } else if (Tag.DOORS.isTagged(material) || Tag.FENCE_GATES.isTagged(material)) {
+            newBlockData = Material.AIR.createBlockData(); // Converts all doors to air
+        } else if (Tag.CORAL_BLOCKS.isTagged(material)) {
+            newBlockData = Material.NETHERRACK.createBlockData(); // Converts all coral blocks to netherrack
+        } else if (Tag.LOGS.isTagged(material)) {
+            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
+                newBlockData = Material.CRIMSON_STEM.createBlockData(); // Converts all overworld logs to Warped Stem
+            } else {
+                newBlockData = Material.WARPED_STEM.createBlockData(); // Converts all overworld logs to Warped Stem
+                newBlock.setBiome(Biome.WARPED_FOREST);
+            }
+        } else if (Tag.LEAVES.isTagged(material)) {
+            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
+                newBlockData = Material.WARPED_WART_BLOCK.createBlockData(); // Converts all overworld leaves to Nether Wart Block
+            } else {
+                newBlockData = Material.NETHER_WART_BLOCK.createBlockData(); // Converts all overworld leaves to Nether Wart Block
+            }
+        } else if (Tag.STONE_BRICKS.isTagged(material)) {
+            newBlockData = rand.nextBoolean() ? Material.AIR.createBlockData() : Material.NETHER_BRICKS.createBlockData(); // Converts all stone bricks to Nether Bricks
+        } else if (Tag.SAND.isTagged(material)) {
+            newBlockData = Material.SOUL_SAND.createBlockData(); // Converts all types of sand to Soul Sand
+            newBlock.setBiome(Biome.SOUL_SAND_VALLEY);
+        } else if (Tag.DIRT.isTagged(material)) {
+            newBlockData = Material.NETHERRACK.createBlockData(); // Converts all dirt/grass-like blocks to Netherrack
+        } else if (Tag.FLOWERS.isTagged(material) || Tag.SAPLINGS.isTagged(material)) {
+            if (newBlock.getBiome() == Biome.CRIMSON_FOREST) {
+                newBlockData = rand.nextDouble() < 0.2 ? Material.CRIMSON_FUNGUS.createBlockData() : Material.CRIMSON_ROOTS.createBlockData(); // Converts flowers/saplings to Crimson Roots
+            } else if (newBlock.getBiome() == Biome.WARPED_FOREST) {
+                newBlockData = rand.nextDouble() < 0.2 ? Material.WARPED_FUNGUS.createBlockData() : Material.WARPED_ROOTS.createBlockData(); // Converts flowers/saplings to Warped Roots
+            } else {
+                newBlockData = rand.nextBoolean() ? Material.RED_MUSHROOM.createBlockData() : Material.BROWN_MUSHROOM.createBlockData();
+            }
+        } else if (Tag.COAL_ORES.isTagged(material) || Tag.IRON_ORES.isTagged(material) || Tag.GOLD_ORES.isTagged(material)) {
+            // Converts overworld ores to their Nether equivalent (or just a common Nether block)
+            newBlockData = Material.NETHER_GOLD_ORE.createBlockData(); // Example conversion
+        } else if (Tag.CROPS.isTagged(material)) {
+            newBlockData = Material.NETHER_WART.createBlockData();
+            newBlock.getRelative(BlockFace.DOWN).setType(Material.SOUL_SAND);
+        } else if (Tag.BANNERS.isTagged(material)) {
+            newBlockData = Material.BLACK_BANNER.createBlockData();
+        } else if (Tag.TRAPDOORS.isTagged(material)) {
+            newBlockData = Material.WARPED_TRAPDOOR.createBlockData();
+        } else if (Tag.BADLANDS_TERRACOTTA.isTagged(material)) {
+            newBlockData = Material.NETHER_BRICKS.createBlockData();
+        } else if(Tag.ALL_HANGING_SIGNS.isTagged(material)) {
+            newBlockData = Material.WARPED_HANGING_SIGN.createBlockData();
+        } else if(Tag.ALL_SIGNS.isTagged(material)) {
+            newBlockData = Material.WARPED_SIGN.createBlockData();
+        } else if(Tag.ANVIL.isTagged(material)) {
+            newBlockData = Material.CRACKED_POLISHED_BLACKSTONE_BRICKS.createBlockData();
+        } else if(Tag.CAMPFIRES.isTagged(material)) {
+            newBlockData = Material.SOUL_CAMPFIRE.createBlockData();
+        } else if(Tag.CANDLE_CAKES.isTagged(material)) {
+            newBlockData = Material.WARPED_HYPHAE.createBlockData();
+        } else if(Tag.COAL_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
+        } else if(Tag.COPPER_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
+        } else if(Tag.DIAMOND_ORES.isTagged(material)) {
+            newBlockData = Material.ANCIENT_DEBRIS.createBlockData();
+        } else if (Tag.EMERALD_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
+        } else if (Tag.GOLD_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
+        } else if (Tag.IRON_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
+        } else if (Tag.LAPIS_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_GOLD_ORE.createBlockData();
+        } else if (Tag.REDSTONE_ORES.isTagged(material)) {
+            newBlockData = Material.NETHER_QUARTZ_ORE.createBlockData();
+        } else if (Tag.BEDS.isTagged(material)) {
+            newBlockData = Material.GLOWSTONE.createBlockData();
+        } else if (Tag.BEEHIVES.isTagged(material)) {
+            newBlockData = Material.GLOWSTONE.createBlockData();
+        } else if (Tag.BARS.isTagged(material)) {
+            newBlockData = Material.IRON_BARS.createBlockData();
+        } else if (Tag.CAVE_VINES.isTagged(material)) {
+            newBlockData = Material.GLOWSTONE.createBlockData();
+        } else if (Tag.CAULDRONS.isTagged(material)) {
+            if (rand.nextBoolean()) {
+                newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.CAULDRON.createBlockData();
+            } else {
+                newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.LAVA_CAULDRON.createBlockData();
+            }
+        } else if (Tag.COPPER_CHESTS.isTagged(material)) {
+            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() : Material.OXIDIZED_COPPER_CHEST.createBlockData();
+
+        }  else if (Tag.FENCES.isTagged(material)) {
+            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.NETHER_BRICK_FENCE.createBlockData();
+        } else if (Tag.SLABS.isTagged(material)) {
+            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() :Material.NETHER_BRICK_SLAB.createBlockData();
+        } else if (Tag.STAIRS.isTagged(material)) {
+
+            newBlockData = rand.nextDouble() < attrition ? Material.AIR.createBlockData() : Material.NETHER_BRICK_STAIRS.createBlockData() ;
+
+        } else if (Tag.WALLS.isTagged(material)) {
+            newBlockData = rand.nextDouble() < 0.1 ? Material.AIR .createBlockData() :  Material.NETHER_BRICK_WALL.createBlockData();
+        } else if (newBlock.getType() == Material.OBSIDIAN) {
+            newBlockData = Material.OBSIDIAN.createBlockData();
+        } else {
+            // No tags applied
+            return Optional.empty();
+        }
+        return Optional.of(newBlockData);
+    }
+
     /**
      * Checks if a specific block coordinate (relative or absolute) is contained
      * within any of the provided list of BoundingBoxes.
@@ -640,11 +645,11 @@ public class NetherChunkMaker implements Listener {
 
     /**
      * Populates a chest with loot from a defined LootTable.
-     * @param overworldBlock 
-     * @param bd 
+     * @param overworldBlock the overworld block
+     * @param bd  Block data
      * 
      * @param chest The chest to populate.
-     * @param newBlockData 
+     * @param newBlockData the blockdata of the new block
      */
     private void populateChest(Block overworldBlock, BlockData bd, Chest chest, BlockData newBlockData) {
         Location chestLocation = chest.getLocation();
@@ -688,232 +693,229 @@ public class NetherChunkMaker implements Listener {
     }
 
     private EntityType getNetherEnt(EntityType type) {
-        return  switch (type) {
-        case ALLAY:
-            // A friendly flying helper, creatively mapped to the friendly, flying GHAST?
-            yield EntityType.GHAST;
-        case ARMADILLO:
-            // A shell-armored creature, maybe a MAGMA_CUBE as a rolling/bouncing threat?
-            yield EntityType.MAGMA_CUBE;
-        case AXOLOTL:
-            // An aquatic, helpful mob, creatively mapped to the fiery BLAZE
-            yield EntityType.BLAZE;
-        case BAT:
-            // A small flying creature, mapped to the flying, hostile GHAST
-            yield EntityType.GHAST;
-        case BEE:
-            // A stinging insect, maybe a smaller, aggressive MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case BLAZE:
-            // Already a Nether mob, keep it
-            yield EntityType.BLAZE;
-        case BOGGED:
-            // A variant of SKELETON, use WITHER_SKELETON
-            yield EntityType.WITHER_SKELETON;
-        case BREEZE:
-            // Already a mob from a deep structure, could default or use a powerful Nether mob
-            yield EntityType.BLAZE; // Or null, as it's not strictly Overworld
-        case CAMEL:
-            // A large rideable desert mob, mapped to the ridable STRIDER
-            yield EntityType.STRIDER;
-        case CAT:
-            // A smaller, friendly ground mob, mapped to the aggressive HOGLIN
-            yield EntityType.HOGLIN;
-        case CAVE_SPIDER:
-            yield EntityType.CAVE_SPIDER;
-        case CHICKEN:
-            // A small, passive mob, mapped to the small, aggressive ZOMBIFIED_PIGLIN
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case COD:
-            // An Overworld fish, mapped to the hostile GHAST (flying over lava like fish in water)
-            yield EntityType.GHAST;
-        case COPPER_GOLEM:
-            // A golem variant, he continues to exist here!
-            yield EntityType.COPPER_GOLEM;
-        case COW:
-            // A large, passive mob, mapped to the large, aggressive HOGLIN
-            yield EntityType.HOGLIN;
-        case CREEPER:
-            // An explosive mob, mapped to the projectile-shooting GHAST
-            yield EntityType.GHAST;
-        case DONKEY:
-            // A pack animal, mapped to the rideable STRIDER
-            yield EntityType.STRIDER;
-        case ENDERMAN:
-            // Already a mob that can spawn in the Nether, keep it
-            yield EntityType.ENDERMAN;
-        case ENDERMITE:
-            // A small burrowing mob, mapped to the small MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case EVOKER:
-            // An illager type, mapped to the powerful PIGLIN_BRUTE
-            yield EntityType.PIGLIN_BRUTE;
-        case FOX:
-            // A cunning predator, mapped to the aggressive PIGLIN
-            yield EntityType.PIGLIN;
-        case FROG:
-            // A jumping amphibian, mapped to the bouncing MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case GHAST:
-            // Already a Nether mob, keep it
-            yield EntityType.GHAST;
-        case GLOW_SQUID:
-            // A bioluminescent aquatic mob, mapped to the glowing MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case GOAT:
-            // A mountain climber/jumper, mapped to the bounding MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case HOGLIN:
-            // Already a Nether mob, keep it
-            yield EntityType.HOGLIN;
-        case HORSE:
-            // A rideable animal, mapped to the rideable STRIDER
-            yield EntityType.STRIDER;
-        case HUSK:
-            // A desert ZOMBIE, mapped to the ZOMBIE_VILLAGER's Nether equivalent
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case ILLUSIONER:
-            // A ranged illager, mapped to the ranged PIGLIN
-            yield EntityType.PIGLIN;
-        case IRON_GOLEM:
-            // A defensive golem, mapped to the defensive WITHER_SKELETON (Fortress guardian)
-            yield EntityType.WITHER_SKELETON;
-        case LLAMA:
-            // A pack animal, mapped to the rideable STRIDER
-            yield EntityType.STRIDER;
-        case MAGMA_CUBE:
-            // Already a Nether mob, keep it
-            yield EntityType.MAGMA_CUBE;
-        case MOOSHROOM:
-            // A variant of COW, mapped to the HOGLIN
-            yield EntityType.HOGLIN;
-        case MULE:
-            // A pack animal, mapped to the rideable STRIDER
-            yield EntityType.STRIDER;
-        case OCELOT:
-            // A jungle cat, mapped to the aggressive PIGLIN
-            yield EntityType.PIGLIN;
-        case PANDA:
-            // A large, rare Overworld mob, mapped to the PIGLIN_BRUTE
-            yield EntityType.PIGLIN_BRUTE;
-        case PARROT:
-            // A small, flying pet, mapped to the flying, hostile GHAST
-            yield EntityType.GHAST;
-        case PHANTOM:
-            // A flying undead mob, mapped to the flying, hostile GHAST
-            yield EntityType.GHAST;
-        case PIG:
-            // A passive ground mob, naturally mapped to the ZOMBIFIED_PIGLIN
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case PIGLIN:
-            // Already a Nether mob, keep it
-            yield EntityType.PIGLIN;
-        case PIGLIN_BRUTE:
-            // Already a Nether mob, keep it
-            yield EntityType.PIGLIN_BRUTE;
-        case PILLAGER:
-            // A ranged illager, mapped to the ranged PIGLIN
-            yield EntityType.PIGLIN;
-        case POLAR_BEAR:
-            // A large, aggressive, cold-climate mob, mapped to the HOGLIN
-            yield EntityType.HOGLIN;
-        case PUFFERFISH:
-            // A small, poisonous aquatic mob, mapped to the small MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case RABBIT:
-            // A small, ground-dwelling mob, mapped to the ZOMBIFIED_PIGLIN
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case RAVAGER:
-            // A large, powerful illager beast, mapped to the HOGLIN
-            yield EntityType.HOGLIN;
-        case SHEEP:
-            // A wool-producing passive mob, mapped to the ZOMBIFIED_PIGLIN
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case SHULKER:
-            // Already a mob from a specific structure, can default or use a powerful Nether mob
-            yield EntityType.WITHER_SKELETON;
-        case SILVERFISH:
-            // A small stone-dwelling mob, mapped to the small MAGMA_CUBE
-            yield EntityType.MAGMA_CUBE;
-        case SKELETON:
-            // An undead archer, mapped to the WITHER_SKELETON (Nether archer analog)
-            yield EntityType.WITHER_SKELETON;
-        case SKELETON_HORSE:
-            // An undead rideable animal, mapped to the STRIDER
-            yield EntityType.STRIDER;
-        case SLIME:
-            // A bouncy mob, mapped to the MAGMA_CUBE (Nether slime)
-            yield EntityType.MAGMA_CUBE;
-        case SNIFFER:
-            // A large, ancient Overworld mob, mapped to the PIGLIN_BRUTE
-            yield EntityType.PIGLIN_BRUTE;
-        case SNOW_GOLEM:
-            // A ranged, defensive golem, mapped to the ranged BLAZE
-            yield EntityType.BLAZE;
-        case SPIDER:
-            yield EntityType.CAVE_SPIDER;
-        case SQUID:
-            // An aquatic mob, mapped to the fiery BLAZE
-            yield EntityType.BLAZE;
-        case STRAY:
-            // A frozen SKELETON, mapped to the WITHER_SKELETON
-            yield EntityType.WITHER_SKELETON;
-        case STRIDER:
-            // Already a Nether mob, keep it
-            yield EntityType.STRIDER;
-        case TURTLE:
-            // A slow, armored reptile, mapped to the HOGLIN
-            yield EntityType.HOGLIN;
-        case VEX:
-            // A small, flying summon, mapped to the BLAZE
-            yield EntityType.BLAZE;
-        case VILLAGER:
-            // A passive humanoid, mapped to the PIGLIN (Nether equivalent of society/village)
-            yield EntityType.PIGLIN;
-        case VINDICATOR:
-            // A melee illager, mapped to the PIGLIN_BRUTE
-            yield EntityType.PIGLIN_BRUTE;
-        case WANDERING_TRADER:
-            // A traveling Overworld trader, mapped to the PIGLIN
-            yield EntityType.PIGLIN;
-        case WARDEN:
-            // A deep, powerful mob, mapped to the WITHER
-            yield EntityType.WITHER;
-        case WITCH:
-            // A ranged spellcaster, mapped to the ranged BLAZE
-            yield EntityType.BLAZE;
-        case WITHER:
-            // Already a Nether-related boss, keep it
-            yield EntityType.WITHER;
-        case WITHER_SKELETON:
-            // Already a Nether mob, keep it
-            yield EntityType.WITHER_SKELETON;
-        case WOLF:
-            // A ground-based predator/companion, mapped to the aggressive HOGLIN
-            yield EntityType.HOGLIN;
-        case ZOGLIN:
-            // Already a Nether mob, keep it
-            yield EntityType.ZOGLIN;
-        case ZOMBIE:
-            // A common undead, mapped to the ZOMBIFIED_PIGLIN (Nether's common undead)
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case ZOMBIE_HORSE:
-            // An undead rideable animal, mapped to the STRIDER
-            yield EntityType.STRIDER;
-        case ZOMBIE_VILLAGER:
-            // An undead VILLAGER, mapped to the ZOMBIFIED_PIGLIN
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case ZOMBIFIED_PIGLIN:
-            // Already a Nether mob, keep it
-            yield EntityType.ZOMBIFIED_PIGLIN;
-        case HAPPY_GHAST:
-            // Happy Ghasts exist in both dimensions
-            yield EntityType.HAPPY_GHAST;
-        case MINECART:
-            yield EntityType.MINECART;
-        default:
-            // Default for any remaining non-mob entities (projectiles, items) or unknowns
-            yield null;
+        return switch (type) {
+        case ALLAY ->
+        // A friendly flying helper, creatively mapped to the friendly, flying GHAST?
+        EntityType.GHAST;
+        case ARMADILLO ->
+        // A shell-armored creature, maybe a MAGMA_CUBE as a rolling/bouncing threat?
+        EntityType.MAGMA_CUBE;
+        case AXOLOTL ->
+        // An aquatic, helpful mob, creatively mapped to the fiery BLAZE
+        EntityType.BLAZE;
+        case BAT ->
+        // A small flying creature, mapped to the flying, hostile GHAST
+        EntityType.GHAST;
+        case BEE ->
+        // A stinging insect, maybe a smaller, aggressive MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case BLAZE ->
+        // Already a Nether mob, keep it
+        EntityType.BLAZE;
+        case BOGGED ->
+        // A variant of SKELETON, use WITHER_SKELETON
+        EntityType.WITHER_SKELETON;
+        case BREEZE ->
+        // Already a mob from a deep structure, could default or use a powerful Nether mob
+        EntityType.BLAZE; // Or null, as it's not strictly Overworld
+        case CAMEL ->
+        // A large rideable desert mob, mapped to the ridable STRIDER
+        EntityType.STRIDER;
+        case CAT ->
+        // A smaller, friendly ground mob, mapped to the aggressive HOGLIN
+        EntityType.HOGLIN;
+        case CAVE_SPIDER -> EntityType.CAVE_SPIDER;
+        case CHICKEN ->
+        // A small, passive mob, mapped to the small, aggressive ZOMBIFIED_PIGLIN
+        EntityType.ZOMBIFIED_PIGLIN;
+        case COD ->
+        // An Overworld fish, mapped to the hostile GHAST (flying over lava like fish in water)
+        EntityType.GHAST;
+        case COPPER_GOLEM ->
+        // A golem variant, he continues to exist here!
+        EntityType.COPPER_GOLEM;
+        case COW ->
+        // A large, passive mob, mapped to the large, aggressive HOGLIN
+        EntityType.HOGLIN;
+        case CREEPER ->
+        // An explosive mob, mapped to the projectile-shooting GHAST
+        EntityType.GHAST;
+        case DONKEY ->
+        // A pack animal, mapped to the rideable STRIDER
+        EntityType.STRIDER;
+        case ENDERMAN ->
+        // Already a mob that can spawn in the Nether, keep it
+        EntityType.ENDERMAN;
+        case ENDERMITE ->
+        // A small burrowing mob, mapped to the small MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case EVOKER ->
+        // An illager type, mapped to the powerful PIGLIN_BRUTE
+        EntityType.PIGLIN_BRUTE;
+        case FOX ->
+        // A cunning predator, mapped to the aggressive PIGLIN
+        EntityType.PIGLIN;
+        case FROG ->
+        // A jumping amphibian, mapped to the bouncing MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case GHAST ->
+        // Already a Nether mob, keep it
+        EntityType.GHAST;
+        case GLOW_SQUID ->
+        // A bioluminescent aquatic mob, mapped to the glowing MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case GOAT ->
+        // A mountain climber/jumper, mapped to the bounding MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case HOGLIN ->
+        // Already a Nether mob, keep it
+        EntityType.HOGLIN;
+        case HORSE ->
+        // A rideable animal, mapped to the rideable STRIDER
+        EntityType.STRIDER;
+        case HUSK ->
+        // A desert ZOMBIE, mapped to the ZOMBIE_VILLAGER's Nether equivalent
+        EntityType.ZOMBIFIED_PIGLIN;
+        case ILLUSIONER ->
+        // A ranged illager, mapped to the ranged PIGLIN
+        EntityType.PIGLIN;
+        case IRON_GOLEM ->
+        // A defensive golem, mapped to the defensive WITHER_SKELETON (Fortress guardian)
+        EntityType.WITHER_SKELETON;
+        case LLAMA ->
+        // A pack animal, mapped to the rideable STRIDER
+        EntityType.STRIDER;
+        case MAGMA_CUBE ->
+        // Already a Nether mob, keep it
+        EntityType.MAGMA_CUBE;
+        case MOOSHROOM ->
+        // A variant of COW, mapped to the HOGLIN
+        EntityType.HOGLIN;
+        case MULE ->
+        // A pack animal, mapped to the rideable STRIDER
+        EntityType.STRIDER;
+        case OCELOT ->
+        // A jungle cat, mapped to the aggressive PIGLIN
+        EntityType.PIGLIN;
+        case PANDA ->
+        // A large, rare Overworld mob, mapped to the PIGLIN_BRUTE
+        EntityType.PIGLIN_BRUTE;
+        case PARROT ->
+        // A small, flying pet, mapped to the flying, hostile GHAST
+        EntityType.GHAST;
+        case PHANTOM ->
+        // A flying undead mob, mapped to the flying, hostile GHAST
+        EntityType.GHAST;
+        case PIG ->
+        // A passive ground mob, naturally mapped to the ZOMBIFIED_PIGLIN
+        EntityType.ZOMBIFIED_PIGLIN;
+        case PIGLIN ->
+        // Already a Nether mob, keep it
+        EntityType.PIGLIN;
+        case PIGLIN_BRUTE ->
+        // Already a Nether mob, keep it
+        EntityType.PIGLIN_BRUTE;
+        case PILLAGER ->
+        // A ranged illager, mapped to the ranged PIGLIN
+        EntityType.PIGLIN;
+        case POLAR_BEAR ->
+        // A large, aggressive, cold-climate mob, mapped to the HOGLIN
+        EntityType.HOGLIN;
+        case PUFFERFISH ->
+        // A small, poisonous aquatic mob, mapped to the small MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case RABBIT ->
+        // A small, ground-dwelling mob, mapped to the ZOMBIFIED_PIGLIN
+        EntityType.ZOMBIFIED_PIGLIN;
+        case RAVAGER ->
+        // A large, powerful illager beast, mapped to the HOGLIN
+        EntityType.HOGLIN;
+        case SHEEP ->
+        // A wool-producing passive mob, mapped to the ZOMBIFIED_PIGLIN
+        EntityType.ZOMBIFIED_PIGLIN;
+        case SHULKER ->
+        // Already a mob from a specific structure, can default or use a powerful Nether mob
+        EntityType.WITHER_SKELETON;
+        case SILVERFISH ->
+        // A small stone-dwelling mob, mapped to the small MAGMA_CUBE
+        EntityType.MAGMA_CUBE;
+        case SKELETON ->
+        // An undead archer, mapped to the WITHER_SKELETON (Nether archer analog)
+        EntityType.WITHER_SKELETON;
+        case SKELETON_HORSE ->
+        // An undead rideable animal, mapped to the STRIDER
+        EntityType.STRIDER;
+        case SLIME ->
+        // A bouncy mob, mapped to the MAGMA_CUBE (Nether slime)
+        EntityType.MAGMA_CUBE;
+        case SNIFFER ->
+        // A large, ancient Overworld mob, mapped to the PIGLIN_BRUTE
+        EntityType.PIGLIN_BRUTE;
+        case SNOW_GOLEM ->
+        // A ranged, defensive golem, mapped to the ranged BLAZE
+        EntityType.BLAZE;
+        case SPIDER -> EntityType.CAVE_SPIDER;
+        case SQUID ->
+        // An aquatic mob, mapped to the fiery BLAZE
+        EntityType.BLAZE;
+        case STRAY ->
+        // A frozen SKELETON, mapped to the WITHER_SKELETON
+        EntityType.WITHER_SKELETON;
+        case STRIDER ->
+        // Already a Nether mob, keep it
+        EntityType.STRIDER;
+        case TURTLE ->
+        // A slow, armored reptile, mapped to the HOGLIN
+        EntityType.HOGLIN;
+        case VEX ->
+        // A small, flying summon, mapped to the BLAZE
+        EntityType.BLAZE;
+        case VILLAGER ->
+        // A passive humanoid, mapped to the PIGLIN (Nether equivalent of society/village)
+        EntityType.PIGLIN;
+        case VINDICATOR ->
+        // A melee illager, mapped to the PIGLIN_BRUTE
+        EntityType.PIGLIN_BRUTE;
+        case WANDERING_TRADER ->
+        // A traveling Overworld trader, mapped to the PIGLIN
+        EntityType.PIGLIN;
+        case WARDEN ->
+        // A deep, powerful mob, mapped to the WITHER
+        EntityType.WITHER;
+        case WITCH ->
+        // A ranged spellcaster, mapped to the ranged BLAZE
+        EntityType.BLAZE;
+        case WITHER ->
+        // Already a Nether-related boss, keep it
+        EntityType.WITHER;
+        case WITHER_SKELETON ->
+        // Already a Nether mob, keep it
+        EntityType.WITHER_SKELETON;
+        case WOLF ->
+        // A ground-based predator/companion, mapped to the aggressive HOGLIN
+        EntityType.HOGLIN;
+        case ZOGLIN ->
+        // Already a Nether mob, keep it
+        EntityType.ZOGLIN;
+        case ZOMBIE ->
+        // A common undead, mapped to the ZOMBIFIED_PIGLIN (Nether's common undead)
+        EntityType.ZOMBIFIED_PIGLIN;
+        case ZOMBIE_HORSE ->
+        // An undead rideable animal, mapped to the STRIDER
+        EntityType.STRIDER;
+        case ZOMBIE_VILLAGER ->
+        // An undead VILLAGER, mapped to the ZOMBIFIED_PIGLIN
+        EntityType.ZOMBIFIED_PIGLIN;
+        case ZOMBIFIED_PIGLIN ->
+        // Already a Nether mob, keep it
+        EntityType.ZOMBIFIED_PIGLIN;
+        case HAPPY_GHAST ->
+        // Happy Ghasts exist in both dimensions
+        EntityType.HAPPY_GHAST;
+        case MINECART -> EntityType.MINECART;
+        default ->
+        // Default for any remaining non-mob entities (projectiles, items) or unknowns
+        null;
         };
     }
 }

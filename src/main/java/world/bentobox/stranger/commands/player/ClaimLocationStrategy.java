@@ -15,7 +15,7 @@ import world.bentobox.stranger.StrangerRealms;
 public class ClaimLocationStrategy implements NewIslandLocationStrategy {
 
     protected final BentoBox plugin = BentoBox.getInstance();
-    private StrangerRealms addon;
+    private final StrangerRealms addon;
     
     public ClaimLocationStrategy(StrangerRealms addon) {
         this.addon = addon;

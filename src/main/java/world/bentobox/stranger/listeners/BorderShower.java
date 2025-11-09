@@ -10,25 +10,25 @@ import world.bentobox.bentobox.api.user.User;
  *
  */
 public interface BorderShower {
-    public static final String BORDER_STATE_META_DATA = "Crowdbound_border_state";
+    String BORDER_STATE_META_DATA = "Stranger_border_state";
 
     /**
      * Show the barrier to the player
      * @param player - player to show
      */
-    public void showBorder(Player player);
+    void showBorder(Player player);
 
     /**
      * Hide the barrier
      * @param user - user
      */
-    public void hideBorder(User user);
+    void hideBorder(User user);
 
     /**
      * Removes any cache
      * @param user - user
      */
-    public default void clearUser(User user) {
+    default void clearUser(User user) {
         // Do nothing
     }
 
@@ -36,7 +36,7 @@ public interface BorderShower {
      * Refreshes the barrier view, if required
      * @param user user 
      */
-    public default void refreshView(User user){
+    default void refreshView(User user){
         // Do nothing
     }
 
@@ -44,6 +44,6 @@ public interface BorderShower {
      * Teleports player back within the island space they are in
      * @param player player
      */
-    public void teleportPlayer(Player player);
+    void teleportPlayer(Player player);
 
 }

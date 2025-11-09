@@ -16,7 +16,7 @@ import world.bentobox.stranger.StrangerRealms;
  */
 public class WorldBorderCommand extends CompositeCommand {
 
-    private StrangerRealms addon;
+    private final StrangerRealms addon;
     /**
      * Command to create a claim
      * 
@@ -71,7 +71,7 @@ public class WorldBorderCommand extends CompositeCommand {
     private boolean turnOn(User user) {
         addon.getSettings().setDisableWorldBorder(false);
         addon.saveWorldSettings();
-        Bukkit.getServer().getOnlinePlayers().stream().forEach(addon.getBorderShower()::showBorder);
+        Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
         user.sendMessage("general.success");
         return true;
     }
@@ -89,7 +89,7 @@ public class WorldBorderCommand extends CompositeCommand {
         // Turn on auto
         addon.getSettings().setManualBorderSize(false);
         addon.saveWorldSettings();
-        Bukkit.getServer().getOnlinePlayers().stream().forEach(addon.getBorderShower()::showBorder);
+        Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
         user.sendMessage("general.success");
         return true;
     }
@@ -117,7 +117,7 @@ public class WorldBorderCommand extends CompositeCommand {
             addon.getSettings().setManualBorderSize(true);
             addon.saveWorldSettings();
             // Update all players
-            Bukkit.getServer().getOnlinePlayers().stream().forEach(addon.getBorderShower()::showBorder);
+            Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
             user.sendMessage("general.success");
             return true;
 
