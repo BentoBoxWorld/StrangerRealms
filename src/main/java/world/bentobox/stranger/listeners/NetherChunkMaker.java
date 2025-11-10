@@ -68,7 +68,6 @@ public class NetherChunkMaker implements Listener {
     private static final Set<Material> NETHER_STRUCTURE_BLOCKS = Set.of(Material.NETHER_BRICKS, Material.NETHER_BRICK_FENCE, 
             Material.NETHER_BRICK_SLAB, Material.NETHER_BRICK_STAIRS, Material.NETHER_BRICK_WALL, Material.CHISELED_NETHER_BRICKS
             , Material.CRACKED_NETHER_BRICKS, Material.BONE_BLOCK, Material.SPAWNER, Material.CHEST);
-
     // Overworld Biome -> Nether Biome
     public static final Map<Biome, Biome> BIOME_MAPPING;
     static {
@@ -180,7 +179,7 @@ public class NetherChunkMaker implements Listener {
      * @param e The event triggered
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onNetherPortalExit(PlayerChangedWorldEvent e) {
+    public void onNetherEnterViaTeleport(PlayerChangedWorldEvent e) {
         if (addon.inWorld(e.getPlayer().getWorld()) && e.getPlayer().getWorld().getEnvironment() == Environment.NETHER) {
             User.getInstance(e.getPlayer()).notify(addon.getNetherWorld(), "stranger.nether.welcome");
         }
@@ -245,14 +244,15 @@ public class NetherChunkMaker implements Listener {
         }
 
         handler.saveObjectAsync(netherChunksMade); // Save to database
-        clearTileEntities(e); // Clear tile entities in the chunk
-        clearEntities(e); // Clear entities in the chunk
+        Chunk chunk = e.getChunk();
+        clearTileEntities(chunk); // Clear tile entities in the chunk
+        clearEntities(chunk); // Clear entities in the chunk
         // Get the overworld chunk async
-        Util.getChunkAtAsync(addon.getOverWorld(), e.getChunk().getX(), e.getChunk().getZ()).thenRun(() -> {
-            convertBlocks(e);
-            convertBlocks(e); // Convert blocks from overworld to Nether
-            spawnNetherEntities(e); // Spawn Nether entities
+        Util.getChunkAtAsync(addon.getOverWorld(), chunk.getX(), chunk.getZ()).thenRun(() -> {
+            convertBlocks(chunk); // Convert blocks from overworld to Nether
+            spawnNetherEntities(chunk); // Spawn Nether entities
         });
+
     }
 
     /**
@@ -270,10 +270,10 @@ public class NetherChunkMaker implements Listener {
     /**
      * Clears tile entities in the loaded chunk that are below the roof height.
      * 
-     * @param e The chunk load event.
+     * @param chunk The chunk.
      */
-    private void clearTileEntities(ChunkLoadEvent e) {
-        Arrays.stream(e.getChunk().getTileEntities())
+    private void clearTileEntities(Chunk chunk) {
+        Arrays.stream(chunk.getTileEntities())
         .filter(en -> en.getLocation().getBlockY() < ROOF_HEIGHT && en instanceof InventoryHolder)
         .forEach(tileEntity -> ((InventoryHolder) tileEntity).getInventory().clear());
     }
@@ -281,10 +281,10 @@ public class NetherChunkMaker implements Listener {
     /**
      * Clears entities in the loaded chunk that are below the roof height.
      * 
-     * @param e The chunk load event.
+     * @param chunk The chunk.
      */
-    private void clearEntities(ChunkLoadEvent e) {
-        Arrays.stream(e.getChunk().getEntities())
+    private void clearEntities(Chunk chunk) {
+        Arrays.stream(chunk.getEntities())
         .filter(en -> en.getType() != EntityType.PLAYER && en.getLocation().getBlockY() < ROOF_HEIGHT)
         .forEach(Entity::remove);
     }
@@ -292,11 +292,11 @@ public class NetherChunkMaker implements Listener {
     /**
      * Converts blocks in the loaded chunk from overworld to Nether equivalents.
      * 
-     * @param e The chunk load event.
+     * @param chunk The chunk
      */
-    private void convertBlocks(ChunkLoadEvent e) {
+    private void convertBlocks(Chunk chunk) {
         // Get the overworld chunk we are copying from
-        Chunk overworldChunk = addon.getOverWorld().getChunkAt(e.getChunk().getX(), e.getChunk().getZ());
+        Chunk overworldChunk = addon.getOverWorld().getChunkAt(chunk.getX(), chunk.getZ());
         // Determine the attrition
         int rawAttritionValue = addon.getSettings().getAttrition();
         double attrition = (rawAttritionValue >= 0 && rawAttritionValue <= 100)
@@ -307,25 +307,25 @@ public class NetherChunkMaker implements Listener {
 
         // Check for structures
         List<BoundingBox> structures = new ArrayList<>();
-        e.getChunk().getStructures().forEach(gs -> structures.add(gs.getBoundingBox()));
+        chunk.getStructures().forEach(gs -> structures.add(gs.getBoundingBox()));
         // Loop through the chunk and set blocks
-        for (int y = e.getWorld().getMinHeight() + NETHER_FLOOR; y < ROOF_HEIGHT; y++) {
+        for (int y = chunk.getWorld().getMinHeight() + NETHER_FLOOR; y < ROOF_HEIGHT; y++) {
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
-                    if (y == e.getWorld().getMinHeight() + NETHER_FLOOR) {
+                    if (y == chunk.getWorld().getMinHeight() + NETHER_FLOOR) {
                         // Bleed some netherrack into the deep dark
                         for (int bleed = y - rand.nextInt(5); bleed < y; bleed++ ) {
-                            e.getChunk().getBlock(x, bleed, z).setType(Material.NETHERRACK, false);
+                            chunk.getBlock(x, bleed, z).setType(Material.NETHERRACK, false);
                         }
                     }
                     Block overworldBlock = overworldChunk.getBlock(x, y, z);
-                    Block newBlock = e.getChunk().getBlock(x, y, z);
+                    Block newBlock = chunk.getBlock(x, y, z);
                     newBlock.setBiome(BIOME_MAPPING.getOrDefault(overworldBlock.getBiome(), Biome.NETHER_WASTES)); // Set biome for the new block
                     // Skip if the block should not be converted
                     if (overworldBlock.getType() == newBlock.getType() 
                             || newBlock.getType() == Material.NETHER_PORTAL // We must not touch these otherwise errors occur
                             || y > CEILING_START && rand.nextDouble() < attrition
-                            || (inStructure(e.getChunk().getX(), e.getChunk().getZ(), x, y, z, structures) 
+                            || (inStructure(chunk.getX(), chunk.getZ(), x, y, z, structures) 
                                     &&  NETHER_STRUCTURE_BLOCKS.contains(newBlock.getType()))) {
                         continue; // Skip if the block types are the same or if conditions are met
                     }
@@ -366,7 +366,7 @@ public class NetherChunkMaker implements Listener {
                             }
                             break;
                         case NETHER_PORTAL:
-                            if (e.getChunk().getBlock(x, y, z).getType() == Material.NETHER_PORTAL) {
+                            if (chunk.getBlock(x, y, z).getType() == Material.NETHER_PORTAL) {
                                 newBlockData = Material.NETHER_PORTAL.createBlockData();
                             } else {
                                 newBlockData = Material.AIR.createBlockData();
@@ -473,7 +473,7 @@ public class NetherChunkMaker implements Listener {
                             break;
                         }
                     }
-                    
+
                     // Apply the new BlockData to the shadow world chunk
                     newBlock.setBlockData(newBlockData, false);
 
@@ -678,11 +678,11 @@ public class NetherChunkMaker implements Listener {
     /**
      * Spawns Nether entities based on the entities present in the loaded chunk.
      * 
-     * @param e The chunk load event.
+     * @param chunk The chunk
      */
-    private void spawnNetherEntities(ChunkLoadEvent e) {
+    private void spawnNetherEntities(Chunk chunk) {
         // Now do Mobs
-        Arrays.stream(e.getChunk().getEntities())
+        Arrays.stream(chunk.getEntities())
         .filter(en -> en instanceof LivingEntity)
         .forEach(en -> {
             EntityType newType = getNetherEnt(en.getType());
