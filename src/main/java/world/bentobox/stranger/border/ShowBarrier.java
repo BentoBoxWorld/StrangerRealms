@@ -60,7 +60,6 @@ public class ShowBarrier implements BorderShower {
             // If the player is not in a world governed by this addon, skip
             return;
         }
-        //BentoBox.getInstance().logDebug("showing barrier border for " + player.getName());
         if (!Objects.requireNonNull(User.getInstance(player)).getMetaData(BORDER_STATE_META_DATA).map(MetaDataValue::asBoolean).orElse(true)) {
             return;
         }

@@ -374,9 +374,7 @@ public class PlayerListener implements Listener {
         // Hide and show again
         e.getIsland().getPlayersOnIsland().forEach(player -> {
             if (isOn(player)) {
-                //BentoBox.getInstance().logDebug("Hiding for "+ player.getName());
                 show.hideBorder(User.getInstance(player));
-                //BentoBox.getInstance().logDebug("Showing for "+ player.getName());
                 show.showBorder(player);
             }
         });

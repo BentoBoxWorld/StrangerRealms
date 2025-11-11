@@ -24,13 +24,13 @@ public class ClaimLocationStrategy implements NewIslandLocationStrategy {
     @Override
     public Location getNextLocation(World world, User user) {
         if (!Util.getWorld(user.getWorld()).equals(world)) {
-            user.sendMessage("stranger.errors.not-in-world");
+            user.sendMessage("strangerrealms.errors.not-in-world");
             return null;
         }
         Location location = user.getLocation();
         // Quick check using the claim grid cache.
         if (plugin.getIslands().isIslandAt(location)) {
-            user.sendMessage("stranger.errors.already-claimed");
+            user.sendMessage("strangerrealms.errors.already-claimed");
             return null;
         }
 
@@ -48,13 +48,12 @@ public class ClaimLocationStrategy implements NewIslandLocationStrategy {
          for (Location l : locs) {
             // Check if a claim exists
             if (plugin.getIslands().getIslandAt(l).isPresent()) {
-                user.sendMessage("stranger.errors.overlap", "[xyz]", Util.xyz(l.toVector()));
+                user.sendMessage("strangerrealms.errors.overlap", "[xyz]", Util.xyz(l.toVector()));
                 return null;
             }
             // Check that everything is within the global world border
             if (!addon.getSettings().isDisableWorldBorder() &&  !user.getPlayer().getWorldBorder().isInside(l)) {
-                user.sendMessage("stranger.errors.no-fit-inside");
-                //BentoBox.getInstance().logDebug(l + " would be outside the world border");
+                user.sendMessage("strangerrealms.errors.no-fit-inside");
                 return null;
             }
         }

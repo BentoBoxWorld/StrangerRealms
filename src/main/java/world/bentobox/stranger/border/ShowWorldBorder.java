@@ -32,7 +32,6 @@ public class ShowWorldBorder implements BorderShower {
 
     @Override
     public void showBorder(Player player) {
-        //BentoBox.getInstance().logDebug("showing world border for " + player.getName());
         if (addon.getSettings().isDisableWorldBorder() || !Objects.requireNonNull(User.getInstance(player)).getMetaData(BORDER_STATE_META_DATA).map(MetaDataValue::asBoolean).orElse(true)) {
             return;
         }
@@ -47,7 +46,6 @@ public class ShowWorldBorder implements BorderShower {
                showWorldBarrier(player);
                return;
            }
-           //BentoBox.getInstance().logDebug("Claim is not within the world barrier");
            // Claim is isolated so show the world barrier 
             WorldBorder wb = Bukkit.createWorldBorder();
             wb.setCenter(l);
@@ -61,15 +59,12 @@ public class ShowWorldBorder implements BorderShower {
     }
     
     private void showWorldBarrier(Player player) {
-        //BentoBox.getInstance().logDebug("Show world barrier");
         if (!addon.inWorld(player.getWorld())) {
             // If the player is not in a world governed by this addon, skip
-           // BentoBox.getInstance().logDebug("Wrong world");
             return;
         }
         // Get the center of the barrier
         Location center = Objects.requireNonNullElse(addon.getIslands().getSpawnPoint(player.getWorld()), player.getWorld().getSpawnLocation());
-        //BentoBox.getInstance().logDebug("Spawn point = " + center);
         WorldBorder wb = Bukkit.createWorldBorder();
         wb.setCenter(center);
         double size = addon.getBorderSize();
@@ -77,8 +72,7 @@ public class ShowWorldBorder implements BorderShower {
         wb.setWarningDistance(5);
         
         if (!wb.isInside(player.getLocation())) {
-            //BentoBox.getInstance().logDebug("Player is outside the barrier");
-            User.getInstance(player).sendMessage("stranger.teleporting-to-spawn");
+            User.getInstance(player).sendMessage("strangerrealms.teleporting-to-spawn");
             new SafeSpotTeleport.Builder(addon.getPlugin()).entity(player).location(center).build();
         }
         player.setWorldBorder(wb);

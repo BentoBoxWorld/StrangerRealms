@@ -1,4 +1,4 @@
-package world.bentobox.stranger.listeners;
+package world.bentobox.stranger.generator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,7 +63,7 @@ public class NetherChunkMaker implements Listener {
 
     private static final int ROOF_HEIGHT = 107; 
     private static final int CEILING_START = 100; // Blocks above this height are left as natural nether blocks
-    private static final int NETHER_FLOOR = 30; // Blocks below this are left as natural nether world blocks
+    protected static final int NETHER_FLOOR = 20; // Blocks below this are left as natural nether world blocks
     private static final String NETHER_CHUNKS_TABLE = "StrangerChunks";
     private static final Set<Material> NETHER_STRUCTURE_BLOCKS = Set.of(Material.NETHER_BRICKS, Material.NETHER_BRICK_FENCE, 
             Material.NETHER_BRICK_SLAB, Material.NETHER_BRICK_STAIRS, Material.NETHER_BRICK_WALL, Material.CHISELED_NETHER_BRICKS
@@ -181,7 +181,7 @@ public class NetherChunkMaker implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onNetherEnterViaTeleport(PlayerChangedWorldEvent e) {
         if (addon.inWorld(e.getPlayer().getWorld()) && e.getPlayer().getWorld().getEnvironment() == Environment.NETHER) {
-            User.getInstance(e.getPlayer()).notify(addon.getNetherWorld(), "stranger.nether.welcome");
+            User.getInstance(e.getPlayer()).notify(addon.getNetherWorld(), "strangerrealms.nether.welcome");
         }
     }
 
@@ -202,7 +202,7 @@ public class NetherChunkMaker implements Listener {
             }
         }
         handler.saveObject(netherChunksMade);
-        User.getInstance(p).sendMessage("stranger.nether.refresh");
+        User.getInstance(p).sendMessage("strangerrealms.nether.refresh");
         Bukkit.getScheduler().runTask(addon.getPlugin(), () -> p.playSound(p, Sound.ENTITY_LIGHTNING_BOLT_IMPACT, 1F, 1F));
 
         // Reduce the amount of the warped compass used

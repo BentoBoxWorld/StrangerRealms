@@ -40,9 +40,9 @@ import world.bentobox.stranger.commands.player.ClaimCommand;
 import world.bentobox.stranger.commands.player.SpawnCommand;
 import world.bentobox.stranger.commands.player.UnclaimCommand;
 import world.bentobox.stranger.generator.NetherBiomeProvider;
+import world.bentobox.stranger.generator.NetherChunkMaker;
 import world.bentobox.stranger.generator.NetherChunks;
 import world.bentobox.stranger.listeners.BorderShower;
-import world.bentobox.stranger.listeners.NetherChunkMaker;
 import world.bentobox.stranger.listeners.NetherRedstoneListener;
 import world.bentobox.stranger.listeners.PlayerListener;
 import world.bentobox.stranger.listeners.TeamListener;
@@ -302,14 +302,12 @@ public class StrangerRealms extends GameModeAddon {
              task.cancel();
              // Trigger gradual reduction of border
            task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
-               //BentoBox.getInstance().logDebug("Get border size = " + newBorderSize + " old = " + borderSize);
                 if (borderSize > newBorderSize) {
                     borderSize--;
                     // Update the border for any online players
                     Bukkit.getOnlinePlayers().stream().filter(p -> inWorld(p.getWorld())).forEach(borderShower::showBorder);
                 } else {
                     // We are done
-                    //BentoBox.getInstance().logDebug("canceled");
                     task.cancel();
                 }
             }, this.getSettings().getBarrierReductionSpeed() * 20L, this.getSettings().getBarrierReductionSpeed() * 20L);

@@ -61,7 +61,7 @@ public class TeamListener implements Listener {
         int change =  resize(e.getIsland());
         // If there is no difference in size, explain why
         if (change == 0 && e.getIsland().getOwner() != null) {
-            User.getInstance(e.getIsland().getOwner()).sendMessage("stranger.claim.team-no-change");
+            User.getInstance(e.getIsland().getOwner()).sendMessage("strangerrealms.claim.team-no-change");
         }
     }
 
@@ -107,14 +107,14 @@ public class TeamListener implements Listener {
         // Notify players
         if (claim.isOwned()) {
             // Tell owner
-            User.getInstance(claim.getOwner()).sendMessage("stranger.claim.team-" + suffix + "-owner");
+            User.getInstance(claim.getOwner()).sendMessage("strangerrealms.claim.team-" + suffix + "-owner");
         }
 
         // Tell players on the claim (excluding the owner, if one exists)
         claim.getPlayersOnIsland().stream()
         .filter(p -> claim.getOwner() == null || !p.getUniqueId().equals(claim.getOwner()))
         .map(User::getInstance)
-        .forEach(u -> u.sendMessage("stranger.claim.team-" + suffix));
+        .forEach(u -> u.sendMessage("strangerrealms.claim.team-" + suffix));
 
         return size - oldSize;
     }

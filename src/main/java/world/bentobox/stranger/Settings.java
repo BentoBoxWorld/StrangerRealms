@@ -35,24 +35,24 @@ public class Settings implements WorldSettings {
     /* Commands */
     @ConfigComment("Player Command. What command users will run to access their claim.")
     @ConfigComment("To define alias, just separate commands with white space.")
-    @ConfigEntry(path = "stranger.command.player")
+    @ConfigEntry(path = "strangerrealms.command.player")
     private String playerCommandAliases = "cb stranger";
 
     @ConfigComment("The admin command.")
     @ConfigComment("To define alias, just separate commands with white space.")
-    @ConfigEntry(path = "stranger.command.admin")
+    @ConfigEntry(path = "strangerrealms.command.admin")
     private String adminCommandAliases = "crowd";
 
     @ConfigComment("The default action for new player command call.")
     @ConfigComment("Sub-command of main player command that will be run on first player command call.")
     @ConfigComment("By default it is sub-command 'create'.")
-    @ConfigEntry(path = "stranger.command.new-player-action")
+    @ConfigEntry(path = "strangerrealms.command.new-player-action")
     private String defaultNewPlayerAction = "create";
 
     @ConfigComment("The default action for player command.")
     @ConfigComment("Sub-command of main player command that will be run on each player command call.")
     @ConfigComment("By default it is sub-command 'go'.")
-    @ConfigEntry(path = "stranger.command.default-action")
+    @ConfigEntry(path = "strangerrealms.command.default-action")
     private String defaultPlayerAction = "go";
 
     /*      WORLD       */
