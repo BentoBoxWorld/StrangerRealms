@@ -55,7 +55,7 @@ public class StrangerRealms extends GameModeAddon {
 
     private static final String NETHER = "_nether";
     private static final String THE_END = "_the_end";
-    
+
     // Define a static key for the custom item, primarily for referencing its material later if needed.
     public static final Material WARPED_COMPASS_MATERIAL = Material.COMPASS;
 
@@ -75,7 +75,7 @@ public class StrangerRealms extends GameModeAddon {
     public boolean isFixIslandCenter() {
         return false;
     }
-    
+
     @Override
     public boolean isEnforceEqualRanges() {
         return false;
@@ -89,7 +89,7 @@ public class StrangerRealms extends GameModeAddon {
         loadSettings();
         // Create the nether chunk listener; set it up in onEnable
         netherChunkMaker = new NetherChunkMaker(this);
-        
+
         // Register commands
         playerCommand = new DefaultPlayerCommand(this) {
             @Override
@@ -141,10 +141,10 @@ public class StrangerRealms extends GameModeAddon {
         this.registerListener(netherChunkMaker);
         this.registerListener(new TeamListener(this));
         this.registerListener(new NetherRedstoneListener(this));
-        
+
         // Register recipe for warped compass
         registerWarpedCompassRecipe();
-        
+
         // Set the initial spawn
         if (getPlugin().getIslands().getSpawn(getOverWorld()).isEmpty()) {
             // Make a spawn claim
@@ -296,12 +296,12 @@ public class StrangerRealms extends GameModeAddon {
      */
     public double getBorderSize() {
         int newBorderSize = getSettings().isManualBorderSize() ? borderSize :
-                Math.max(getSettings().getBarrierIncreaseBlocks(), (this.getSettings().getBarrierIncreaseBlocks() * Bukkit.getServer().getOnlinePlayers().size()));
-         if (newBorderSize < borderSize) {
-             // End any current task to replace it
-             task.cancel();
-             // Trigger gradual reduction of border
-           task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
+            Math.max(getSettings().getBarrierIncreaseBlocks(), (this.getSettings().getBarrierIncreaseBlocks() * Bukkit.getServer().getOnlinePlayers().size()));
+        if (newBorderSize < borderSize) {
+            // End any current task to replace it
+            task.cancel();
+            // Trigger gradual reduction of border
+            task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
                 if (borderSize > newBorderSize) {
                     borderSize--;
                     // Update the border for any online players
@@ -323,14 +323,16 @@ public class StrangerRealms extends GameModeAddon {
     public void setBorderSize(int borderSize) {
         this.borderSize = borderSize;
     }
-    
+
     /**
      * Cancels any active border reduction task
      */
     public void cancelBorderTask() {
-        this.task.cancel();
+        if (task != null) {
+            this.task.cancel();
+        }
     }
-    
+
     /**
      * Creates a new ItemStack representing the Warped Compass with all its custom metadata.
      * This method is used both for the recipe result and for checking items.
@@ -342,21 +344,21 @@ public class StrangerRealms extends GameModeAddon {
 
         // Set the custom display name using the Adventure API
         Component displayName = Component.text("Warped Compass", NamedTextColor.AQUA)
-                                         .decorate(TextDecoration.BOLD);
+                .decorate(TextDecoration.BOLD);
         meta.displayName(displayName);
 
         // Set the lore/tooltip using the Adventure API
         List<Component> lore = Arrays.asList(
-            Component.text("Hold fast to the needle when the realm is stale.", NamedTextColor.GRAY),
-            Component.text("A single spark is all it takes to refresh the flame.", NamedTextColor.GRAY),
-            Component.empty(), // Represents an empty line
-            Component.text("Consumed upon entry to re-thread the Nether.", NamedTextColor.RED)
-        );
+                Component.text("Hold fast to the needle when the realm is stale.", NamedTextColor.GRAY),
+                Component.text("A single spark is all it takes to refresh the flame.", NamedTextColor.GRAY),
+                Component.empty(), // Represents an empty line
+                Component.text("Consumed upon entry to re-thread the Nether.", NamedTextColor.RED)
+                );
         meta.lore(lore);
         warpedCompass.setItemMeta(meta);
         return warpedCompass;
     }
-    
+
     /**
      * Checks if the given ItemStack is a Warped Compass based on its material and metadata.
      * @param item The ItemStack to check.
@@ -371,7 +373,7 @@ public class StrangerRealms extends GameModeAddon {
         // We compare the item's meta against the meta of a freshly created reference item.
         ItemMeta referenceMeta = createWarpedCompassItem().getItemMeta();
         ItemMeta itemMeta = item.getItemMeta();
-        
+
         return itemMeta.equals(referenceMeta);
     }
 
@@ -387,11 +389,11 @@ public class StrangerRealms extends GameModeAddon {
 
         // --- 3. Define the Recipe Shape ---        
         recipe.shape(
-            "COC",
-            "FRF",
-            "COC"
-        );
-        
+                "COC",
+                "FRF",
+                "COC"
+                );
+
         // --- 4. Define the Ingredients ---
         // O = Obsidian
         // C = Crying Obsidian
