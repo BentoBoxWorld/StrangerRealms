@@ -73,6 +73,7 @@ public class WorldBorderCommand extends CompositeCommand {
         addon.saveWorldSettings();
         Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
         user.sendMessage("general.success");
+        showInfo(user);
         return true;
     }
 
@@ -91,6 +92,7 @@ public class WorldBorderCommand extends CompositeCommand {
         addon.saveWorldSettings();
         Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
         user.sendMessage("general.success");
+        showInfo(user);
         return true;
     }
 
@@ -119,6 +121,7 @@ public class WorldBorderCommand extends CompositeCommand {
             // Update all players
             Bukkit.getServer().getOnlinePlayers().forEach(addon.getBorderShower()::showBorder);
             user.sendMessage("general.success");
+            showInfo(user);
             return true;
 
         } catch (NumberFormatException e) {
