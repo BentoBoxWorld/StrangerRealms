@@ -17,7 +17,7 @@ public class NetherBiomeProvider extends BiomeProvider {
 
     @Override
     public @NotNull Biome getBiome(@NotNull WorldInfo worldInfo, int x, int y, int z) {
-        final int top = worldInfo.getMinHeight() + 30 - random.nextInt(5);
+        final int top = worldInfo.getMinHeight() + NetherChunkMaker.NETHER_FLOOR - random.nextInt(5);
         if (y < top) {
             return Biome.DEEP_DARK;
         }

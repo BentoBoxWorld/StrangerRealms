@@ -35,7 +35,7 @@ public class NetherChunks extends ChunkGenerator {
         }
 
         // Define the Y-range for cave generation
-        final int minCaveY = worldInfo.getMinHeight() + 7;
+        final int minCaveY = worldInfo.getMinHeight() + 5;
         final int maxCaveY = minCaveY + NetherChunkMaker.NETHER_FLOOR;
         final double caveRange = maxCaveY - minCaveY;
         
@@ -111,7 +111,7 @@ public class NetherChunks extends ChunkGenerator {
     @Override
     public void generateSurface(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) {
         //  Define the Y-range
-        final int minY = worldInfo.getMinHeight() + 7;
+        final int minY = worldInfo.getMinHeight() + 5;
         final int maxY = minY + NetherChunkMaker.NETHER_FLOOR;
 
         for (int y = minY; y < maxY;  y++) {
