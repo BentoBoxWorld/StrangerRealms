@@ -1,7 +1,7 @@
 
 <img width="600" height="300" alt="Stranger Realms" src="https://github.com/user-attachments/assets/4893497a-7c92-4947-b1af-23c1daf05261" />
 
-# Strange Realms: A BentoBox Game Mode
+# Stranger Realms: A BentoBox Game Mode
 
 A chilling new survival experience where the familiar world is shadowed by a terrifying, inverted dimension. *Stranger Realms* is a custom BentoBox game mode that replaces the Nether with a dark, distressed copy of the Overworld — the **Upside Down**.
 
