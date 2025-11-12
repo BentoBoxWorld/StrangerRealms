@@ -47,7 +47,7 @@ public class Settings implements WorldSettings {
     @ConfigComment("Sub-command of main player command that will be run on first player command call.")
     @ConfigComment("By default it is sub-command 'create'.")
     @ConfigEntry(path = "strangerrealms.command.new-player-action")
-    private String defaultNewPlayerAction = "create";
+    private String defaultNewPlayerAction = "spawn";
 
     @ConfigComment("The default action for player command.")
     @ConfigComment("Sub-command of main player command that will be run on each player command call.")
