@@ -85,9 +85,9 @@ public class Settings implements WorldSettings {
     @ConfigEntry(path = "world.manual-border-size")
     private boolean manualBorderSize = false;
         
-    @ConfigComment("Global border size increase per online player in blocks.")
+    @ConfigComment("Global border size increase per online player in blocks. Radius size.")
     @ConfigEntry(path = "world.barrier-increase-blocks")
-    private int barrierIncreaseBlocks = 160;
+    private int barrierIncreaseBlocks = 320;
     
     @ConfigComment("Global border reduction speed. How fast the global border will shrink if it needs to do so.")
     @ConfigComment("Per block reduction time in seconds.")

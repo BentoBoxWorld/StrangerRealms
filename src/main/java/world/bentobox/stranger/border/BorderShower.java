@@ -1,4 +1,4 @@
-package world.bentobox.stranger.listeners;
+package world.bentobox.stranger.border;
 
 import org.bukkit.entity.Player;
 

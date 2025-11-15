@@ -15,7 +15,6 @@ import world.bentobox.bentobox.api.user.User;
 import world.bentobox.bentobox.util.Util;
 import world.bentobox.bentobox.util.teleport.SafeSpotTeleport;
 import world.bentobox.stranger.StrangerRealms;
-import world.bentobox.stranger.listeners.BorderShower;
 
 /**
  * Show a border using Paper's WorldBorder API
@@ -35,12 +34,13 @@ public class ShowWorldBorder implements BorderShower {
         if (addon.getSettings().isDisableWorldBorder() || !Objects.requireNonNull(User.getInstance(player)).getMetaData(BORDER_STATE_META_DATA).map(MetaDataValue::asBoolean).orElse(true)) {
             return;
         }
-        addon.getIslands().getIslandAt(player.getLocation()).ifPresentOrElse(island -> {
-            
+        addon.getIslands().getIslandAt(player.getLocation())
+        .filter(i -> !i.isSpawn()) // Don't show border of the spawn claim itself
+        .ifPresentOrElse(island -> {
             Location l = island.getProtectionCenter().toVector().toLocation(player.getWorld());
             // Check if the claim is entirely within the world barrier
             Location center = Objects.requireNonNullElse(addon.getIslands().getSpawnPoint(player.getWorld()), player.getWorld().getSpawnLocation());
-            double dist = addon.getBorderSize() / 2D;
+            double dist = addon.getBorderSize();
            BoundingBox worldBB = BoundingBox.of(center.toVector(), dist, dist, dist);
            if (worldBB.contains(island.getBoundingBox())) {
                showWorldBarrier(player);

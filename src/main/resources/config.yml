@@ -34,7 +34,7 @@ world:
   # Use manual world border sizing
   # Set to true to overide the automatic world border sizing based on the number of online players.
   manual-border-size: false
-  # Global border size increase per online player in blocks.
+  # Global border size increase per online player in blocks. Radius size.
   barrier-increase-blocks: 320
   # Global border reduction speed. How fast the global border will shrink if it needs to do so.
   # Per block reduction time in seconds.
