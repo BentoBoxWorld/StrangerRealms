@@ -23,7 +23,6 @@ import world.bentobox.bentobox.api.metadata.MetaDataValue;
 import world.bentobox.bentobox.api.user.User;
 import world.bentobox.bentobox.util.Util;
 import world.bentobox.stranger.StrangerRealms;
-import world.bentobox.stranger.listeners.BorderShower;
 
 /**
  *
