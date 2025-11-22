@@ -10,8 +10,10 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -20,6 +22,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityMountEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -27,6 +31,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.RayTraceResult;
@@ -71,11 +76,16 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent e) {
+        // Set the recipe
+        updateRecipeAccess(e.getPlayer());
+        
         Player player = e.getPlayer();
         // Check if player is in the world
         if (!addon.inWorld(player.getWorld())) {
             return;
         }
+
+
         if (isOn(player)) {
             // Run one-tick after joining because metadata cannot be set otherwise
             Bukkit.getScheduler().runTask(addon.getPlugin(), () -> processEvent(e));
@@ -210,7 +220,7 @@ public class PlayerListener implements Listener {
         if (!outsideCheck(e.getPlayer(), from, e.getTo())) {
             return;
         }
-        
+
         // If player is still in protected area, cancel movement and teleport back
         if (addon.getIslands().getProtectedIslandAt(from).isPresent()) {
             e.setCancelled(true);
@@ -218,18 +228,18 @@ public class PlayerListener implements Listener {
             Util.teleportAsync(p, from).thenRun(() -> inTeleport.remove(p.getUniqueId()));
             return;
         }
-        
+
         // If outside, calculate the closest safe position on border
         addon.getIslands().getIslandAt(p.getLocation()).ifPresent(i -> {
             // Calculate vector pointing from player to island center
             Vector unitVector = i.getProtectionCenter().toVector().subtract(p.getLocation().toVector()).normalize()
                     .multiply(new Vector(1,0,1));
-            
+
             // Skip if no valid direction found
             if (unitVector.lengthSquared() <= 0D) {
                 return;
             }
-            
+
             // Perform ray trace to find intersection with border
             RayTraceResult r = i.getProtectionBoundingBox().rayTrace(p.getLocation().toVector(), unitVector, i.getRange());
             if (r != null && checkFinite(r.getHitPosition())) {
@@ -362,7 +372,7 @@ public class PlayerListener implements Listener {
         // Remove head movement
         if (!e.getFrom().toVector().equals(e.getTo().toVector())) {
             e.getVehicle().getPassengers().stream().filter(Player.class::isInstance).map(Player.class::cast)
-                    .filter(this::isOn).forEach(p -> show.refreshView(User.getInstance(p)));
+            .filter(this::isOn).forEach(p -> show.refreshView(User.getInstance(p)));
         }
     }
 
@@ -380,4 +390,54 @@ public class PlayerListener implements Listener {
             }
         });
     }
+
+    /**
+     * Updates the player's access to the warped compass recipe based on their current world.
+     * @param player The player to check.
+     */
+    private void updateRecipeAccess(Player player) {
+        World currentWorld = player.getWorld();
+
+        // Check if the player is in the custom world
+        if (addon.inWorld(currentWorld)) {
+            // Player is in the custom world: grant the recipe
+            if (!player.hasDiscoveredRecipe(StrangerRealms.WARPED_COMPASS_RECIPE)) {
+                // Use a scheduler for safety, though for this specific task it might not be strictly needed.
+                // It ensures the action is run on the main server thread, which is good practice.
+                Bukkit.getScheduler().runTask(addon.getPlugin(), () -> {
+                    player.discoverRecipe(StrangerRealms.WARPED_COMPASS_RECIPE);
+                });
+            }
+        } else {
+            Bukkit.getScheduler().runTask(addon.getPlugin(), () -> {
+                player.undiscoverRecipe(StrangerRealms.WARPED_COMPASS_RECIPE);
+            });
+        }
+    }
+
+    /**
+     * Handles players changing worlds (e.g., via /tp, portals) - add or remove recipe
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onWorldChange(PlayerChangedWorldEvent event) {
+        updateRecipeAccess(event.getPlayer());
+    }
+
+    /**
+     * Blocks the custom item from being crafted if the player is not 
+     * in the designated custom world.
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPrepareItemCraft(PrepareItemCraftEvent event) {
+        Recipe recipe = event.getRecipe();
+
+        // Check if a recipe exists and if it is a keyed recipe
+        if (recipe != null && recipe instanceof Keyed keyed
+                && keyed.getKey().equals(StrangerRealms.WARPED_COMPASS_RECIPE) 
+                && !addon.inWorld(event.getInventory().getLocation())) {
+            // BLOCK: Set the result to null
+            event.getInventory().setResult(null); 
+        }
+    }
 }
+

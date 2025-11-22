@@ -20,10 +20,12 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 import org.eclipse.jdt.annotation.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.addons.GameModeAddon;
 import world.bentobox.bentobox.api.commands.admin.DefaultAdminCommand;
 import world.bentobox.bentobox.api.commands.island.DefaultPlayerCommand;
@@ -57,7 +59,8 @@ public class StrangerRealms extends GameModeAddon {
     private static final String THE_END = "_the_end";
 
     // Define a static key for the custom item, primarily for referencing its material later if needed.
-    public static final Material WARPED_COMPASS_MATERIAL = Material.COMPASS;
+    private static final Material WARPED_COMPASS_MATERIAL = Material.COMPASS;
+    public static final @NotNull NamespacedKey WARPED_COMPASS_RECIPE = new NamespacedKey(BentoBox.getInstance(), "warped_compass");
 
 
     // Settings
@@ -384,8 +387,7 @@ public class StrangerRealms extends GameModeAddon {
 
         // --- 2. Create the NamespacedKey and ShapedRecipe ---
         // A NamespacedKey is required for the recipe to be uniquely identified.
-        NamespacedKey key = new NamespacedKey(this.getPlugin(), "warped_compass");
-        ShapedRecipe recipe = new ShapedRecipe(key, warpedCompass);
+        ShapedRecipe recipe = new ShapedRecipe(WARPED_COMPASS_RECIPE, warpedCompass);
 
         // --- 3. Define the Recipe Shape ---        
         recipe.shape(
