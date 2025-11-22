@@ -226,24 +226,12 @@ public class StrangerRealms extends GameModeAddon {
     }
 
     private void setSpawnRates(World w) {
-        if (getSettings().getSpawnLimitMonsters() > 0) {
             w.setSpawnLimit(SpawnCategory.MONSTER, getSettings().getSpawnLimitMonsters());
-        }
-        if (getSettings().getSpawnLimitAmbient() > 0) {
             w.setSpawnLimit(SpawnCategory.AMBIENT, getSettings().getSpawnLimitAmbient());
-        }
-        if (getSettings().getSpawnLimitAnimals() > 0) {
-            w.setSpawnLimit(SpawnCategory.ANIMAL, getSettings().getSpawnLimitAnimals());
-        }
-        if (getSettings().getSpawnLimitWaterAnimals() > 0) {
-            w.setSpawnLimit(SpawnCategory.WATER_ANIMAL, getSettings().getSpawnLimitWaterAnimals());
-        }
-        if (getSettings().getTicksPerAnimalSpawns() > 0) {
+             w.setSpawnLimit(SpawnCategory.ANIMAL, getSettings().getSpawnLimitAnimals());
+             w.setSpawnLimit(SpawnCategory.WATER_ANIMAL, getSettings().getSpawnLimitWaterAnimals());
             w.setTicksPerSpawns(SpawnCategory.ANIMAL, getSettings().getTicksPerAnimalSpawns());
-        }
-        if (getSettings().getTicksPerMonsterSpawns() > 0) {
             w.setTicksPerSpawns(SpawnCategory.MONSTER, getSettings().getTicksPerMonsterSpawns());
-        }
     }
 
     @Override
