@@ -52,7 +52,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>21</java.version>
         <!-- Non-minecraft related dependencies -->
-        <powermock.version>2.0.9</powermock.version>
+        <junit.version>5.10.2</junit.version>
+        <mockito.version>5.11.0</mockito.version>
+        <mock-bukkit.version>v1.21-SNAPSHOT</mock-bukkit.version>
         <!-- More visible way how to change dependency versions -->
         <paper.version>1.21.10-R0.1-SNAPSHOT</paper.version>
         <bentobox.version>3.10.0-SNAPSHOT</bentobox.version>
@@ -61,7 +63,7 @@
         <!-- Do not change unless you want different name for local builds. -->
         <build.number>-LOCAL</build.number>
         <!-- This allows to change between versions. -->
-        <build.version>1.0.3</build.version>
+        <build.version>1.0.4</build.version>
         <sonar.organization>bentobox-world</sonar.organization>
     </properties>
 
@@ -109,6 +111,10 @@
 
     <repositories>
        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+       <repository>
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
@@ -136,6 +142,38 @@
     </repositories>
 
     <dependencies>
+            <!-- Mock Bukkit - used to mock the server in tests -->
+        <dependency>
+            <groupId>com.github.MockBukkit</groupId>
+            <artifactId>MockBukkit</artifactId>
+            <version>${mock-bukkit.version}</version>
+            <scope>test</scope>
+         </dependency>
+        <!-- Mockito (Unit testing) This goes at the top to ensure the dependencies are accurate. -->
+        <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <version>5.11.0</version>
+                <scope>test</scope>
+            </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- Paper API-->
         <dependency>
           <groupId>io.papermc.paper</groupId>
@@ -144,24 +182,6 @@
           <scope>provided</scope>
         </dependency>
         <!-- Mockito (Unit testing) -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>3.11.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>world.bentobox</groupId>
             <artifactId>bentobox</artifactId>
@@ -246,7 +266,6 @@
                 <!--suppress MavenModelInspection -->
                 <configuration>
                     <argLine>
-                        ${argLine}
                         --add-opens java.base/java.lang=ALL-UNNAMED
                         --add-opens java.base/java.math=ALL-UNNAMED
                         --add-opens java.base/java.io=ALL-UNNAMED
