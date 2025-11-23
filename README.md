@@ -27,6 +27,9 @@ As a BentoBox game mode, survival hinges on laying claim to your piece of the wo
 ### The Warped Compass
 
   * **Chunk Regeneration:** Discover the custom recipe for the **Warped Compass**. When a player holds this powerful item while traveling through a Nether Portal, it forces the regeneration of chunks in all directions, ensuring you always have fresh territory to explore based on the Overworld.
+The recipe is:
+<img width="708" height="340" alt="image" src="https://github.com/user-attachments/assets/d9ff44b6-61dc-4680-8a80-03786b50d405" />
+
 
 ### Dynamic World Border (Admin Feature)
 
