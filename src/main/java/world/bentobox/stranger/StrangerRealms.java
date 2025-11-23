@@ -164,6 +164,7 @@ public class StrangerRealms extends GameModeAddon {
 
     @Override
     public void onDisable() {
+        // Nothing to do
     }
 
     @Override
