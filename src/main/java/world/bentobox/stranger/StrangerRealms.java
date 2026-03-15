@@ -133,7 +133,7 @@ public class StrangerRealms extends GameModeAddon {
     public void onEnable() {
         // Check for recommended addons
         if (this.getPlugin().getAddonsManager().getAddonByName("Border").isPresent()) {
-            this.logWarning("StrangerRealms has its own Border, so do not use Border in the Crowdbound world.");
+            this.logWarning("StrangerRealms has its own Border, so do not use Border addon.");
         }
         if (this.getPlugin().getAddonsManager().getAddonByName("InvSwitcher").isEmpty()) {
             this.logWarning("StrangerRealms recommends the InvSwitcher addon.");

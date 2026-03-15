@@ -128,7 +128,7 @@ class StrangerRealmsTest extends RanksManagerTestSetup {
     void testOnEnable() {
         verify(plugin).logWarning("[StrangerRealms] StrangerRealms recommends the InvSwitcher addon.");
         verify(plugin).logWarning(
-                "[StrangerRealms] StrangerRealms has its own Border, so do not use Border in the Crowdbound world."
+                "[StrangerRealms] StrangerRealms has its own Border, so do not use Border addon."
                 );
         verify(plugin).logError(
                 "[StrangerRealms] Could not make a spawn claim. You will have to set one manually in the world."
