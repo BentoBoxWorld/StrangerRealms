@@ -18,6 +18,8 @@ Versioning is driven by Maven properties: `build.version` (in `pom.xml`) sets th
 
 ## Architecture
 
+StrangerRealms targets Paper **1.21.11** / BentoBox **3.10.0-SNAPSHOT**. The `mock-bukkit` snapshot tracks the latest Paper API, so bumping Paper here when MockBukkit moves is part of routine maintenance.
+
 StrangerRealms is a **BentoBox GameModeAddon** — it does not run as a standalone Bukkit/Paper plugin. The runtime entry point Paper sees is `StrangerRealmsPladdon` (a `Pladdon`), which constructs and returns the real addon, `StrangerRealms`. `plugin.yml` points Paper at the Pladdon; `addon.yml` points BentoBox at `StrangerRealms`. When changing entry points or lifecycle, both files matter.
 
 ### Addon lifecycle (StrangerRealms.java)
