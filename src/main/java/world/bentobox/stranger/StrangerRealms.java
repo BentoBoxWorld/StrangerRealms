@@ -291,7 +291,7 @@ public class StrangerRealms extends GameModeAddon {
             Math.max(getSettings().getBarrierIncreaseBlocks(), (this.getSettings().getBarrierIncreaseBlocks() * Bukkit.getServer().getOnlinePlayers().size()));
         if (newBorderSize < borderSize) {
             // End any current task to replace it
-            task.cancel();
+            cancelBorderTask();
             // Trigger gradual reduction of border
             task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
                 if (borderSize > newBorderSize) {
