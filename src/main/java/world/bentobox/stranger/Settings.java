@@ -11,7 +11,7 @@ import java.util.Set;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.entity.EntityType;
-
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.configuration.ConfigComment;
@@ -22,6 +22,7 @@ import world.bentobox.bentobox.api.flags.Flag;
 import world.bentobox.bentobox.database.objects.adapters.Adapter;
 import world.bentobox.bentobox.database.objects.adapters.FlagSerializer;
 import world.bentobox.bentobox.database.objects.adapters.FlagSerializer2;
+import world.bentobox.bentobox.database.objects.adapters.PotionEffectListAdapter;
 import world.bentobox.stranger.border.BorderType;
 
 /**
@@ -145,6 +146,28 @@ public class Settings implements WorldSettings {
     @ConfigComment("Make the UpsideDown nether - this is a nether that mirrors the overworld")
     @ConfigEntry(path = "world.nether.upsidedown.generate")
     private boolean useUpsideDown = true;
+    
+    @ConfigComment("Force overworld discovery. If this is true, then player won't really be able to explore areas in the Upside Down not discovered in the Overworld")
+    @ConfigEntry(path = "world.nether.upsidedown.force-discovery")
+    private boolean forceDiscovery = true;
+    
+    @ConfigComment("The Upside Down reflects the overworld and if players explore areas not discovered in the overworld, they get sick.")
+    @ConfigComment("You can list multiple effects.")
+    @ConfigComment("Available effects are:")
+    @ConfigComment("   BLINDNESS")
+    @ConfigComment("   CONFUSION")
+    @ConfigComment("   HUNGER")
+    @ConfigComment("   POISON")
+    @ConfigComment("   SLOW")
+    @ConfigComment("   SLOW_DIGGING")
+    @ConfigComment("   WEAKNESS")
+    @ConfigEntry(path = "world.nether.upsidedown.undiscovered-effects")
+    @Adapter(PotionEffectListAdapter.class)
+    private List<PotionEffectType> effects = new ArrayList<>();
+    
+    @ConfigComment("Effect duration")
+    @ConfigEntry(path = "world.nether.upsidedown.effect-duration")
+    private int effectDuration = 30;
     
     @ConfigComment("Level of destruction of UpsideDown nether in %. Default is 5%.")
     @ConfigComment("The UpsideDown is not pretty like the overworld...")
@@ -1473,6 +1496,48 @@ public class Settings implements WorldSettings {
     public void setRedstoneChance(int redstoneChance) {
         redstoneChance = Math.clamp(redstoneChance, 0, 100);
         this.redstoneChance = redstoneChance;
+    }
+
+    /**
+     * @return the effects
+     */
+    public List<PotionEffectType> getEffects() {
+        return effects;
+    }
+
+    /**
+     * @param effects the effects to set
+     */
+    public void setEffects(List<PotionEffectType> effects) {
+        this.effects = effects;
+    }
+
+    /**
+     * @return the effectDuration
+     */
+    public int getEffectDuration() {
+        return effectDuration;
+    }
+
+    /**
+     * @param effectDuration the effectDuration to set
+     */
+    public void setEffectDuration(int effectDuration) {
+        this.effectDuration = effectDuration;
+    }
+
+    /**
+     * @return the forceDiscovery
+     */
+    public boolean isForceDiscovery() {
+        return forceDiscovery;
+    }
+
+    /**
+     * @param forceDiscovery the forceDiscovery to set
+     */
+    public void setForceDiscovery(boolean forceDiscovery) {
+        this.forceDiscovery = forceDiscovery;
     }
 
 }

@@ -242,6 +242,11 @@ public class NetherChunkMaker implements Listener {
         if (!netherChunksMade.getChunkSet().add(Pair.of(e.getChunk().getX(), e.getChunk().getZ()))) {
             return; // Ignore if the chunk is already processed
         }
+        
+        if (addon.getSettings().isForceDiscovery() && !Util.isChunkGenerated(addon.getOverWorld(), e.getChunk().getX(), e.getChunk().getZ())) {
+            // Don't generate chunks that haven't been discovered in the overworld yet.
+            return;
+        }
 
         handler.saveObjectAsync(netherChunksMade); // Save to database
         Chunk chunk = e.getChunk();

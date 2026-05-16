@@ -71,6 +71,23 @@ world:
     upsidedown:
       # Make the UpsideDown nether - this is a nether that mirrors the overworld
       generate: true
+      # Force overworld discovery. If this is true, then player won't really be able to explore areas in the Upside Down not discovered in the Overworld
+      force-discovery: true
+      # You can list multiple effects.
+      # Available effects are:
+      #    BLINDNESS
+      #    CONFUSION
+      #    HUNGER
+      #    POISON
+      #    SLOW
+      #    SLOW_DIGGING
+      #    WEAKNESS
+      undiscovered-effects:
+        - CONFUSION
+        - BLINDNESS
+        - SLOW_DIGGING
+      # Effect duraction
+      effect-duration: 30
       # Level of destruction of UpsideDown nether in %. Default is 5%.
       # The UpsideDown is not pretty like the overworld...
       attrition: 5

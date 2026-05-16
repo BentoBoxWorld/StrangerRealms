@@ -2,6 +2,7 @@ package world.bentobox.stranger.listeners;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -32,11 +33,14 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import world.bentobox.bentobox.BentoBox;
 import world.bentobox.bentobox.api.events.island.IslandProtectionRangeChangeEvent;
 import world.bentobox.bentobox.api.flags.Flag;
 import world.bentobox.bentobox.api.metadata.MetaDataValue;
@@ -55,6 +59,9 @@ import world.bentobox.stranger.border.BorderShower;
 public class PlayerListener implements Listener {
     // Vector used to compare x,z coordinates only (y = 0)
     private static final Vector XZ = new Vector(1,0,1);
+    private static final List<PotionEffectType> EFFECTS = List.of(PotionEffectType.BLINDNESS, PotionEffectType.NAUSEA, PotionEffectType.HUNGER,
+                    PotionEffectType.SLOWNESS, PotionEffectType.MINING_FATIGUE, PotionEffectType.WEAKNESS,
+                    PotionEffectType.POISON, PotionEffectType.DARKNESS, PotionEffectType.UNLUCK);
     private final StrangerRealms addon;
     // Set to track players currently being teleported to prevent recursion
     private final Set<UUID> inTeleport;
@@ -356,10 +363,29 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent e) {
+        if (e.getFrom().toVector().equals(e.getTo().toVector())) {
+            // Ignore head movement
+            return;
+        }
         Player player = e.getPlayer();
-        // Remove head movement
-        if (isOn(player) && !e.getFrom().toVector().equals(e.getTo().toVector())) {
+        if (isOn(player)) {
             show.refreshView(User.getInstance(e.getPlayer()));
+        }
+        if (!addon.getSettings().isUseUpsideDown()) {
+            return;
+        }
+        // If in nether in a non-explored overworld chunk situation, then hurt the player
+        if (e.getTo() != null 
+                && e.getTo().getWorld().equals(addon.getNetherWorld())
+                && addon.getSettings().isForceDiscovery()
+                && !Util.isChunkGenerated(e.getTo().toVector().toLocation(addon.getOverWorld()))) {
+            // Apply disincentives
+           addon.getSettings().getEffects().stream().filter(EFFECTS::contains).forEach(t -> player
+                    .addPotionEffect(new PotionEffect(t, addon.getSettings().getEffectDuration() * 20, 1)));
+           BentoBox.getInstance().logDebug("Hurt");
+        } else {
+            BentoBox.getInstance().logDebug(e.getEventName() + " " + e.getTo().getWorld().equals(addon.getNetherWorld()));
+            BentoBox.getInstance().logDebug(e.getTo().toVector().toLocation(addon.getOverWorld()));
         }
     }
 
