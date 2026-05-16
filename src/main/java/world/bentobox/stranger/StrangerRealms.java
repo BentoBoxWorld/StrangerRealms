@@ -133,7 +133,7 @@ public class StrangerRealms extends GameModeAddon {
     public void onEnable() {
         // Check for recommended addons
         if (this.getPlugin().getAddonsManager().getAddonByName("Border").isPresent()) {
-            this.logWarning("StrangerRealms has its own Border, so do not use Border in the Crowdbound world.");
+            this.logWarning("StrangerRealms has its own Border, so do not use Border addon.");
         }
         if (this.getPlugin().getAddonsManager().getAddonByName("InvSwitcher").isEmpty()) {
             this.logWarning("StrangerRealms recommends the InvSwitcher addon.");
@@ -164,6 +164,7 @@ public class StrangerRealms extends GameModeAddon {
 
     @Override
     public void onDisable() {
+        // Nothing to do
     }
 
     @Override
@@ -290,7 +291,7 @@ public class StrangerRealms extends GameModeAddon {
             Math.max(getSettings().getBarrierIncreaseBlocks(), (this.getSettings().getBarrierIncreaseBlocks() * Bukkit.getServer().getOnlinePlayers().size()));
         if (newBorderSize < borderSize) {
             // End any current task to replace it
-            task.cancel();
+            cancelBorderTask();
             // Trigger gradual reduction of border
             task =  Bukkit.getScheduler().runTaskTimer(getPlugin(), () -> {
                 if (borderSize > newBorderSize) {
