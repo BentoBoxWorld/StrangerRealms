@@ -68,20 +68,28 @@ public class TeamListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onTeamKick(TeamKickEvent e) {
         if (!addon.inWorld(e.getIsland().getWorld()) // Not in game world
-                || addon.getSettings().getMemberBonus() != 0) {
-            resize(e.getIsland());
+                || addon.getSettings().getMemberBonus() == 0) { // No resizing
+            return;
         }
+        resize(e.getIsland());
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onTeamLeave(TeamLeaveEvent e) {
         if (!addon.inWorld(e.getIsland().getWorld()) // Not in game world
-                || addon.getSettings().getMemberBonus() != 0) {
-            resize(e.getIsland());
+                || addon.getSettings().getMemberBonus() == 0) { // No resizing
+            return;
         }
+        resize(e.getIsland());
     }
 
     protected int resize(Island claim) {
+        // Guard: never resize an island that isn't governed by StrangerRealms.
+        // Resizing would call setRange/setProtectionRange with StrangerRealms' distance,
+        // corrupting the range of islands belonging to other game modes (see #issue).
+        if (!addon.inWorld(claim.getWorld())) {
+            return 0;
+        }
         // Remove old claim from grid
         addon.getPlugin().getIslands().getIslandCache().getIslandGrid(claim.getWorld()).removeFromGrid(claim);
 
