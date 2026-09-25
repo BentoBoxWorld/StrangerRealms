@@ -1,9 +1,12 @@
 package world.bentobox.stranger.generator;
 
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +28,12 @@ public class NetherChunks extends ChunkGenerator {
      * - Larger value (e.g., 0.12) = More common, wider caves.
      */
     private static final double CAVE_THRESHOLD = 0.4;
+
+    /**
+     * Populators run after vanilla carvers and decorations, so blocks with block
+     * entities placed by them are not overwritten
+     */
+    private final List<BlockPopulator> populators = List.of(new SculkSensorPopulator());
 
     @Override
     public void generateNoise(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull ChunkData chunkData) {
@@ -79,6 +88,11 @@ public class NetherChunks extends ChunkGenerator {
     }
 
     @Override
+    public @NotNull List<BlockPopulator> getDefaultPopulators(@NotNull World world) {
+        return populators;
+    }
+
+    @Override
     public boolean shouldGenerateNoise() {
         return true;
     }
@@ -126,12 +140,10 @@ public class NetherChunks extends ChunkGenerator {
                         }
                         continue;
                     }
-                    if (block.getMaterial() != Material.AIR && upBlock.getMaterial() == Material.AIR) {
-                        if (random.nextDouble() < 0.1) {
-                            chunkData.setBlock(x, y, z, Material.SCULK_SENSOR);
-                        } else  if (random.nextDouble() < 0.2) {
-                            chunkData.setBlock(x, y, z, Material.SCULK_VEIN);
-                        }
+                    // Sculk sensors are added later by SculkSensorPopulator
+                    if (block.getMaterial() != Material.AIR && upBlock.getMaterial() == Material.AIR
+                            && random.nextDouble() < 0.2) {
+                        chunkData.setBlock(x, y, z, Material.SCULK_VEIN);
                     }
                 }
             }
