@@ -27,6 +27,15 @@ permissions:
   strangerrealms.island.sethome:
     description: Let the player use the sethome command
     default: true
+  strangerrealms.island.deletehome:
+    description: Allow use of '/st deletehome' command - delete a home location
+    default: true
+  strangerrealms.island.homes:
+    description: Allow use of '/st homes' command - list your homes
+    default: true
+  strangerrealms.island.renamehome:
+    description: Allow use of '/st renamehome' command - rename a home location
+    default: true
   strangerrealms.island.info:
     description: Let the player check other players info
     default: true
