@@ -3,6 +3,9 @@
 
 # Stranger Realms: A BentoBox Game Mode
 
+<!-- BentoBox stats badges: https://download.bentobox.world/admin (Badges tab) -->
+[![Servers](https://download.bentobox.world/badge/StrangerRealms/servers.svg)](https://download.bentobox.world/) [![Downloads](https://download.bentobox.world/badge/StrangerRealms/downloads.svg)](https://download.bentobox.world/) [![Minecraft](https://download.bentobox.world/badge/StrangerRealms/mc.svg)](https://download.bentobox.world/)
+
 A chilling new survival experience where the familiar world is shadowed by a terrifying, inverted dimension. *Stranger Realms* is a custom BentoBox game mode that replaces the Nether with a dark, distressed copy of the Overworld — the **Upside Down**.
 
 ## 🌌 Game Concept: Welcome to the Upside Down
